@@ -1,11 +1,13 @@
 package client
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 )
 
+// Rate limit retries: opwan answers 429 with Retry-After, which is followed up to MAX_RETRY_WAIT.
 const (
 	MAX_RATE_LIMIT_RETRIES = 4
 	MAX_RETRY_WAIT         = 60 * time.Second
@@ -21,18 +23,18 @@ func (t *rateLimitTransport) RoundTrip(req *http.Request) (*http.Response, error
 	for attempt := 0; ; attempt++ {
 		resp, err := t.next.RoundTrip(req)
 		if err != nil || resp.StatusCode != http.StatusTooManyRequests || attempt == MAX_RATE_LIMIT_RETRIES {
-			return resp, err
+			return resp, wrapTransportError(err)
 		}
 
 		retryReq, ok := rewind(req)
 		if !ok {
 			return resp, nil
 		}
-		resp.Body.Close()
+		_ = resp.Body.Close()
 
 		select {
 		case <-req.Context().Done():
-			return nil, req.Context().Err()
+			return nil, fmt.Errorf("wait to retry a rate-limited request: %w", req.Context().Err())
 		case <-time.After(retryWait(resp)):
 		}
 		req = retryReq
@@ -61,4 +63,11 @@ func retryWait(resp *http.Response) time.Duration {
 		return DEFAULT_RETRY_WAIT
 	}
 	return min(time.Duration(seconds)*time.Second, MAX_RETRY_WAIT)
+}
+
+func wrapTransportError(err error) error {
+	if err == nil {
+		return nil
+	}
+	return fmt.Errorf("send the request: %w", err)
 }

@@ -58,11 +58,16 @@ type monthUsageModel struct {
 	Throttled      string `tfsdk:"throttled"`
 }
 
+// NewAccountDataSource returns the opwan_account data source.
 func NewAccountDataSource() datasource.DataSource {
 	return &accountDataSource{}
 }
 
-func (d *accountDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *accountDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_account"
 }
 
@@ -70,18 +75,18 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The account the API token belongs to: its addresses, subscription and this month's usage.",
 		Attributes: map[string]schema.Attribute{
-			"id":         schema.StringAttribute{Computed: true, MarkdownDescription: "The account id (UUID)."},
-			"email":      schema.StringAttribute{Computed: true, MarkdownDescription: "The op account's email."},
-			"status":     schema.StringAttribute{Computed: true, MarkdownDescription: "`active`, `suspended` or `closed`."},
-			"created_at": schema.StringAttribute{Computed: true, MarkdownDescription: "When the account was created (RFC 3339)."},
-			"location":   schema.StringAttribute{Computed: true, MarkdownDescription: "The location the account chose, null before it chose one."},
+			"id":         computedString("The account id (UUID)."),
+			"email":      computedString("The op account's email."),
+			"status":     computedString("`active`, `suspended` or `closed`."),
+			"created_at": computedString("When the account was created (RFC 3339)."),
+			"location":   computedString("The location the account chose, null before it chose one."),
 			"addresses": schema.ListNestedAttribute{
 				Computed:            true,
 				MarkdownDescription: "The account's public IPv4 addresses.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"ip":       schema.StringAttribute{Computed: true, MarkdownDescription: "The address (dotted IPv4)."},
-						"location": schema.StringAttribute{Computed: true, MarkdownDescription: "The address's location id."},
+						"ip":       computedString("The address (dotted IPv4)."),
+						"location": computedString("The address's location id."),
 					},
 				},
 			},
@@ -89,37 +94,49 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 				Computed:            true,
 				MarkdownDescription: "The subscription, null without one.",
 				Attributes: map[string]schema.Attribute{
-					"plan":                 schema.StringAttribute{Computed: true, MarkdownDescription: "`base` or `plus`."},
-					"status":               schema.StringAttribute{Computed: true, MarkdownDescription: "The Stripe subscription status (`active`, `past_due`, `canceled`, ...)."},
-					"extra_ips":            schema.Int64Attribute{Computed: true, MarkdownDescription: "Extra addresses on top of the first."},
-					"monthly_tb":           schema.Int64Attribute{Computed: true, MarkdownDescription: "Monthly data add-on, TB, billed every month."},
-					"monthly_tb_counted":   schema.Int64Attribute{Computed: true, MarkdownDescription: "Monthly data in this month's allowance, TB."},
-					"extra_tb":             schema.Int64Attribute{Computed: true, MarkdownDescription: "One-time data bought for the current month, TB."},
-					"peak_mbps":            schema.Int64Attribute{Computed: true, MarkdownDescription: "The speed ceiling, Mbps."},
-					"cancel_at_period_end": schema.BoolAttribute{Computed: true, MarkdownDescription: "The subscription ends with the current period."},
-					"current_period_start": schema.StringAttribute{Computed: true, MarkdownDescription: "Start of the billing period (RFC 3339)."},
-					"current_period_end":   schema.StringAttribute{Computed: true, MarkdownDescription: "End of the billing period (RFC 3339)."},
-					"suspend_at":           schema.StringAttribute{Computed: true, MarkdownDescription: "While a payment is late, when the tunnel will be suspended."},
-					"release_at":           schema.StringAttribute{Computed: true, MarkdownDescription: "After cancellation, when the addresses will be released."},
+					"plan": computedString("`base` or `plus`."),
+					"status": computedString(
+						"The Stripe subscription status (`active`, `past_due`, `canceled`, ...).",
+					),
+					"extra_ips":            computedInt64("Extra addresses on top of the first."),
+					"monthly_tb":           computedInt64("Monthly data add-on, TB, billed every month."),
+					"monthly_tb_counted":   computedInt64("Monthly data in this month's allowance, TB."),
+					"extra_tb":             computedInt64("One-time data bought for the current month, TB."),
+					"peak_mbps":            computedInt64("The speed ceiling, Mbps."),
+					"cancel_at_period_end": computedBool("The subscription ends with the current period."),
+					"current_period_start": computedString("Start of the billing period (RFC 3339)."),
+					"current_period_end":   computedString("End of the billing period (RFC 3339)."),
+					"suspend_at": computedString(
+						"While a payment is late, when the tunnel will be suspended.",
+					),
+					"release_at": computedString("After cancellation, when the addresses will be released."),
 				},
 			},
 			"usage": schema.SingleNestedAttribute{
-				Computed:            true,
-				MarkdownDescription: "Data used this month (UTC). For daily figures or another month use the `opwan_usage` data source.",
+				Computed: true,
+				MarkdownDescription: "Data used this month (UTC). " +
+					"For daily figures or another month use the `opwan_usage` data source.",
 				Attributes: map[string]schema.Attribute{
-					"month":           schema.StringAttribute{Computed: true, MarkdownDescription: "`YYYY-MM`."},
-					"rx_bytes":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Bytes to you."},
-					"tx_bytes":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Bytes from you."},
-					"used_bytes":      schema.Int64Attribute{Computed: true, MarkdownDescription: "rx + tx, what counts against the allowance."},
-					"allowance_bytes": schema.Int64Attribute{Computed: true, MarkdownDescription: "The plan's allowance plus this month's data add-ons."},
-					"throttled":       schema.StringAttribute{Computed: true, MarkdownDescription: THROTTLED_DESCRIPTION},
+					"month":           computedString("`YYYY-MM`."),
+					"rx_bytes":        computedInt64("Bytes to you."),
+					"tx_bytes":        computedInt64("Bytes from you."),
+					"used_bytes":      computedInt64("rx + tx, what counts against the allowance."),
+					"allowance_bytes": computedInt64("The plan's allowance plus this month's data add-ons."),
+					"throttled": schema.StringAttribute{
+						Computed:            true,
+						MarkdownDescription: THROTTLED_DESCRIPTION,
+					},
 				},
 			},
 		},
 	}
 }
 
-func (d *accountDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *accountDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	d.client = clientFromProviderData(req.ProviderData, &resp.Diagnostics)
 }
 

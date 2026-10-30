@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"errors"
 	"fmt"
 	"net/netip"
 	"slices"
@@ -8,12 +9,20 @@ import (
 	"strings"
 )
 
+// Limits opwan puts on firewall rules.
 const (
 	MIN_PORT                = 1
 	MAX_PORT                = 65535
 	MAX_PORT_ITEMS_PER_RULE = 32
 	MAX_FIREWALL_RULES      = 64
 	BLOCKED_SMTP_PORT       = 25
+)
+
+var (
+	errTooManyPorts  = errors.New("too many ports or ranges in one rule")
+	errReversedRange = errors.New("range starts after it ends")
+	errNotAPort      = errors.New("not a port from 1 to 65535")
+	errNotIPv4Source = errors.New("not an IPv4 address or CIDR")
 )
 
 type portRange struct {
@@ -24,7 +33,7 @@ type portRange struct {
 func parsePorts(ports string) ([]portRange, error) {
 	items := strings.Split(ports, ",")
 	if len(items) > MAX_PORT_ITEMS_PER_RULE {
-		return nil, fmt.Errorf("at most %d ports or ranges per rule, got %d", MAX_PORT_ITEMS_PER_RULE, len(items))
+		return nil, fmt.Errorf("%w: at most %d, got %d", errTooManyPorts, MAX_PORT_ITEMS_PER_RULE, len(items))
 	}
 
 	ranges := make([]portRange, 0, len(items))
@@ -43,7 +52,7 @@ func parsePorts(ports string) ([]portRange, error) {
 			return nil, err
 		}
 		if from > to {
-			return nil, fmt.Errorf("range %q starts after it ends", item)
+			return nil, fmt.Errorf("%w: %q", errReversedRange, item)
 		}
 		ranges = append(ranges, portRange{from: from, to: to})
 	}
@@ -53,7 +62,7 @@ func parsePorts(ports string) ([]portRange, error) {
 func parsePort(text string) (int, error) {
 	port, err := strconv.Atoi(strings.TrimSpace(text))
 	if err != nil || port < MIN_PORT || port > MAX_PORT {
-		return 0, fmt.Errorf("%q is not a port from %d to %d", text, MIN_PORT, MAX_PORT)
+		return 0, fmt.Errorf("%q is %w", text, errNotAPort)
 	}
 	return port, nil
 }
@@ -95,7 +104,7 @@ func parseSource(source string) (netip.Prefix, error) {
 	if addr, err := netip.ParseAddr(source); err == nil && addr.Is4() {
 		return netip.PrefixFrom(addr, addr.BitLen()), nil
 	}
-	return netip.Prefix{}, fmt.Errorf("%q is not an IPv4 address or CIDR", source)
+	return netip.Prefix{}, fmt.Errorf("%q is %w", source, errNotIPv4Source)
 }
 
 func sourcesEquivalent(a, b string) bool {

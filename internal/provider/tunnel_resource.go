@@ -17,7 +17,7 @@ import (
 	"github.com/slop-place/terraform-provider-opwan/internal/opwanapi"
 )
 
-// An account has one tunnel, so its id is fixed.
+// TUNNEL_ID is the id of the account's one tunnel.
 const TUNNEL_ID = "tunnel"
 
 var (
@@ -44,6 +44,7 @@ type tunnelResourceModel struct {
 	PersistentKeepalive types.Int64  `tfsdk:"persistent_keepalive"`
 }
 
+// NewTunnelResource returns the opwan_tunnel resource.
 func NewTunnelResource() resource.Resource {
 	return &tunnelResource{}
 }
@@ -54,10 +55,12 @@ func (r *tunnelResource) Metadata(_ context.Context, req resource.MetadataReques
 
 func (r *tunnelResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The account's WireGuard tunnel. An account has one tunnel: creating this resource when one exists takes it over and sets its key. " +
+		MarkdownDescription: "The account's WireGuard tunnel. An account has one tunnel: " +
+			"creating this resource when one exists takes it over and sets its key. " +
 			"Changing `public_key` re-keys the tunnel in place. The location can't change once the tunnel exists. " +
 			"opwan has no way to delete a tunnel, so destroying this resource only removes it from the Terraform state.\n\n" +
-			"Only the public key is sent to opwan. Generate the key pair yourself, for example with `wg genkey | tee private.key | wg pubkey`.",
+			"Only the public key is sent to opwan. Generate the key pair with `opwan_wireguard_key`, " +
+			"or yourself with `wg genkey | tee private.key | wg pubkey`.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				MarkdownDescription: "Always `" + TUNNEL_ID + "`.",
@@ -90,13 +93,15 @@ func (r *tunnelResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"server_public_key": schema.StringAttribute{
-				MarkdownDescription: "The exit's WireGuard public key. Null until the exit has reported it, seconds after the tunnel is created.",
-				Computed:            true,
+				MarkdownDescription: "The exit's WireGuard public key. " +
+					"Null until the exit has reported it, seconds after the tunnel is created.",
+				Computed: true,
 			},
 			"addresses": schema.ListAttribute{
-				MarkdownDescription: "The tunnel's addresses as /32s (the wg-quick `Address`). Empty until the subscription is active.",
-				ElementType:         types.StringType,
-				Computed:            true,
+				MarkdownDescription: "The tunnel's addresses as /32s (the wg-quick `Address`). " +
+					"Empty until the subscription is active.",
+				ElementType: types.StringType,
+				Computed:    true,
 			},
 			"allowed_ips": schema.ListAttribute{
 				MarkdownDescription: "Suggested `AllowedIPs` of the peer on the client.",
@@ -119,7 +124,11 @@ func (r *tunnelResource) Configure(_ context.Context, req resource.ConfigureRequ
 	r.client = clientFromProviderData(req.ProviderData, &resp.Diagnostics)
 }
 
-func (r *tunnelResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+func (r *tunnelResource) ModifyPlan(
+	ctx context.Context,
+	req resource.ModifyPlanRequest,
+	resp *resource.ModifyPlanResponse,
+) {
 	if req.State.Raw.IsNull() || req.Plan.Raw.IsNull() {
 		return
 	}
@@ -163,7 +172,11 @@ func (r *tunnelResource) Delete(_ context.Context, _ resource.DeleteRequest, res
 			"It keeps its addresses until the subscription ends; cancel the subscription in the dashboard to end it.")
 }
 
-func (r *tunnelResource) ImportState(ctx context.Context, _ resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *tunnelResource) ImportState(
+	ctx context.Context,
+	_ resource.ImportStateRequest,
+	resp *resource.ImportStateResponse,
+) {
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), TUNNEL_ID)...)
 }
 

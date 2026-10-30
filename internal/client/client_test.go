@@ -9,6 +9,7 @@ import (
 )
 
 func TestRetriesRateLimitedRequests(t *testing.T) {
+	t.Parallel()
 	var calls atomic.Int32
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		if calls.Add(1) == 1 {
@@ -17,7 +18,9 @@ func TestRetriesRateLimitedRequests(t *testing.T) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"version":"v1","api_version":"0.9.0","terms_version":"x","terms_url":"https://opwan.io/terms/"}`))
+		_, _ = w.Write(
+			[]byte(`{"version":"v1","api_version":"0.9.0","terms_version":"x","terms_url":"https://opwan.io/terms/"}`),
+		)
 	}))
 	defer server.Close()
 
@@ -35,10 +38,11 @@ func TestRetriesRateLimitedRequests(t *testing.T) {
 }
 
 func TestProblemErrors(t *testing.T) {
+	t.Parallel()
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/problem+json")
 		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write([]byte(`{"type":"x","title":"x","status":422,"code":"validation_failed","detail":"Check the rules.",
+		_, _ = w.Write([]byte(`{"type":"x","title":"x","status":422,"code":"validation_failed","detail":"Check the rules.",
 			"errors":[{"field":"rules[2].ports","message":"port 25 is blocked"}],"request_id":"req1"}`))
 	}))
 	defer server.Close()

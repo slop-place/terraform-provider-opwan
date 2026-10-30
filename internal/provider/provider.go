@@ -14,8 +14,9 @@ import (
 	"github.com/slop-place/terraform-provider-opwan/internal/client"
 )
 
+// Environment variables the provider reads its settings from.
 const (
-	ENV_API_TOKEN = "OPWAN_API_TOKEN"
+	ENV_API_TOKEN = "OPWAN_API_TOKEN" //nolint:gosec // the name of an environment variable, not a credential
 	ENV_ENDPOINT  = "OPWAN_ENDPOINT"
 )
 
@@ -30,6 +31,7 @@ type providerModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
 }
 
+// New returns the opwan provider factory for version.
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
 		return &opwanProvider{version: version}
@@ -48,19 +50,25 @@ func (p *opwanProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp
 			"api_token": schema.StringAttribute{
 				MarkdownDescription: "An opwan API token (`opwan_...`) from the dashboard's Settings → API tokens. " +
 					"Reading needs a `read` token; managing the tunnel and firewalls needs `write`. " +
-					"Defaults to `" + ENV_API_TOKEN + "`. The `opwan_locations`, `opwan_plans` and `opwan_meta` data sources work without one.",
+					"Defaults to `" + ENV_API_TOKEN + "`. " +
+					"The `opwan_locations`, `opwan_plans` and `opwan_meta` data sources work without one.",
 				Optional:  true,
 				Sensitive: true,
 			},
 			"endpoint": schema.StringAttribute{
-				MarkdownDescription: "The opwan API's base URL. Defaults to `" + ENV_ENDPOINT + "`, else `" + client.DEFAULT_ENDPOINT + "`.",
-				Optional:            true,
+				MarkdownDescription: "The opwan API's base URL. " +
+					"Defaults to `" + ENV_ENDPOINT + "`, else `" + client.DEFAULT_ENDPOINT + "`.",
+				Optional: true,
 			},
 		},
 	}
 }
 
-func (p *opwanProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+func (p *opwanProvider) Configure(
+	ctx context.Context,
+	req provider.ConfigureRequest,
+	resp *provider.ConfigureResponse,
+) {
 	var config providerModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {

@@ -17,7 +17,13 @@ func clientFromProviderData(providerData any, diags *diag.Diagnostics) *client.C
 	}
 	c, ok := providerData.(*client.Client)
 	if !ok {
-		diags.AddError("Unexpected provider data", fmt.Sprintf("Expected *client.Client, got %T. Please report this issue to the provider developers.", providerData))
+		diags.AddError(
+			"Unexpected provider data",
+			fmt.Sprintf(
+				"Expected *client.Client, got %T. Please report this issue to the provider developers.",
+				providerData,
+			),
+		)
 		return nil
 	}
 	return c
@@ -25,13 +31,6 @@ func clientFromProviderData(providerData any, diags *diag.Diagnostics) *client.C
 
 func timeValue(t time.Time) types.String {
 	return types.StringValue(t.Format(time.RFC3339))
-}
-
-func nullableTimeValue(t *time.Time) types.String {
-	if t == nil {
-		return types.StringNull()
-	}
-	return timeValue(*t)
 }
 
 func stringListValue(values []string) types.List {

@@ -22,11 +22,16 @@ type metaModel struct {
 	TermsURL     string `tfsdk:"terms_url"`
 }
 
+// NewMetaDataSource returns the opwan_meta data source.
 func NewMetaDataSource() datasource.DataSource {
 	return &metaDataSource{}
 }
 
-func (d *metaDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *metaDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_meta"
 }
 
@@ -34,15 +39,19 @@ func (d *metaDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The opwan server's version and terms of service. Needs no API token.",
 		Attributes: map[string]schema.Attribute{
-			"version":       schema.StringAttribute{Computed: true, MarkdownDescription: "The server version."},
-			"api_version":   schema.StringAttribute{Computed: true, MarkdownDescription: "The API version."},
-			"terms_version": schema.StringAttribute{Computed: true, MarkdownDescription: "The terms of service version in effect."},
-			"terms_url":     schema.StringAttribute{Computed: true, MarkdownDescription: "Where the terms of service are published."},
+			"version":       computedString("The server version."),
+			"api_version":   computedString("The API version."),
+			"terms_version": computedString("The terms of service version in effect."),
+			"terms_url":     computedString("Where the terms of service are published."),
 		},
 	}
 }
 
-func (d *metaDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *metaDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	d.client = clientFromProviderData(req.ProviderData, &resp.Diagnostics)
 }
 

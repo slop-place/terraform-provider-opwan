@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/slop-place/terraform-provider-opwan/internal/opwanapi"
 )
@@ -17,16 +18,17 @@ type tunnelStatusModel struct {
 	UpdatedAt     *string `tfsdk:"updated_at"`
 }
 
+// THROTTLED_DESCRIPTION documents every attribute carrying a throttled reason.
 const THROTTLED_DESCRIPTION = "Why the speed is lowered right now: `none`, `burst`, `allowance` or `pacing`."
 
 func tunnelStatusAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
-		"up":             schema.BoolAttribute{Computed: true, MarkdownDescription: "A handshake within the last 3 minutes."},
-		"last_handshake": schema.StringAttribute{Computed: true, MarkdownDescription: "The last WireGuard handshake (RFC 3339), null before the first."},
-		"rate_bps_rx":    schema.Int64Attribute{Computed: true, MarkdownDescription: "Bits per second to you, over the last report."},
-		"rate_bps_tx":    schema.Int64Attribute{Computed: true, MarkdownDescription: "Bits per second from you, over the last report."},
+		"up":             computedBool("A handshake within the last 3 minutes."),
+		"last_handshake": computedString("The last WireGuard handshake (RFC 3339), null before the first."),
+		"rate_bps_rx":    computedInt64("Bits per second to you, over the last report."),
+		"rate_bps_tx":    computedInt64("Bits per second from you, over the last report."),
 		"throttled":      schema.StringAttribute{Computed: true, MarkdownDescription: THROTTLED_DESCRIPTION},
-		"updated_at":     schema.StringAttribute{Computed: true, MarkdownDescription: "When the exit last reported (RFC 3339), null before the first report."},
+		"updated_at":     computedString("When the exit last reported (RFC 3339), null before the first report."),
 	}
 }
 
@@ -50,4 +52,20 @@ func formatTime(t *time.Time) *string {
 	}
 	formatted := t.Format(time.RFC3339)
 	return &formatted
+}
+
+func computedString(description string) schema.StringAttribute {
+	return schema.StringAttribute{Computed: true, MarkdownDescription: description}
+}
+
+func computedInt64(description string) schema.Int64Attribute {
+	return schema.Int64Attribute{Computed: true, MarkdownDescription: description}
+}
+
+func computedBool(description string) schema.BoolAttribute {
+	return schema.BoolAttribute{Computed: true, MarkdownDescription: description}
+}
+
+func computedStringList(description string) schema.ListAttribute {
+	return schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: description}
 }

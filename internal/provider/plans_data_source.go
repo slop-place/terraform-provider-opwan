@@ -47,31 +47,37 @@ type peakTierModel struct {
 	PriceCents int64 `tfsdk:"price_cents"`
 }
 
+// NewPlansDataSource returns the opwan_plans data source.
 func NewPlansDataSource() datasource.DataSource {
 	return &plansDataSource{}
 }
 
-func (d *plansDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *plansDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_plans"
 }
 
 func (d *plansDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The plans and add-ons on sale. Prices are in cents of `currency`, tax exclusive. Needs no API token.",
+		MarkdownDescription: "The plans and add-ons on sale. " +
+			"Prices are in cents of `currency`, tax exclusive. Needs no API token.",
 		Attributes: map[string]schema.Attribute{
-			"currency": schema.StringAttribute{Computed: true, MarkdownDescription: "`usd`."},
+			"currency": computedString("`usd`."),
 			"plans": schema.ListNestedAttribute{
 				Computed:            true,
 				MarkdownDescription: "The plans.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id":              schema.StringAttribute{Computed: true, MarkdownDescription: "`base` or `plus`."},
-						"name":            schema.StringAttribute{Computed: true, MarkdownDescription: "Display name."},
-						"price_cents":     schema.Int64Attribute{Computed: true, MarkdownDescription: "Per month."},
-						"ceil_mbps":       schema.Int64Attribute{Computed: true, MarkdownDescription: "Speed ceiling."},
-						"rate_mbps":       schema.Int64Attribute{Computed: true, MarkdownDescription: "Guaranteed rate under contention."},
-						"slow_mbps":       schema.Int64Attribute{Computed: true, MarkdownDescription: "The ceiling once the month's allowance is used."},
-						"allowance_bytes": schema.Int64Attribute{Computed: true, MarkdownDescription: "Data per calendar month, both directions."},
+						"id":              computedString("`base` or `plus`."),
+						"name":            computedString("Display name."),
+						"price_cents":     computedInt64("Per month."),
+						"ceil_mbps":       computedInt64("Speed ceiling."),
+						"rate_mbps":       computedInt64("Guaranteed rate under contention."),
+						"slow_mbps":       computedInt64("The ceiling once the month's allowance is used."),
+						"allowance_bytes": computedInt64("Data per calendar month, both directions."),
 					},
 				},
 			},
@@ -79,20 +85,20 @@ func (d *plansDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 				Computed:            true,
 				MarkdownDescription: "The add-ons.",
 				Attributes: map[string]schema.Attribute{
-					"extra_ip_price_cents":   schema.Int64Attribute{Computed: true, MarkdownDescription: "Per extra address per month."},
-					"max_extra_ips":          schema.Int64Attribute{Computed: true, MarkdownDescription: "Most extra addresses a subscription can have."},
-					"monthly_tb_price_cents": schema.Int64Attribute{Computed: true, MarkdownDescription: "Monthly data, per TB per month."},
-					"max_monthly_tb":         schema.Int64Attribute{Computed: true, MarkdownDescription: "Most monthly data a subscription can have, TB."},
-					"extra_tb_price_cents":   schema.Int64Attribute{Computed: true, MarkdownDescription: "One-time data, per TB, added to the current month."},
-					"max_extra_tb":           schema.Int64Attribute{Computed: true, MarkdownDescription: "Most TB one data add-on purchase can buy."},
-					"peak_plan":              schema.StringAttribute{Computed: true, MarkdownDescription: "The plan the peak speed tiers apply to."},
+					"extra_ip_price_cents":   computedInt64("Per extra address per month."),
+					"max_extra_ips":          computedInt64("Most extra addresses a subscription can have."),
+					"monthly_tb_price_cents": computedInt64("Monthly data, per TB per month."),
+					"max_monthly_tb":         computedInt64("Most monthly data a subscription can have, TB."),
+					"extra_tb_price_cents":   computedInt64("One-time data, per TB, added to the current month."),
+					"max_extra_tb":           computedInt64("Most TB one data add-on purchase can buy."),
+					"peak_plan":              computedString("The plan the peak speed tiers apply to."),
 					"peak_tiers": schema.ListNestedAttribute{
 						Computed:            true,
 						MarkdownDescription: "Peak speed tiers, slowest first. The first is the plan's own ceiling at 0 cents.",
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"mbps":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Speed ceiling, Mbps."},
-								"price_cents": schema.Int64Attribute{Computed: true, MarkdownDescription: "Per month on top of the plan."},
+								"mbps":        computedInt64("Speed ceiling, Mbps."),
+								"price_cents": computedInt64("Per month on top of the plan."),
 							},
 						},
 					},
@@ -102,7 +108,11 @@ func (d *plansDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 	}
 }
 
-func (d *plansDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *plansDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	d.client = clientFromProviderData(req.ProviderData, &resp.Diagnostics)
 }
 

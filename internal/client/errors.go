@@ -10,11 +10,10 @@ import (
 	"github.com/slop-place/terraform-provider-opwan/internal/opwanapi"
 )
 
+// Problem codes the provider reacts to.
 const (
-	CODE_NOT_FOUND          = opwanapi.ProblemCode("not_found")
-	CODE_LOCATION_LOCKED    = opwanapi.ProblemCode("location_locked")
-	CODE_UNAUTHENTICATED    = opwanapi.ProblemCode("unauthenticated")
-	CODE_INSUFFICIENT_SCOPE = opwanapi.ProblemCode("insufficient_scope")
+	CODE_LOCATION_LOCKED = opwanapi.ProblemCode("location_locked")
+	CODE_UNAUTHENTICATED = opwanapi.ProblemCode("unauthenticated")
 )
 
 // APIError is a non-2xx answer from opwan, carrying its problem document when there was one.
@@ -45,11 +44,13 @@ func (e *APIError) Error() string {
 	return b.String()
 }
 
+// HasCode reports whether err is an opwan problem with code.
 func HasCode(err error, code opwanapi.ProblemCode) bool {
 	var apiErr *APIError
 	return errors.As(err, &apiErr) && apiErr.Problem != nil && apiErr.Problem.Code == code
 }
 
+// IsNotFound reports whether err is an opwan 404.
 func IsNotFound(err error) bool {
 	var apiErr *APIError
 	return errors.As(err, &apiErr) && apiErr.StatusCode == http.StatusNotFound

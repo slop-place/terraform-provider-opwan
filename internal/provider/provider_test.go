@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"regexp"
 	"testing"
@@ -20,8 +21,12 @@ const (
 	TEST_PUBKEY_2 = "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8="
 )
 
-var testProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
-	"opwan": providerserver.NewProtocol6WithError(New("test")()),
+var errFirewallNotReset = errors.New("firewall not reset on destroy")
+
+func testProviderFactories() map[string]func() (tfprotov6.ProviderServer, error) {
+	return map[string]func() (tfprotov6.ProviderServer, error){
+		"opwan": providerserver.NewProtocol6WithError(New("test")()),
+	}
 }
 
 func providerConfig(endpoint string) string {
@@ -43,10 +48,11 @@ resource "opwan_tunnel" "this" {
 }
 
 func TestTunnelResource(t *testing.T) {
+	t.Parallel()
 	server := newFakeOpwan(t)
 
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: testProviderFactories,
+		ProtoV6ProviderFactories: testProviderFactories(),
 		Steps: []resource.TestStep{
 			{
 				Config: tunnelConfig(server.URL, TEST_LOCATION, TEST_PUBKEY),
@@ -68,7 +74,9 @@ func TestTunnelResource(t *testing.T) {
 			{
 				Config: tunnelConfig(server.URL, TEST_LOCATION, TEST_PUBKEY_2),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
-					PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("opwan_tunnel.this", plancheck.ResourceActionUpdate)},
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction("opwan_tunnel.this", plancheck.ResourceActionUpdate),
+					},
 				},
 				Check: resource.TestCheckResourceAttr("opwan_tunnel.this", "public_key", TEST_PUBKEY_2),
 			},
@@ -81,10 +89,11 @@ func TestTunnelResource(t *testing.T) {
 }
 
 func TestTunnelResourceRejectsBadKey(t *testing.T) {
+	t.Parallel()
 	server := newFakeOpwan(t)
 
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: testProviderFactories,
+		ProtoV6ProviderFactories: testProviderFactories(),
 		Steps: []resource.TestStep{{
 			Config:      tunnelConfig(server.URL, TEST_LOCATION, "not-a-key"),
 			ExpectError: regexp.MustCompile("base64 of exactly 32 bytes"),
@@ -103,6 +112,7 @@ resource "opwan_firewall" "this" {
 }
 
 func TestFirewallResource(t *testing.T) {
+	t.Parallel()
 	server := newFakeOpwan(t)
 	webRules := `
     { action = "allow", protocol = "tcp", ports = "443,80" },
@@ -110,7 +120,7 @@ func TestFirewallResource(t *testing.T) {
     { action = "allow", protocol = "icmp" },`
 
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: testProviderFactories,
+		ProtoV6ProviderFactories: testProviderFactories(),
 		CheckDestroy:             checkFirewallReset(server.URL),
 		Steps: []resource.TestStep{
 			{
@@ -149,21 +159,29 @@ func TestFirewallResource(t *testing.T) {
 }
 
 func TestFirewallResourceValidation(t *testing.T) {
+	t.Parallel()
 	server := newFakeOpwan(t)
 	tests := map[string]struct {
 		rules string
 		err   string
 	}{
-		"tcp port 25":      {`{ action = "allow", protocol = "tcp", ports = "1-1024" }`, "TCP port 25 is always blocked"},
-		"ports on icmp":    {`{ action = "allow", protocol = "icmp", ports = "80" }`, "Ports need tcp or udp"},
-		"bad port":         {`{ action = "allow", protocol = "udp", ports = "70000" }`, "is not a port"},
-		"bad source":       {`{ action = "allow", protocol = "any", source = "example.com" }`, "not an IPv4 address or CIDR"},
+		"tcp port 25": {
+			`{ action = "allow", protocol = "tcp", ports = "1-1024" }`,
+			"TCP port 25 is always blocked",
+		},
+		"ports on icmp": {`{ action = "allow", protocol = "icmp", ports = "80" }`, "Ports need tcp or udp"},
+		"bad port":      {`{ action = "allow", protocol = "udp", ports = "70000" }`, "is not a port"},
+		"bad source": {
+			`{ action = "allow", protocol = "any", source = "example.com" }`,
+			"not an IPv4 address or CIDR",
+		},
 		"unknown protocol": {`{ action = "allow", protocol = "sctp" }`, "value must be one of"},
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
+			t.Parallel()
 			resource.UnitTest(t, resource.TestCase{
-				ProtoV6ProviderFactories: testProviderFactories,
+				ProtoV6ProviderFactories: testProviderFactories(),
 				Steps: []resource.TestStep{{
 					Config:      firewallConfig(server.URL, tt.rules),
 					ExpectError: regexp.MustCompile(tt.err),
@@ -174,6 +192,7 @@ func TestFirewallResourceValidation(t *testing.T) {
 }
 
 func TestDataSources(t *testing.T) {
+	t.Parallel()
 	server := newFakeOpwan(t)
 	config := tunnelConfig(server.URL, TEST_LOCATION, TEST_PUBKEY) + fmt.Sprintf(`
 data "opwan_account" "this" {}
@@ -192,7 +211,7 @@ data "opwan_meta" "this" {}
 `, TEST_ADDRESS)
 
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: testProviderFactories,
+		ProtoV6ProviderFactories: testProviderFactories(),
 		Steps: []resource.TestStep{{
 			Config: config,
 			Check: resource.ComposeAggregateTestCheckFunc(
@@ -216,10 +235,11 @@ data "opwan_meta" "this" {}
 }
 
 func TestUnauthenticated(t *testing.T) {
+	t.Parallel()
 	server := newFakeOpwan(t)
 
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: testProviderFactories,
+		ProtoV6ProviderFactories: testProviderFactories(),
 		Steps: []resource.TestStep{{
 			Config: fmt.Sprintf(`
 provider "opwan" {
@@ -237,14 +257,14 @@ func checkFirewallReset(endpoint string) resource.TestCheckFunc {
 	return func(_ *terraform.State) error {
 		c, err := client.New(endpoint, TEST_TOKEN, "test")
 		if err != nil {
-			return err
+			return fmt.Errorf("create a client: %w", err)
 		}
 		firewall, err := c.GetFirewall(context.Background(), TEST_ADDRESS)
 		if err != nil {
-			return err
+			return fmt.Errorf("read the firewall: %w", err)
 		}
 		if firewall.Default != DEFAULT_ACTION || len(firewall.Rules) != 0 {
-			return fmt.Errorf("firewall not reset on destroy: %+v", firewall)
+			return fmt.Errorf("%w: %+v", errFirewallNotReset, firewall)
 		}
 		return nil
 	}

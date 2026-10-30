@@ -39,11 +39,16 @@ type maintenanceModel struct {
 	InProgress bool   `tfsdk:"in_progress"`
 }
 
+// NewLocationsDataSource returns the opwan_locations data source.
 func NewLocationsDataSource() datasource.DataSource {
 	return &locationsDataSource{}
 }
 
-func (d *locationsDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *locationsDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_locations"
 }
 
@@ -56,22 +61,24 @@ func (d *locationsDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 				MarkdownDescription: "Every location.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id":           schema.StringAttribute{Computed: true, MarkdownDescription: "Location id (`dfw`), used as `opwan_tunnel.location`."},
-						"name":         schema.StringAttribute{Computed: true, MarkdownDescription: "Display name."},
-						"city":         schema.StringAttribute{Computed: true, MarkdownDescription: "City."},
-						"country":      schema.StringAttribute{Computed: true, MarkdownDescription: "ISO 3166-1 alpha-2 country code (`US`)."},
-						"network_gbps": schema.Int64Attribute{Computed: true, MarkdownDescription: "Network capacity in Gbps."},
-						"test_ip":      schema.StringAttribute{Computed: true, MarkdownDescription: "An address that answers ping, to measure latency. Null: none."},
-						"ping_host":    schema.StringAttribute{Computed: true, MarkdownDescription: "Host name of the HTTPS latency test (`GET https://<ping_host>/ping`). Null: none."},
-						"available":    schema.BoolAttribute{Computed: true, MarkdownDescription: "Has a free address for a new customer now."},
+						"id":           computedString("Location id (`dfw`), used as `opwan_tunnel.location`."),
+						"name":         computedString("Display name."),
+						"city":         computedString("City."),
+						"country":      computedString("ISO 3166-1 alpha-2 country code (`US`)."),
+						"network_gbps": computedInt64("Network capacity in Gbps."),
+						"test_ip":      computedString("An address that answers ping, to measure latency. Null: none."),
+						"ping_host": computedString(
+							"Host name of the HTTPS latency test (`GET https://<ping_host>/ping`). Null: none.",
+						),
+						"available": computedBool("Has a free address for a new customer now."),
 						"maintenance": schema.SingleNestedAttribute{
 							Computed:            true,
 							MarkdownDescription: "The maintenance window in progress, else the next one. Null: none ahead.",
 							Attributes: map[string]schema.Attribute{
-								"starts_at":   schema.StringAttribute{Computed: true, MarkdownDescription: "RFC 3339."},
-								"ends_at":     schema.StringAttribute{Computed: true, MarkdownDescription: "RFC 3339."},
-								"reason":      schema.StringAttribute{Computed: true, MarkdownDescription: "What is being done."},
-								"in_progress": schema.BoolAttribute{Computed: true, MarkdownDescription: "The window has started."},
+								"starts_at":   computedString("RFC 3339."),
+								"ends_at":     computedString("RFC 3339."),
+								"reason":      computedString("What is being done."),
+								"in_progress": computedBool("The window has started."),
 							},
 						},
 					},
@@ -81,7 +88,11 @@ func (d *locationsDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 	}
 }
 
-func (d *locationsDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *locationsDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	d.client = clientFromProviderData(req.ProviderData, &resp.Diagnostics)
 }
 

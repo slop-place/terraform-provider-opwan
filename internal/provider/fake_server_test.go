@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -28,6 +29,7 @@ type fakeOpwan struct {
 }
 
 func newFakeOpwan(t *testing.T) *httptest.Server {
+	t.Helper()
 	fake := &fakeOpwan{firewalls: map[string]opwanapi.Firewall{TEST_ADDRESS: defaultFirewall()}}
 	server := httptest.NewServer(fake.routes())
 	t.Cleanup(server.Close)
@@ -66,7 +68,12 @@ func (f *fakeOpwan) authed(next http.HandlerFunc) http.HandlerFunc {
 func (f *fakeOpwan) getMe(w http.ResponseWriter, _ *http.Request) {
 	location := TEST_LOCATION
 	writeJSON(w, opwanapi.Me{
-		Account:   opwanapi.Account{Email: "you@example.com", Status: "active", CreatedAt: time.Date(2026, 10, 29, 18, 0, 0, 0, time.UTC), Location: &location},
+		Account: opwanapi.Account{
+			Email:     "you@example.com",
+			Status:    "active",
+			CreatedAt: time.Date(2026, 10, 29, 18, 0, 0, 0, time.UTC),
+			Location:  &location,
+		},
 		Addresses: []opwanapi.Address{{Ip: TEST_ADDRESS, Location: TEST_LOCATION}},
 		Tunnel:    f.tunnel,
 		Usage:     opwanapi.MonthUsage{Month: "2026-10", Throttled: "none", AllowanceBytes: 4_000_000_000_000},
@@ -140,7 +147,7 @@ func normalisePorts(ports string) string {
 	items := make([]string, 0, len(ranges))
 	for _, r := range mergePorts(ranges) {
 		if r.from == r.to {
-			items = append(items, fmt.Sprint(r.from))
+			items = append(items, strconv.Itoa(r.from))
 			continue
 		}
 		items = append(items, fmt.Sprintf("%d-%d", r.from, r.to))
@@ -171,7 +178,15 @@ func (f *fakeOpwan) getPlans(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, map[string]any{
 		"currency": "usd",
 		"plans": []map[string]any{
-			{"id": "base", "name": "Base", "price_cents": 500, "ceil_mbps": 500, "rate_mbps": 10, "slow_mbps": 10, "allowance_bytes": 1_000_000_000_000},
+			{
+				"id":              "base",
+				"name":            "Base",
+				"price_cents":     500,
+				"ceil_mbps":       500,
+				"rate_mbps":       10,
+				"slow_mbps":       10,
+				"allowance_bytes": 1_000_000_000_000,
+			},
 		},
 		"add_ons": map[string]any{
 			"extra_ip_price_cents": 300, "max_extra_ips": 2, "monthly_tb_price_cents": 200, "max_monthly_tb": 50,
@@ -182,18 +197,32 @@ func (f *fakeOpwan) getPlans(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (f *fakeOpwan) getMeta(w http.ResponseWriter, _ *http.Request) {
-	writeJSON(w, map[string]any{"version": "v0.1.0", "api_version": "0.9.0", "terms_version": "2026-10-30", "terms_url": "https://opwan.io/terms/"})
+	writeJSON(
+		w,
+		map[string]any{
+			"version":       "v0.1.0",
+			"api_version":   "0.9.0",
+			"terms_version": "2026-10-30",
+			"terms_url":     "https://opwan.io/terms/",
+		},
+	)
 }
 
 func writeJSON(w http.ResponseWriter, body any) {
 	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(body)
+	encode(w, body)
+}
+
+func encode(w http.ResponseWriter, body any) {
+	if err := json.NewEncoder(w).Encode(body); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func writeProblem(w http.ResponseWriter, status int, code, detail string) {
 	w.Header().Set("Content-Type", "application/problem+json")
 	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(map[string]any{
+	encode(w, map[string]any{
 		"type": "https://opwan.io/problems/" + code, "title": http.StatusText(status), "status": status,
 		"code": code, "detail": detail, "request_id": "test",
 	})

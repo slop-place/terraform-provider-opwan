@@ -4,14 +4,14 @@ page_title: "opwan_tunnel Resource - opwan"
 subcategory: ""
 description: |-
   The account's WireGuard tunnel. An account has one tunnel: creating this resource when one exists takes it over and sets its key. Changing public_key re-keys the tunnel in place. The location can't change once the tunnel exists. opwan has no way to delete a tunnel, so destroying this resource only removes it from the Terraform state.
-  Only the public key is sent to opwan. Generate the key pair yourself, for example with wg genkey | tee private.key | wg pubkey.
+  Only the public key is sent to opwan. Generate the key pair with opwan_wireguard_key, or yourself with wg genkey | tee private.key | wg pubkey.
 ---
 
 # opwan_tunnel (Resource)
 
 The account's WireGuard tunnel. An account has one tunnel: creating this resource when one exists takes it over and sets its key. Changing `public_key` re-keys the tunnel in place. The location can't change once the tunnel exists. opwan has no way to delete a tunnel, so destroying this resource only removes it from the Terraform state.
 
-Only the public key is sent to opwan. Generate the key pair yourself, for example with `wg genkey | tee private.key | wg pubkey`.
+Only the public key is sent to opwan. Generate the key pair with `opwan_wireguard_key`, or yourself with `wg genkey | tee private.key | wg pubkey`.
 
 ## Example Usage
 

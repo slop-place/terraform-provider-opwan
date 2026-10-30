@@ -3,6 +3,7 @@ package provider
 import "testing"
 
 func TestPortsEquivalent(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		a, b string
 		want bool
@@ -24,6 +25,7 @@ func TestPortsEquivalent(t *testing.T) {
 }
 
 func TestParsePortsRejects(t *testing.T) {
+	t.Parallel()
 	for _, ports := range []string{"", "0", "65536", "abc", "100-90", "1-2-3"} {
 		if _, err := parsePorts(ports); err == nil {
 			t.Errorf("parsePorts(%q) accepted an invalid list", ports)
@@ -32,6 +34,7 @@ func TestParsePortsRejects(t *testing.T) {
 }
 
 func TestSourcesEquivalent(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		a, b string
 		want bool

@@ -3,13 +3,20 @@ package provider
 import (
 	"context"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/netip"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
 
+// WIREGUARD_KEY_BYTES is the length of a WireGuard key before base64.
 const WIREGUARD_KEY_BYTES = 32
+
+var (
+	errNotIPv4         = errors.New("not an IPv4 address")
+	errBadWireguardKey = errors.New("a WireGuard public key is base64 of exactly 32 bytes")
+)
 
 // stringCheck adapts a plain check function to a schema string validator.
 type stringCheck struct {
@@ -35,7 +42,7 @@ func ipv4Address() validator.String {
 		check: func(value string) error {
 			addr, err := netip.ParseAddr(value)
 			if err != nil || !addr.Is4() {
-				return fmt.Errorf("%q is not an IPv4 address", value)
+				return fmt.Errorf("%q is %w", value, errNotIPv4)
 			}
 			return nil
 		},
@@ -63,14 +70,13 @@ func ipv4Source() validator.String {
 }
 
 func wireguardPublicKey() validator.String {
-	return stringCheck{
-		description: "must be a base64 WireGuard public key",
-		check: func(value string) error {
-			key, err := base64.StdEncoding.DecodeString(value)
-			if err != nil || len(key) != WIREGUARD_KEY_BYTES {
-				return fmt.Errorf("a WireGuard public key is base64 of exactly %d bytes", WIREGUARD_KEY_BYTES)
-			}
-			return nil
-		},
+	return stringCheck{description: "must be a base64 WireGuard public key", check: checkWireguardKey}
+}
+
+func checkWireguardKey(value string) error {
+	key, err := base64.StdEncoding.DecodeString(value)
+	if err != nil || len(key) != WIREGUARD_KEY_BYTES {
+		return errBadWireguardKey
 	}
+	return nil
 }

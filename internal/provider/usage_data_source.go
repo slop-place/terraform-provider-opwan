@@ -39,11 +39,16 @@ type usageDayModel struct {
 	TxBytes int64  `tfsdk:"tx_bytes"`
 }
 
+// NewUsageDataSource returns the opwan_usage data source.
 func NewUsageDataSource() datasource.DataSource {
 	return &usageDataSource{}
 }
 
-func (d *usageDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+func (d *usageDataSource) Metadata(
+	_ context.Context,
+	req datasource.MetadataRequest,
+	resp *datasource.MetadataResponse,
+) {
 	resp.TypeName = req.ProviderTypeName + "_usage"
 }
 
@@ -58,18 +63,18 @@ func (d *usageDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 				MarkdownDescription: "`YYYY-MM` (UTC). Defaults to the current month.",
 				Validators:          []validator.String{stringvalidator.RegexMatches(monthPattern, "must be YYYY-MM")},
 			},
-			"rx_bytes":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Bytes to you."},
-			"tx_bytes":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Bytes from you."},
-			"used_bytes":      schema.Int64Attribute{Computed: true, MarkdownDescription: "rx + tx, what counts against the allowance."},
-			"allowance_bytes": schema.Int64Attribute{Computed: true, MarkdownDescription: "The month's allowance."},
+			"rx_bytes":        computedInt64("Bytes to you."),
+			"tx_bytes":        computedInt64("Bytes from you."),
+			"used_bytes":      computedInt64("rx + tx, what counts against the allowance."),
+			"allowance_bytes": computedInt64("The month's allowance."),
 			"days": schema.ListNestedAttribute{
 				Computed:            true,
 				MarkdownDescription: "One entry per UTC day with traffic, oldest first.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"date":     schema.StringAttribute{Computed: true, MarkdownDescription: "`YYYY-MM-DD`."},
-						"rx_bytes": schema.Int64Attribute{Computed: true, MarkdownDescription: "Bytes to you."},
-						"tx_bytes": schema.Int64Attribute{Computed: true, MarkdownDescription: "Bytes from you."},
+						"date":     computedString("`YYYY-MM-DD`."),
+						"rx_bytes": computedInt64("Bytes to you."),
+						"tx_bytes": computedInt64("Bytes from you."),
 					},
 				},
 			},
@@ -82,7 +87,11 @@ func (d *usageDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 	}
 }
 
-func (d *usageDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *usageDataSource) Configure(
+	_ context.Context,
+	req datasource.ConfigureRequest,
+	resp *datasource.ConfigureResponse,
+) {
 	d.client = clientFromProviderData(req.ProviderData, &resp.Diagnostics)
 }
 

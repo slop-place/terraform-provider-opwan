@@ -1,9 +1,11 @@
 package provider
 
 import (
+	"bytes"
 	"crypto/ecdh"
 	"encoding/base64"
 	"encoding/hex"
+	"slices"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -17,6 +19,7 @@ const (
 )
 
 func TestClampedKeyKeepsPublicKey(t *testing.T) {
+	t.Parallel()
 	scalar, _ := hex.DecodeString(RFC7748_PRIVATE)
 	clampCurve25519(scalar)
 	key, err := ecdh.X25519().NewPrivateKey(scalar)
@@ -29,17 +32,22 @@ func TestClampedKeyKeepsPublicKey(t *testing.T) {
 }
 
 func TestGenerateWireguardKey(t *testing.T) {
-	privateKey, publicKey, err := generateWireguardKey()
+	t.Parallel()
+
+	keyPair, err := generateWireguardKey()
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, key := range []string{privateKey, publicKey} {
-		if err := wireguardPublicKey().(stringCheck).check(key); err != nil {
+	for _, key := range []string{keyPair.private, keyPair.public} {
+		if err := checkWireguardKey(key); err != nil {
 			t.Errorf("%q: %v", key, err)
 		}
 	}
-	scalar, _ := base64.StdEncoding.DecodeString(privateKey)
-	if scalar[0]&7 != 0 || scalar[31]&128 != 0 || scalar[31]&64 == 0 {
+
+	scalar, _ := base64.StdEncoding.DecodeString(keyPair.private)
+	clamped := slices.Clone(scalar)
+	clampCurve25519(clamped)
+	if !bytes.Equal(scalar, clamped) {
 		t.Errorf("private key is not clamped like wg genkey: %x", scalar)
 	}
 }
@@ -53,24 +61,34 @@ resource "opwan_wireguard_key" "this" {
 }
 
 func TestWireguardKeyResource(t *testing.T) {
+	t.Parallel()
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: testProviderFactories,
+		ProtoV6ProviderFactories: testProviderFactories(),
 		Steps: []resource.TestStep{
 			{
 				Config: wireguardKeyConfig("1"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("opwan_wireguard_key.this", "private_key"),
-					resource.TestCheckResourceAttrPair("opwan_wireguard_key.this", "id", "opwan_wireguard_key.this", "public_key"),
+					resource.TestCheckResourceAttrPair(
+						"opwan_wireguard_key.this",
+						"id",
+						"opwan_wireguard_key.this",
+						"public_key",
+					),
 				),
 			},
 			{
-				Config:           wireguardKeyConfig("1"),
-				ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}},
+				Config: wireguardKeyConfig("1"),
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()},
+				},
 			},
 			{
 				Config: wireguardKeyConfig("2"),
 				ConfigPlanChecks: resource.ConfigPlanChecks{
-					PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("opwan_wireguard_key.this", plancheck.ResourceActionReplace)},
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction("opwan_wireguard_key.this", plancheck.ResourceActionReplace),
+					},
 				},
 			},
 		},
