@@ -38,6 +38,7 @@ Tools come from `mise`.
 ```sh
 mise install
 mise run test          # unit tests and Terraform runs against a fake opwan server
+mise run lint          # go vet and golangci-lint
 mise run fetch-spec    # pull the latest api/openapi.json
 mise run generate      # regenerate internal/opwanapi and docs/
 mise run install       # build into GOBIN
