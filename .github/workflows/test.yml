@@ -1,0 +1,19 @@
+name: test
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - run: go vet ./...
+      - run: go test ./...
+      - name: Generated code and docs are current
+        run: |
+          go generate ./...
+          git diff --exit-code

@@ -1,0 +1,5 @@
+package: opwanapi
+output: ../internal/opwanapi/client.gen.go
+generate:
+  client: true
+  models: true

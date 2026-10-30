@@ -1,0 +1,24 @@
+[tools]
+go = "1.27"
+terraform = "latest"
+
+[tasks.generate]
+description = "Regenerate the API client and provider docs"
+run = ["go generate ./..."]
+
+[tasks.fetch-spec]
+description = "Download the latest opwan OpenAPI spec"
+run = "curl -fsSL https://app.opwan.io/v1/openapi.json -o api/openapi.json"
+
+[tasks.build]
+run = "go build ./..."
+
+[tasks.install]
+description = "Install the provider binary into GOBIN"
+run = "go install ."
+
+[tasks.test]
+run = "go test ./..."
+
+[tasks.lint]
+run = "go vet ./..."

@@ -1,0 +1,2522 @@
+{
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "bad_request",
+              "detail": "We couldn't read the request. Please try again.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 400,
+              "title": "Bad Request",
+              "type": "https://opwan.io/problems/bad_request"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "The request can't be read."
+      },
+      "Conflict": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "already_subscribed",
+              "detail": "You already have a subscription. To change your plan or extra addresses, open Billing and use Manage subscription.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 409,
+              "title": "Conflict",
+              "type": "https://opwan.io/problems/already_subscribed"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Not possible in the account's current state."
+      },
+      "Forbidden": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "csrf_rejected",
+              "detail": "This change came from a page outside the opwan dashboard, so we didn't make it. Please make the change from the dashboard.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 403,
+              "title": "Forbidden",
+              "type": "https://opwan.io/problems/csrf_rejected"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Refused (a write from another site, an API token on a session-only operation or without the scope)."
+      },
+      "NotFound": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "not_found",
+              "detail": "We couldn't find that. It may have been removed, or the link may be wrong.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 404,
+              "title": "Not Found",
+              "type": "https://opwan.io/problems/not_found"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Not found."
+      },
+      "PaymentFailed": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "payment_failed",
+              "detail": "Your card was declined, so nothing changed. Update your card in Billing, then try again.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 402,
+              "title": "Payment Required",
+              "type": "https://opwan.io/problems/payment_failed"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "The payment was refused."
+      },
+      "RateLimited": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "rate_limited",
+              "detail": "Too many requests in a short time. Please wait a moment, then try again.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "retry_after": 30,
+              "status": 429,
+              "title": "Too Many Requests",
+              "type": "https://opwan.io/problems/rate_limited"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Too many requests.",
+        "headers": {
+          "Retry-After": {
+            "description": "Seconds to wait.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "RedirectURL": {
+        "content": {
+          "application/json": {
+            "example": {
+              "url": "https://checkout.stripe.com/c/pay/cs_test_a1"
+            },
+            "schema": {
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url"
+              ],
+              "type": "object"
+            }
+          }
+        },
+        "description": "Where to send the browser."
+      },
+      "Unauthenticated": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "unauthenticated",
+              "detail": "You're not signed in, or your sign-in has ended. Please sign in again to continue.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 401,
+              "title": "Unauthorized",
+              "type": "https://opwan.io/problems/unauthenticated"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Not signed in, or the API token is unknown, revoked or expired."
+      },
+      "Unavailable": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "billing_unavailable",
+              "detail": "We couldn't reach our payment provider. This isn't a problem with your account. Please try again in a few minutes.",
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 503,
+              "title": "Service Unavailable",
+              "type": "https://opwan.io/problems/billing_unavailable"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "A service we depend on is not answering."
+      },
+      "ValidationFailed": {
+        "content": {
+          "application/problem+json": {
+            "example": {
+              "code": "validation_failed",
+              "detail": "Some of what you sent needs fixing. The list of errors says what to change.",
+              "errors": [
+                {
+                  "field": "rules[0].ports",
+                  "message": "Port 25 is always blocked, so a rule can't include it. Split the range around it, for example 1-24 and 26-1024."
+                }
+              ],
+              "request_id": "01JBX4Y2Q8Z9",
+              "status": 422,
+              "title": "Unprocessable Entity",
+              "type": "https://opwan.io/problems/validation_failed"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        },
+        "description": "Some of the input needs fixing."
+      }
+    },
+    "schemas": {
+      "APIToken": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "expires_at": {
+            "description": "Null for a token that lasts until revoked.",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "last_used": {
+            "description": "The last request with it (to the minute); null when never used.",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/TokenScope"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "scope",
+          "created_at",
+          "expires_at",
+          "last_used"
+        ],
+        "type": "object"
+      },
+      "Account": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "email": {
+            "description": "From the op account (display only).",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "location": {
+            "description": "The location the account chose (at checkout or with its tunnel); null before.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "active",
+              "suspended",
+              "closed"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "status",
+          "created_at",
+          "location"
+        ],
+        "type": "object"
+      },
+      "Address": {
+        "properties": {
+          "ip": {
+            "format": "ipv4",
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ip",
+          "location"
+        ],
+        "type": "object"
+      },
+      "Catalogue": {
+        "properties": {
+          "add_ons": {
+            "properties": {
+              "extra_ip_price_cents": {
+                "description": "Per extra address per month.",
+                "type": "integer"
+              },
+              "extra_tb_price_cents": {
+                "description": "Per TB, one-time, added to the current month.",
+                "type": "integer"
+              },
+              "max_extra_ips": {
+                "type": "integer"
+              },
+              "max_extra_tb": {
+                "description": "The most TB one data add-on purchase can buy.",
+                "type": "integer"
+              },
+              "max_monthly_tb": {
+                "description": "The most monthly data a subscription can have, TB.",
+                "type": "integer"
+              },
+              "monthly_tb_price_cents": {
+                "description": "Monthly data, per TB per month, added to every month's allowance.",
+                "type": "integer"
+              },
+              "peak_plan": {
+                "$ref": "#/components/schemas/PlanID"
+              },
+              "peak_tiers": {
+                "description": "The peak speed tiers of `peak_plan`, slowest first: the first is the plan's own ceiling (included, 0 cents), the last the maximum. Only the speed ceiling rises: the guaranteed rate, the allowance and the slowed rate past it stay the plan's.",
+                "items": {
+                  "$ref": "#/components/schemas/PeakTier"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "extra_ip_price_cents",
+              "max_extra_ips",
+              "monthly_tb_price_cents",
+              "max_monthly_tb",
+              "peak_plan",
+              "peak_tiers",
+              "extra_tb_price_cents",
+              "max_extra_tb"
+            ],
+            "type": "object"
+          },
+          "currency": {
+            "enum": [
+              "usd"
+            ],
+            "type": "string"
+          },
+          "plans": {
+            "items": {
+              "$ref": "#/components/schemas/Plan"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "plans",
+          "add_ons",
+          "currency"
+        ],
+        "type": "object"
+      },
+      "CheckoutRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "accept_terms_version": {
+            "description": "The terms of service version the customer accepted by continuing (`GET /v1/meta`, `terms_version`).",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}(\\.[0-9]+)?$",
+            "type": "string"
+          },
+          "extra_ips": {
+            "default": 0,
+            "maximum": 2,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "location": {
+            "description": "The location chosen in the location step (an id of `GET /v1/locations`); the addresses come from there.",
+            "type": "string"
+          },
+          "monthly_tb": {
+            "default": 0,
+            "description": "Monthly data, TB added to every month's allowance (`GET /v1/plans`, `add_ons`).",
+            "maximum": 50,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "peak_mbps": {
+            "$ref": "#/components/schemas/PeakMbps"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanID"
+          }
+        },
+        "required": [
+          "plan",
+          "accept_terms_version"
+        ],
+        "type": "object"
+      },
+      "CreateTokenRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "expires_at": {
+            "description": "In the future; null or absent for no expiry.",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/TokenScope"
+          }
+        },
+        "required": [
+          "name",
+          "scope"
+        ],
+        "type": "object"
+      },
+      "DataAddonRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "tb": {
+            "maximum": 20,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "tb"
+        ],
+        "type": "object"
+      },
+      "Firewall": {
+        "additionalProperties": false,
+        "properties": {
+          "default": {
+            "description": "What happens to inbound traffic no rule matches.",
+            "enum": [
+              "allow",
+              "deny"
+            ],
+            "type": "string"
+          },
+          "rules": {
+            "description": "Checked in order, first match wins.",
+            "items": {
+              "$ref": "#/components/schemas/FirewallRule"
+            },
+            "maxItems": 64,
+            "type": "array"
+          }
+        },
+        "required": [
+          "default",
+          "rules"
+        ],
+        "type": "object"
+      },
+      "FirewallRule": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "allow",
+              "deny"
+            ],
+            "type": "string"
+          },
+          "ports": {
+            "description": "Ports and ranges separated by commas, spaces optional (\"443\", \"80, 443, 8000-8100\"; 1 to 65535, at most 32), tcp and udp only; null for every port. Answers carry the normal form (sorted, \", \" between items, duplicates and overlaps merged). TCP rules can't include 25.",
+            "pattern": "^ *[0-9]{1,5}(-[0-9]{1,5})? *(, *[0-9]{1,5}(-[0-9]{1,5})? *){0,31}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "proto": {
+            "enum": [
+              "tcp",
+              "udp",
+              "icmp",
+              "any"
+            ],
+            "type": "string"
+          },
+          "source": {
+            "description": "An IPv4 address or CIDR the traffic must come from; null for anywhere.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "action",
+          "proto"
+        ],
+        "type": "object"
+      },
+      "Location": {
+        "properties": {
+          "available": {
+            "description": "The location has a free address for a new customer now.",
+            "type": "boolean"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "description": "ISO 3166-1 alpha-2 (`US`).",
+            "pattern": "^[A-Z]{2}$",
+            "type": "string"
+          },
+          "id": {
+            "description": "Location id (`dfw`).",
+            "type": "string"
+          },
+          "maintenance": {
+            "description": "The location's maintenance window in progress, else its next one (staff schedule it; its customers are emailed when it is scheduled). Null: none ahead. The dashboard shows a banner and the site's location card says \"maintenance\" while `in_progress`.",
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "properties": {
+                  "ends_at": {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  "in_progress": {
+                    "description": "The window has started (it ends at `ends_at`).",
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "description": "What is being done, in plain words.",
+                    "type": "string"
+                  },
+                  "starts_at": {
+                    "format": "date-time",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "starts_at",
+                  "ends_at",
+                  "reason",
+                  "in_progress"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "network_gbps": {
+            "description": "The location's network capacity in Gbps (never a number of servers).",
+            "type": "integer"
+          },
+          "ping_host": {
+            "description": "The latency test's host name on `test_ip` (`ping.dfw.opwan.io`): `GET https://<ping_host>/ping` answers 204 with CORS and Timing-Allow-Origin for opwan.io and app.opwan.io, so a browser can time it. Null: none.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "test_ip": {
+            "description": "An address of the location that answers ping from anywhere (rate limited), to measure latency before buying; besides `ping_host`'s HTTPS endpoint nothing else answers on it.",
+            "format": "ipv4",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "city",
+          "country",
+          "network_gbps",
+          "test_ip",
+          "ping_host",
+          "available",
+          "maintenance"
+        ],
+        "type": "object"
+      },
+      "Me": {
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/Account"
+          },
+          "addresses": {
+            "items": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "type": "array"
+          },
+          "subscription": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Subscription"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tunnel": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Tunnel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "usage": {
+            "$ref": "#/components/schemas/MonthUsage"
+          }
+        },
+        "required": [
+          "account",
+          "subscription",
+          "tunnel",
+          "addresses",
+          "usage"
+        ],
+        "type": "object"
+      },
+      "Meta": {
+        "properties": {
+          "api_version": {
+            "type": "string"
+          },
+          "terms_url": {
+            "description": "Where the terms of service are published.",
+            "format": "uri",
+            "type": "string"
+          },
+          "terms_version": {
+            "description": "The terms of service version in effect (the date they were last updated, with \".N\" for a revision that day); `POST /v1/checkout` sends it as `accept_terms_version`.",
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "api_version",
+          "terms_version",
+          "terms_url"
+        ],
+        "type": "object"
+      },
+      "MonthUsage": {
+        "properties": {
+          "allowance_bytes": {
+            "description": "The plan's allowance plus this month's data add-ons (0 without a subscription).",
+            "format": "int64",
+            "type": "integer"
+          },
+          "month": {
+            "type": "string"
+          },
+          "rx_bytes": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "throttled": {
+            "$ref": "#/components/schemas/Throttled"
+          },
+          "tx_bytes": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "used_bytes": {
+            "description": "rx + tx, what counts against the allowance.",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "month",
+          "rx_bytes",
+          "tx_bytes",
+          "used_bytes",
+          "allowance_bytes",
+          "throttled"
+        ],
+        "type": "object"
+      },
+      "PeakMbps": {
+        "description": "The speed ceiling, Mbps (`GET /v1/plans`, `add_ons.peak_tiers`): on Plus 1000 (its own) or a peak tier, on Base 500 only. At checkout absent is the plan's own; on a change absent keeps Plus's tier (Base has none).",
+        "enum": [
+          500,
+          1000,
+          2500,
+          5000,
+          10000
+        ],
+        "type": "integer"
+      },
+      "PeakTier": {
+        "properties": {
+          "mbps": {
+            "description": "The speed ceiling, Mbps.",
+            "type": "integer"
+          },
+          "price_cents": {
+            "description": "Per month on top of the plan (0 for the plan's own).",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "mbps",
+          "price_cents"
+        ],
+        "type": "object"
+      },
+      "Plan": {
+        "properties": {
+          "allowance_bytes": {
+            "description": "Data per calendar month, both directions.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "ceil_mbps": {
+            "description": "Speed ceiling.",
+            "type": "integer"
+          },
+          "id": {
+            "$ref": "#/components/schemas/PlanID"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price_cents": {
+            "description": "USD cents per month, tax exclusive.",
+            "type": "integer"
+          },
+          "rate_mbps": {
+            "description": "Guaranteed rate under contention.",
+            "type": "integer"
+          },
+          "slow_mbps": {
+            "description": "The ceiling once the month's allowance is used.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "price_cents",
+          "ceil_mbps",
+          "rate_mbps",
+          "allowance_bytes",
+          "slow_mbps"
+        ],
+        "type": "object"
+      },
+      "PlanChange": {
+        "additionalProperties": false,
+        "properties": {
+          "extra_ips": {
+            "default": 0,
+            "maximum": 2,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "monthly_tb": {
+            "description": "Monthly data, TB. Absent, the current amount is kept.",
+            "maximum": 50,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "peak_mbps": {
+            "$ref": "#/components/schemas/PeakMbps"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanID"
+          }
+        },
+        "required": [
+          "plan"
+        ],
+        "type": "object"
+      },
+      "PlanID": {
+        "enum": [
+          "base",
+          "plus"
+        ],
+        "type": "string"
+      },
+      "Problem": {
+        "description": "An RFC 9457 problem document.",
+        "properties": {
+          "code": {
+            "description": "Stable machine code.",
+            "enum": [
+              "bad_request",
+              "body_too_large",
+              "unauthenticated",
+              "csrf_rejected",
+              "session_required",
+              "insufficient_scope",
+              "too_many_tokens",
+              "not_found",
+              "method_not_allowed",
+              "validation_failed",
+              "rate_limited",
+              "account_closed",
+              "already_subscribed",
+              "no_subscription",
+              "payment_failed",
+              "subscription_inactive",
+              "pubkey_in_use",
+              "location_unavailable",
+              "location_locked",
+              "no_addresses_free",
+              "oidc_unavailable",
+              "billing_unavailable",
+              "internal"
+            ],
+            "type": "string"
+          },
+          "detail": {
+            "description": "Plain language - what happened, whether it is you or us, what to do.",
+            "type": "string"
+          },
+          "errors": {
+            "description": "Validation problems (`validation_failed`), one per field.",
+            "items": {
+              "properties": {
+                "field": {
+                  "description": "The field path (`pubkey`, `rules[2].ports`).",
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "field",
+                "message"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "request_id": {
+            "description": "The reference our logs carry for this request; mention it to support.",
+            "type": "string"
+          },
+          "retry_after": {
+            "description": "Seconds, repeating the Retry-After header.",
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code",
+          "detail"
+        ],
+        "type": "object"
+      },
+      "Subscription": {
+        "properties": {
+          "cancel_at_period_end": {
+            "type": "boolean"
+          },
+          "current_period_end": {
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "current_period_start": {
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extra_ips": {
+            "maximum": 2,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "extra_tb": {
+            "description": "TB bought as one-time data add-ons for the current month. The allowance is the plan's plus `monthly_tb_counted` plus `extra_tb`.",
+            "type": "integer"
+          },
+          "monthly_tb": {
+            "description": "Monthly data, TB, billed every month (from the next renewal after a decrease).",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "monthly_tb_counted": {
+            "description": "Monthly data in this month's allowance, TB: the most `monthly_tb` had this billing period (at least `monthly_tb`).",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "peak_mbps": {
+            "description": "The speed ceiling, Mbps: the plan's own (Base 500, Plus 1000) or Plus's peak speed tier (2500, 5000, 10000).",
+            "type": "integer"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanID"
+          },
+          "release_at": {
+            "description": "After cancellation, when the addresses will be released (7 days after).",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "description": "Stripe's status, mirrored.",
+            "enum": [
+              "incomplete",
+              "incomplete_expired",
+              "trialing",
+              "active",
+              "past_due",
+              "canceled",
+              "unpaid",
+              "paused"
+            ],
+            "type": "string"
+          },
+          "suspend_at": {
+            "description": "While a payment is late, when the tunnel will be suspended (3 days after it became late).",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plan",
+          "extra_ips",
+          "monthly_tb",
+          "monthly_tb_counted",
+          "peak_mbps",
+          "extra_tb",
+          "status",
+          "current_period_start",
+          "current_period_end",
+          "cancel_at_period_end",
+          "suspend_at",
+          "release_at"
+        ],
+        "type": "object"
+      },
+      "Throttled": {
+        "description": "Why the speed is lowered right now, if it is.",
+        "enum": [
+          "none",
+          "burst",
+          "allowance",
+          "pacing"
+        ],
+        "type": "string"
+      },
+      "TokenScope": {
+        "description": "`read`: the GET operations that allow tokens. `write`: those and the writes that allow tokens.",
+        "enum": [
+          "read",
+          "write"
+        ],
+        "type": "string"
+      },
+      "Tunnel": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/TunnelConfig"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "customer_pubkey": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "state": {
+            "description": "`pending_payment` (no active subscription yet: no address),\n`active`, `suspended` (a payment is late: traffic blocked),\n`canceled` (the subscription ended: traffic blocked until the\naddresses are released).\n",
+            "enum": [
+              "pending_payment",
+              "active",
+              "suspended",
+              "canceled"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TunnelStatus"
+          }
+        },
+        "required": [
+          "location",
+          "state",
+          "customer_pubkey",
+          "created_at",
+          "config",
+          "status"
+        ],
+        "type": "object"
+      },
+      "TunnelConfig": {
+        "description": "Everything a WireGuard client configuration needs besides its private key.",
+        "properties": {
+          "addresses": {
+            "description": "The tunnel's addresses as /32s (the wg-quick `Address`); empty until the subscription is active.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "allowed_ips": {
+            "description": "Suggested `AllowedIPs` of the peer on the client.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "endpoint": {
+            "description": "The exit's WireGuard endpoint, `host:port`.",
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "mtu": {
+            "type": "integer"
+          },
+          "persistent_keepalive": {
+            "description": "Suggested PersistentKeepalive in seconds (behind NAT).",
+            "type": "integer"
+          },
+          "server_pubkey": {
+            "description": "The exit's WireGuard public key (base64); null until the exit has reported it.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "location",
+          "endpoint",
+          "server_pubkey",
+          "addresses",
+          "allowed_ips",
+          "mtu",
+          "persistent_keepalive"
+        ],
+        "type": "object"
+      },
+      "TunnelRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "location": {
+            "description": "A location id from `GET /v1/locations`.",
+            "type": "string"
+          },
+          "pubkey": {
+            "description": "The client's WireGuard public key, base64 of 32 bytes (not all zeros nor of low order, not a server's key). Never the private key.",
+            "maxLength": 44,
+            "minLength": 44,
+            "type": "string"
+          }
+        },
+        "required": [
+          "location",
+          "pubkey"
+        ],
+        "type": "object"
+      },
+      "TunnelStatus": {
+        "description": "The tunnel's live state, as the exit last reported it.",
+        "properties": {
+          "last_handshake": {
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rate_bps_rx": {
+            "description": "Bits per second to you, over the last report.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "rate_bps_tx": {
+            "description": "Bits per second from you.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "throttled": {
+            "$ref": "#/components/schemas/Throttled"
+          },
+          "up": {
+            "description": "A handshake within the last 3 minutes.",
+            "type": "boolean"
+          },
+          "updated_at": {
+            "description": "When the exit last reported (null before the first report).",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "up",
+          "last_handshake",
+          "rate_bps_rx",
+          "rate_bps_tx",
+          "throttled",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "Usage": {
+        "properties": {
+          "allowance_bytes": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "days": {
+            "description": "One entry per UTC day with traffic, oldest first.",
+            "items": {
+              "properties": {
+                "date": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "rx_bytes": {
+                  "format": "int64",
+                  "type": "integer"
+                },
+                "tx_bytes": {
+                  "format": "int64",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "date",
+                "rx_bytes",
+                "tx_bytes"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "live": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TunnelStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "month": {
+            "type": "string"
+          },
+          "rx_bytes": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "tx_bytes": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "used_bytes": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "month",
+          "rx_bytes",
+          "tx_bytes",
+          "used_bytes",
+          "allowance_bytes",
+          "days",
+          "live"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "description": "API token (`opwan_...`), created in the dashboard (Settings → API\ntokens). An operation that allows tokens lists the scope it needs\n(`bearer: [read]` or `bearer: [write]`); a `write` token also has\n`read`.\n",
+        "scheme": "bearer",
+        "type": "http",
+        "x-opwan-scopes": {
+          "read": "Read the account, the tunnel's configuration, the firewalls and usage.",
+          "write": "Everything read allows, and replace the tunnel's key and the firewalls."
+        }
+      },
+      "session": {
+        "description": "Session cookie set by the sign-in callback (`opwan_session` on a plain-HTTP dev server).",
+        "in": "cookie",
+        "name": "__Host-opwan_session",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "description": "The dashboard (`web/`) is the main client; scripts use API tokens. This\ndocument is published at `GET /v1/openapi.json` (without the Stripe\nwebhook). The source of truth for every\nroute of `opwan-cp` (docs/design.md, \"Control plane API\"):\n`internal/cp/api/operations_gen.go` is generated from this file and a test\nfails when a handler exists for an operation that is not here, or the\nother way round.\n\nAuthentication: a session cookie (`__Host-opwan_session`; `opwan_session`\non a plain-HTTP dev server, where the `__Host-` prefix is impossible), set\nby the sign-in callback after \"Sign in with your op account\" at opauth\n(OIDC code flow with PKCE). Writes carried by the cookie are refused with\n403 `csrf_rejected` unless their `Origin` is the dashboard's.\n\nAPI tokens: created in the dashboard (Settings → API tokens), sent as\n`Authorization: Bearer opwan_...` (the `bearer` scheme). A token has one\nscope: `read` (the GET operations that allow tokens) or `write` (those\nand the writes that allow tokens: the tunnel's key and the firewall).\nAn operation whose `security` names `bearer` allows tokens, with the\nscope it lists; any other signed-in operation is session only (403\n`session_required` for a token): checkout, subscription changes,\n`/v1/billing/*`, sign-out and the token management itself. A `read`\ntoken on a write is 403 `insufficient_scope`. An unknown, revoked or\nexpired token is 401 `unauthenticated`. A request with a token never\nneeds an `Origin`. Each token has its own rate limit (429\n`rate_limited`).\n\nRate limits (per client network, and per account once signed in) answer\n429 `rate_limited` with `Retry-After`; the dashboard's normal use stays\nfar below them.\n\nErrors are RFC 9457 problem documents (`application/problem+json`) with a\nstable machine `code`, a plain-language `detail` (what happened, whether it\nis you or us, what to do next), `errors[]` for validation problems (422\n`validation_failed`), and `request_id`, the reference our logs carry (also\nin the `X-Request-Id` header of every response).\n\nUnits: bytes are counted in both directions through the exit (rx = to\nyou, tx = from you); a TB is 10^12 bytes. Speeds are in Mbps (plans) and\nbits per second (live rates). Months are calendar months in UTC\n(`YYYY-MM`): the data allowance resets on the 1st.\n",
+    "license": {
+      "name": "Not chosen yet (Solutions Opero Inc)",
+      "url": "https://github.com/operomtl/opwan"
+    },
+    "summary": "The control plane API of opwan, a static public IPv4 address over WireGuard.",
+    "title": "opwan API",
+    "version": "0.9.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/addresses/{ip}/firewall": {
+      "get": {
+        "description": "The default inbound policy and the ordered rules of one of your\naddresses (first match wins). TCP port 25 is always blocked in both\ndirections, whatever the rules say. A new address allows everything\ninbound (except TCP 25). 404 `not_found` for an address that is not\nyours.\n",
+        "operationId": "getFirewall",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "default": "deny",
+                  "rules": [
+                    {
+                      "action": "allow",
+                      "ports": "80, 443",
+                      "proto": "tcp",
+                      "source": null
+                    },
+                    {
+                      "action": "allow",
+                      "ports": "51000-51100",
+                      "proto": "udp",
+                      "source": "203.0.113.0/24"
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Firewall"
+                }
+              }
+            },
+            "description": "The firewall."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "An address's inbound firewall.",
+        "tags": [
+          "firewall"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "One of the account's addresses (dotted IPv4).",
+          "in": "path",
+          "name": "ip",
+          "required": true,
+          "schema": {
+            "format": "ipv4",
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "description": "Replaces the default policy and every rule at once; applied at the\nexit within seconds. At most 64 rules. `ports` (ports and ranges\nseparated by commas, \"80, 443, 8000-8100\", 1 to 65535, at most 32 per\nrule) only with `tcp` or `udp`, null for every port; stored\nnormalised (sorted, duplicates dropped, overlapping ranges merged).\n`source` an IPv4 address or CIDR, null for anywhere. A TCP rule\nnaming port 25 (alone or inside a range) is refused: port 25 is\nalways blocked, so split the range around it (1-24, 26-…). 422\n`validation_failed` with `errors[]` fields like `rules[2].ports`.\n",
+        "operationId": "putFirewall",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "default": "deny",
+                "rules": [
+                  {
+                    "action": "allow",
+                    "ports": "443",
+                    "proto": "tcp",
+                    "source": null
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/Firewall"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "default": "deny",
+                  "rules": [
+                    {
+                      "action": "allow",
+                      "ports": "443",
+                      "proto": "tcp",
+                      "source": null
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Firewall"
+                }
+              }
+            },
+            "description": "The firewall as stored."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Replace an address's inbound firewall.",
+        "tags": [
+          "firewall"
+        ]
+      }
+    },
+    "/v1/auth/logout": {
+      "post": {
+        "description": "Ends the session (the cookie is cleared) and returns opauth's\nend-session URL, where the dashboard sends the browser to end the op\naccount's sign-in too. Signing out without a session is not an error.\n",
+        "operationId": "signOut",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "redirect_url": "https://opauth.net/oidc/end_session?client_id=opwan"
+                },
+                "schema": {
+                  "properties": {
+                    "redirect_url": {
+                      "description": "opauth's end-session URL (or the dashboard when opauth names none).",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "redirect_url"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Signed out."
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "summary": "Sign out.",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/oidc/callback": {
+      "get": {
+        "description": "Checks the state, exchanges the code (private_key_jwt client\nassertion), verifies the ID token, creates the opwan account on the\nfirst sign-in (keyed by the op account's `sub`), sets the session\ncookie and redirects to the dashboard at `return_to`. A refusal\nredirects to the dashboard's `/?auth_error=<code>` with, when we\nlogged the cause, `&ref=<request id>`. Codes: `oidc_failed` (the\nsign-in could not be completed), `access_denied` (you declined at\nopauth), `account_closed`.\n",
+        "operationId": "finishSignIn",
+        "parameters": [
+          {
+            "description": "Authorization code.",
+            "in": "query",
+            "name": "code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The state sent at start.",
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The issuer (RFC 9207).",
+            "in": "query",
+            "name": "iss",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "opauth's error code.",
+            "in": "query",
+            "name": "error",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to the dashboard (signed in), or to `/?auth_error=<code>[&ref=<request id>]`.",
+            "headers": {
+              "Location": {
+                "description": "Where the browser goes next.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [],
+        "summary": "opauth's redirect back after the sign-in.",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/auth/oidc/start": {
+      "get": {
+        "description": "Redirects the browser to opauth's authorization endpoint (code flow,\nPKCE S256, state and nonce kept in a sealed, HttpOnly, ten-minute\ncookie). A top-level navigation, never a fetch. `return_to` is a\ndashboard path (or a URL on the dashboard's origin) to land on after;\nanything else is ignored. 503 `oidc_unavailable` when opauth can't be\nreached.\n",
+        "operationId": "startSignIn",
+        "parameters": [
+          {
+            "description": "Dashboard path or URL on the dashboard origin to return to.",
+            "in": "query",
+            "name": "return_to",
+            "required": false,
+            "schema": {
+              "maxLength": 2048,
+              "type": "string"
+            }
+          },
+          {
+            "description": "`login` asks opauth for a fresh sign-in.",
+            "in": "query",
+            "name": "prompt",
+            "required": false,
+            "schema": {
+              "enum": [
+                "login"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to opauth's authorization endpoint.",
+            "headers": {
+              "Location": {
+                "description": "opauth's authorization URL.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [],
+        "summary": "Sign in with your op account.",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/v1/billing/data-addon": {
+      "post": {
+        "description": "Returns the URL of a one-time Stripe Checkout for `tb` terabytes\n(1 to 20) added to this calendar month's allowance once paid. A\nslowed tunnel gets its full speed back within a minute of the\npayment. 409 `no_subscription` without an active subscription.\n",
+        "operationId": "buyDataAddon",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "tb": 1
+              },
+              "schema": {
+                "$ref": "#/components/schemas/DataAddonRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RedirectURL"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "summary": "Buy extra data for this month (Stripe Checkout, one-time).",
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/v1/billing/portal": {
+      "post": {
+        "description": "Returns the URL of a Stripe customer portal session: payment method,\nbilling address and tax id, invoices, and cancellation at the\nperiod's end (plan and extra addresses: `PUT /v1/subscription`). 409\n`no_subscription` before the first checkout.\n",
+        "operationId": "openBillingPortal",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RedirectURL"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "summary": "Open the Stripe customer portal.",
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/v1/checkout": {
+      "post": {
+        "description": "Returns the URL of a Stripe Checkout session for a plan and 0 to 2\nextra addresses; the dashboard sends the browser there. `location`\n(optional) records the location chosen in the location step: the\naddresses are assigned there as soon as Stripe confirms the payment\n(webhook), before any tunnel exists, and the tunnel must then be\ncreated at that location. An unknown location is 422; one not taking\nnew customers (no free address) 409 `location_unavailable`; a\ndifferent one while addresses or a tunnel exist elsewhere 409\n`location_locked`. 409\n`already_subscribed` when the account has a live subscription (change\nit with `PUT /v1/subscription`), 503 `billing_unavailable` when billing is off or\nStripe can't be reached. `accept_terms_version` must be the terms of\nservice version in effect (`GET /v1/meta`, `terms_version`): the\ncustomer accepted them by continuing; the acceptance is recorded with\nits time. Another or no version: 422 on `accept_terms_version`.\n",
+        "operationId": "startCheckout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "accept_terms_version": "2026-10-30",
+                "extra_ips": 1,
+                "location": "dfw",
+                "monthly_tb": 2,
+                "peak_mbps": 2500,
+                "plan": "plus"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RedirectURL"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "summary": "Start a subscription (Stripe Checkout).",
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/v1/locations": {
+      "get": {
+        "description": "The enabled locations (v1 Dallas only) with what the location step\nshows: city and country, the location's network capacity in Gbps,\nits ping-test address (answers ICMP echo from anywhere, so you can\nmeasure your latency before buying), whether it has a free\naddress now, and its maintenance window in progress or next\n(`maintenance`). Never lists or counts servers. No sign-in;\n`Access-Control-Allow-Origin: *` (no credentials), so the site\n(https://opwan.io) can show a location under maintenance.\n",
+        "operationId": "listLocations",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "locations": [
+                    {
+                      "available": true,
+                      "city": "Dallas",
+                      "country": "US",
+                      "id": "dfw",
+                      "maintenance": null,
+                      "name": "Dallas",
+                      "network_gbps": 50,
+                      "ping_host": "ping.dfw.opwan.io",
+                      "test_ip": "72.244.89.1"
+                    }
+                  ]
+                },
+                "schema": {
+                  "properties": {
+                    "locations": {
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "locations"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Locations."
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [],
+        "summary": "The exit locations, for the location step.",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "description": "The signed-in account, its subscription (null before the first\ncheckout), its tunnel (null before one is created), its addresses and\nthis month's usage. 401 `unauthenticated` when signed out.\n",
+        "operationId": "getMe",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "account": {
+                    "created_at": "2026-10-29T18:00:00Z",
+                    "email": "you@example.com",
+                    "id": "4b2f0c1e-8f3a-4d2b-9a51-0d6c4e1f7a22",
+                    "location": "dfw",
+                    "status": "active"
+                  },
+                  "addresses": [
+                    {
+                      "ip": "72.244.89.10",
+                      "location": "dfw"
+                    },
+                    {
+                      "ip": "72.244.89.11",
+                      "location": "dfw"
+                    }
+                  ],
+                  "subscription": {
+                    "cancel_at_period_end": false,
+                    "current_period_end": "2026-11-29T18:00:00Z",
+                    "current_period_start": "2026-10-29T18:00:00Z",
+                    "extra_ips": 1,
+                    "extra_tb": 0,
+                    "monthly_tb": 2,
+                    "monthly_tb_counted": 2,
+                    "peak_mbps": 2500,
+                    "plan": "plus",
+                    "release_at": null,
+                    "status": "active",
+                    "suspend_at": null
+                  },
+                  "tunnel": {
+                    "config": {
+                      "addresses": [
+                        "72.244.89.10/32",
+                        "72.244.89.11/32"
+                      ],
+                      "allowed_ips": [
+                        "0.0.0.0/0"
+                      ],
+                      "endpoint": "dfw.wg.opwan.io:51820",
+                      "location": "dfw",
+                      "mtu": 1420,
+                      "persistent_keepalive": 25,
+                      "server_pubkey": "HIgo9xNzJMWLKASShiTqIybxZ0U3wGLiUeJ1PKf8ykw="
+                    },
+                    "created_at": "2026-10-29T18:05:00Z",
+                    "customer_pubkey": "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=",
+                    "location": "dfw",
+                    "state": "active",
+                    "status": {
+                      "last_handshake": "2026-10-29T18:10:00Z",
+                      "rate_bps_rx": 1200000,
+                      "rate_bps_tx": 64000,
+                      "throttled": "none",
+                      "up": true,
+                      "updated_at": "2026-10-29T18:10:30Z"
+                    }
+                  },
+                  "usage": {
+                    "allowance_bytes": 4000000000000,
+                    "month": "2026-10",
+                    "rx_bytes": 52000000000,
+                    "throttled": "none",
+                    "tx_bytes": 3100000000,
+                    "used_bytes": 55100000000
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            },
+            "description": "The account."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "The account and everything it has.",
+        "tags": [
+          "account"
+        ]
+      }
+    },
+    "/v1/meta": {
+      "get": {
+        "description": "The running version of the control plane and the API document's version. No sign-in.",
+        "operationId": "getMeta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "api_version": "0.7.0",
+                  "terms_url": "https://opwan.io/terms/",
+                  "terms_version": "2026-10-30",
+                  "version": "v0.1.0"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            },
+            "description": "Version."
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [],
+        "summary": "Server version.",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/openapi.json": {
+      "get": {
+        "description": "The customer API's OpenAPI document as JSON, generated from\n`api/openapi.yaml` when the control plane is built: every operation\nbut the Stripe webhook. Cacheable (`Cache-Control: public`, an\n`ETag`; `If-None-Match` answers 304). No sign-in;\n`Access-Control-Allow-Origin: *`.\n",
+        "operationId": "getOpenAPI",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "info": {
+                    "title": "opwan API",
+                    "version": "0.9.0"
+                  },
+                  "openapi": "3.1.0",
+                  "paths": {}
+                },
+                "schema": {
+                  "additionalProperties": true,
+                  "properties": {
+                    "info": {
+                      "type": "object"
+                    },
+                    "openapi": {
+                      "type": "string"
+                    },
+                    "paths": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "openapi",
+                    "info",
+                    "paths"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The OpenAPI document."
+          },
+          "304": {
+            "description": "Not modified (the `ETag` matches `If-None-Match`)."
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [],
+        "summary": "This document, as JSON.",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/plans": {
+      "get": {
+        "description": "The catalogue, from the single source of plans (`internal/plans`), so\nthe dashboard never hard-codes a price. Prices are USD cents per month,\ntax exclusive; the data add-on is one-time, for the current month.\nNo sign-in.\n",
+        "operationId": "listPlans",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "add_ons": {
+                    "extra_ip_price_cents": 300,
+                    "extra_tb_price_cents": 200,
+                    "max_extra_ips": 2,
+                    "max_extra_tb": 20,
+                    "max_monthly_tb": 50,
+                    "monthly_tb_price_cents": 200,
+                    "peak_plan": "plus",
+                    "peak_tiers": [
+                      {
+                        "mbps": 1000,
+                        "price_cents": 0
+                      },
+                      {
+                        "mbps": 2500,
+                        "price_cents": 500
+                      },
+                      {
+                        "mbps": 5000,
+                        "price_cents": 1200
+                      },
+                      {
+                        "mbps": 10000,
+                        "price_cents": 2500
+                      }
+                    ]
+                  },
+                  "currency": "usd",
+                  "plans": [
+                    {
+                      "allowance_bytes": 1000000000000,
+                      "ceil_mbps": 500,
+                      "id": "base",
+                      "name": "Base",
+                      "price_cents": 500,
+                      "rate_mbps": 10,
+                      "slow_mbps": 10
+                    },
+                    {
+                      "allowance_bytes": 4000000000000,
+                      "ceil_mbps": 1000,
+                      "id": "plus",
+                      "name": "Plus",
+                      "price_cents": 1000,
+                      "rate_mbps": 25,
+                      "slow_mbps": 25
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Catalogue"
+                }
+              }
+            },
+            "description": "The catalogue."
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [],
+        "summary": "The plans and add-ons on sale.",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/subscription": {
+      "put": {
+        "description": "Changes the live subscription at once: what costs more is prorated\nand invoiced immediately to the saved card. New addresses are\nassigned within seconds; removed ones (the highest first) stop\nrouting at once and are quarantined. More `monthly_tb` adds to\nthe allowance at once; less is not credited: the allowance keeps\nthe most of the billing period (`monthly_tb_counted`) and the new\namount renews from the next period (going back up to what the\nperiod counts costs nothing more). An absent `monthly_tb` keeps\nthe current amount. `peak_mbps` changes the peak speed tier at\nonce, prorated (Plus only; 1000 is Plus's own ceiling, no tier); an\nabsent `peak_mbps` keeps the current tier on Plus, and changing to\nBase removes it (Base's ceiling is 500 Mbps). Stripe's customer portal can't\nchange a subscription with several items, hence this route. 409\n`no_subscription` without a live subscription, 402\n`payment_failed` when the card is refused (nothing changes).\n",
+        "operationId": "changeSubscription",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "extra_ips": 2,
+                "monthly_tb": 1,
+                "peak_mbps": 5000,
+                "plan": "plus"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/PlanChange"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "cancel_at_period_end": false,
+                  "current_period_end": "2026-11-29T18:00:00Z",
+                  "current_period_start": "2026-10-29T18:00:00Z",
+                  "extra_ips": 2,
+                  "extra_tb": 0,
+                  "monthly_tb": 1,
+                  "monthly_tb_counted": 2,
+                  "peak_mbps": 5000,
+                  "plan": "plus",
+                  "release_at": null,
+                  "status": "active",
+                  "suspend_at": null
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            },
+            "description": "The subscription as changed."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentFailed"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "summary": "Change the plan, the extra addresses, the monthly data or the peak speed.",
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/v1/tokens": {
+      "get": {
+        "description": "Every API token of the account, oldest first: name, scope, when it\nwas made, last used (refreshed at most once a minute) and when it\nexpires. Never the token itself. Session cookie only: a token gets\n403 `session_required`.\n",
+        "operationId": "listTokens",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "tokens": [
+                    {
+                      "created_at": "2026-10-30T12:00:00Z",
+                      "expires_at": null,
+                      "id": "6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b",
+                      "last_used": "2026-10-30T12:05:00Z",
+                      "name": "Home Assistant",
+                      "scope": "read"
+                    }
+                  ]
+                },
+                "schema": {
+                  "properties": {
+                    "tokens": {
+                      "items": {
+                        "$ref": "#/components/schemas/APIToken"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "tokens"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The tokens."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "summary": "The account's API tokens (session only).",
+        "tags": [
+          "tokens"
+        ]
+      },
+      "post": {
+        "description": "Creates an API token with a name (1 to 100 characters), a scope\n(`read` or `write`) and an optional expiry in the future. The token\n(`opwan_` and 52 base32 characters) is in this answer only: we keep\nits SHA-256. At most 20 tokens per account (409 `too_many_tokens`:\nrevoke one first). Session cookie only: a token gets 403\n`session_required`.\n",
+        "operationId": "createToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "expires_at": null,
+                "name": "Home Assistant",
+                "scope": "read"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CreateTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "secret": "opwan_abcdefghijklmnopqrstuvwxyz234567abcdefghijklmnopqrst",
+                  "token": {
+                    "created_at": "2026-10-30T12:00:00Z",
+                    "expires_at": null,
+                    "id": "6f1c2a7e-3b4d-4e5f-8a9b-0c1d2e3f4a5b",
+                    "last_used": null,
+                    "name": "Home Assistant",
+                    "scope": "read"
+                  }
+                },
+                "schema": {
+                  "properties": {
+                    "secret": {
+                      "pattern": "^opwan_[a-z2-7]{52}$",
+                      "type": "string"
+                    },
+                    "token": {
+                      "$ref": "#/components/schemas/APIToken"
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "secret"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Created; `secret` is shown once."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "summary": "Create an API token (session only).",
+        "tags": [
+          "tokens"
+        ]
+      }
+    },
+    "/v1/tokens/{id}": {
+      "delete": {
+        "description": "Revokes one of the account's API tokens at once: its next request\nis 401 `unauthenticated`. 404 `not_found` for a token that is not\nthe account's. Session cookie only: a token gets 403\n`session_required`.\n",
+        "operationId": "deleteToken",
+        "responses": {
+          "204": {
+            "description": "Revoked."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "summary": "Revoke an API token (session only).",
+        "tags": [
+          "tokens"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "The token's id.",
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "uuid",
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/v1/tunnel": {
+      "put": {
+        "description": "Creates the account's one tunnel at a location, or replaces its\nWireGuard public key (re-keying: the old key's peer goes, the new\none is live at the next desired state; the location can't change\nonce created, and must be the one chosen at checkout when one was:\n409 `location_locked` otherwise). Send only the **public** key:\nthe private key is generated in the browser, or by the customer on\ntheir own device (bring your own key), and never reaches us. 422 on\n`pubkey` when it isn't base64 of exactly 32 bytes, is all zeros or\nanother point of low order, or is one of our servers' keys. Addresses are assigned while the subscription is\nactive (1 + extra IPs); before that the tunnel is `pending_payment`\nand `config.addresses` is empty. The answer is everything the client\nconfiguration needs besides the private key. 409 `pubkey_in_use`\nwhen another tunnel has that key.\n",
+        "operationId": "putTunnel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "location": "dfw",
+                "pubkey": "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg="
+              },
+              "schema": {
+                "$ref": "#/components/schemas/TunnelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "config": {
+                    "addresses": [
+                      "72.244.89.10/32"
+                    ],
+                    "allowed_ips": [
+                      "0.0.0.0/0"
+                    ],
+                    "endpoint": "dfw.wg.opwan.io:51820",
+                    "location": "dfw",
+                    "mtu": 1420,
+                    "persistent_keepalive": 25,
+                    "server_pubkey": "HIgo9xNzJMWLKASShiTqIybxZ0U3wGLiUeJ1PKf8ykw="
+                  },
+                  "created_at": "2026-10-29T18:05:00Z",
+                  "customer_pubkey": "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg=",
+                  "location": "dfw",
+                  "state": "active",
+                  "status": {
+                    "last_handshake": null,
+                    "rate_bps_rx": 0,
+                    "rate_bps_tx": 0,
+                    "throttled": "none",
+                    "up": false,
+                    "updated_at": null
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Tunnel"
+                }
+              }
+            },
+            "description": "The tunnel."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Create the tunnel, or replace its key.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnel/config": {
+      "get": {
+        "description": "The same data as `PUT /v1/tunnel`'s `config`: endpoint, server public\nkey, addresses and the suggested client settings. Never a private\nkey. `server_pubkey` is null until the exit server has reported its\nkey (seconds after the first start). 404 `not_found` without a\ntunnel.\n",
+        "operationId": "getTunnelConfig",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "addresses": [
+                    "72.244.89.10/32"
+                  ],
+                  "allowed_ips": [
+                    "0.0.0.0/0"
+                  ],
+                  "endpoint": "dfw.wg.opwan.io:51820",
+                  "location": "dfw",
+                  "mtu": 1420,
+                  "persistent_keepalive": 25,
+                  "server_pubkey": "HIgo9xNzJMWLKASShiTqIybxZ0U3wGLiUeJ1PKf8ykw="
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelConfig"
+                }
+              }
+            },
+            "description": "The client configuration data."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "The tunnel's client configuration data.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/usage": {
+      "get": {
+        "description": "Totals and the daily series (UTC days) of a calendar month (default\nthe current one), the month's allowance (plan plus data add-ons) and\nthe tunnel's live state (`live`, null without a tunnel). Months before\nthe account existed answer zeros.\n",
+        "operationId": "getUsage",
+        "parameters": [
+          {
+            "description": "`YYYY-MM` (UTC), default the current month.",
+            "in": "query",
+            "name": "month",
+            "required": false,
+            "schema": {
+              "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "allowance_bytes": 4000000000000,
+                  "days": [
+                    {
+                      "date": "2026-10-29",
+                      "rx_bytes": 52000000000,
+                      "tx_bytes": 3100000000
+                    }
+                  ],
+                  "live": {
+                    "last_handshake": "2026-10-29T18:10:00Z",
+                    "rate_bps_rx": 1200000,
+                    "rate_bps_tx": 64000,
+                    "throttled": "none",
+                    "up": true,
+                    "updated_at": "2026-10-29T18:10:30Z"
+                  },
+                  "month": "2026-10",
+                  "rx_bytes": 52000000000,
+                  "tx_bytes": 3100000000,
+                  "used_bytes": 55100000000
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Usage"
+                }
+              }
+            },
+            "description": "Usage."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "Data used in a month, per day, and live throughput.",
+        "tags": [
+          "usage"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "session": []
+    }
+  ],
+  "servers": [
+    {
+      "description": "Production (planned; the dashboard on the same origin)",
+      "url": "https://app.opwan.io"
+    }
+  ],
+  "tags": [
+    {
+      "description": "Version, plans and locations (no sign-in).",
+      "name": "meta"
+    },
+    {
+      "description": "Sign-in with the op account (opauth) and sign-out.",
+      "name": "auth"
+    },
+    {
+      "description": "The signed-in account and everything it has.",
+      "name": "account"
+    },
+    {
+      "description": "Stripe Checkout, the customer portal and data add-ons.",
+      "name": "billing"
+    },
+    {
+      "description": "The WireGuard tunnel and its client configuration.",
+      "name": "tunnel"
+    },
+    {
+      "description": "Inbound firewall rules per address.",
+      "name": "firewall"
+    },
+    {
+      "description": "Data used, the daily series and live throughput.",
+      "name": "usage"
+    },
+    {
+      "description": "API tokens for scripts (managed from the dashboard only).",
+      "name": "tokens"
+    }
+  ]
+}

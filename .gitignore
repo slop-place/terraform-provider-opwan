@@ -1,0 +1,7 @@
+terraform-provider-opwan
+dist/
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.key
