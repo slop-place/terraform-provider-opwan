@@ -1,5 +1,16 @@
 {
   "components": {
+    "parameters": {
+      "TunnelID": {
+        "description": "The tunnel's id (`tun_…`).",
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
     "responses": {
       "BadRequest": {
         "content": {
@@ -285,6 +296,24 @@
       },
       "Address": {
         "properties": {
+          "assigned_at": {
+            "description": "When the account got it (\"most recently added\" is the latest).",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "assignment": {
+            "$ref": "#/components/schemas/Assignment"
+          },
+          "block": {
+            "description": "The block it was bought in (`72.244.89.16/30`), null for a single address. A block is routed and released whole.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "ip": {
             "format": "ipv4",
             "type": "string"
@@ -295,7 +324,95 @@
         },
         "required": [
           "ip",
-          "location"
+          "location",
+          "assignment",
+          "assigned_at",
+          "block"
+        ],
+        "type": "object"
+      },
+      "Assignment": {
+        "properties": {
+          "kind": {
+            "enum": [
+              "tunnel",
+              "bgp",
+              "unassigned"
+            ],
+            "type": "string"
+          },
+          "tunnel": {
+            "description": "The tunnel it's routed down (`tunnel`), or for `bgp` the one announcing it now (null when none).",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "tunnel"
+        ],
+        "type": "object"
+      },
+      "AssignmentRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "bgp",
+              "unassigned"
+            ],
+            "type": "string"
+          },
+          "tunnel": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "BGPState": {
+        "description": "The session as the node last saw it: `established`, `connecting`\n(we're trying; your side isn't answering yet), `down`, `limit`\n(your router sent more than 64 routes: the session was closed and\nis retried after a wait), `disabled` (the tunnel is suspended);\nnull while BGP is off or before the node's first report.\n",
+        "enum": [
+          "established",
+          "connecting",
+          "down",
+          "limit",
+          "disabled",
+          null
+        ],
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "BuyAddressesRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "unassigned",
+              "bgp"
+            ],
+            "type": "string"
+          },
+          "size": {
+            "description": "Addresses in the block (/32, /31, /30, /29).",
+            "enum": [
+              1,
+              2,
+              4,
+              8
+            ],
+            "type": "integer"
+          },
+          "tunnel": {
+            "description": "The tunnel the block goes down (default none).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "size"
         ],
         "type": "object"
       },
@@ -303,6 +420,13 @@
         "properties": {
           "add_ons": {
             "properties": {
+              "block_sizes": {
+                "description": "The block sizes an account may buy at once (1, 2, 4, 8).",
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
               "extra_ip_price_cents": {
                 "description": "Per extra address per month.",
                 "type": "integer"
@@ -312,6 +436,7 @@
                 "type": "integer"
               },
               "max_extra_ips": {
+                "description": "Extra addresses at checkout. Afterwards addresses are bought in blocks (`block_sizes`), with no cap but the location's free space.",
                 "type": "integer"
               },
               "max_extra_tb": {
@@ -320,6 +445,10 @@
               },
               "max_monthly_tb": {
                 "description": "The most monthly data a subscription can have, TB.",
+                "type": "integer"
+              },
+              "max_tunnels": {
+                "description": "Tunnels per account. Each is billed at its plan's price; every type costs the same.",
                 "type": "integer"
               },
               "monthly_tb_price_cents": {
@@ -345,7 +474,9 @@
               "peak_plan",
               "peak_tiers",
               "extra_tb_price_cents",
-              "max_extra_tb"
+              "max_extra_tb",
+              "max_tunnels",
+              "block_sizes"
             ],
             "type": "object"
           },
@@ -379,7 +510,8 @@
           },
           "extra_ips": {
             "default": 0,
-            "maximum": 2,
+            "description": "Extra addresses at checkout (more afterwards, in blocks, on the Addresses page).",
+            "maximum": 7,
             "minimum": 0,
             "type": "integer"
           },
@@ -430,6 +562,134 @@
         "required": [
           "name",
           "scope"
+        ],
+        "type": "object"
+      },
+      "CreateTunnelRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "endpoint": {
+            "format": "ipv4",
+            "type": "string"
+          },
+          "ike": {
+            "enum": [
+              "ikev2",
+              "ikev1"
+            ],
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 40,
+            "type": "string"
+          },
+          "peak_mbps": {
+            "$ref": "#/components/schemas/PeakMbps"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanID"
+          },
+          "pubkey": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TunnelType"
+          }
+        },
+        "required": [
+          "type",
+          "plan"
+        ],
+        "type": "object"
+      },
+      "DNSProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "DNSSettings": {
+        "additionalProperties": false,
+        "description": "The opdns DNS opt-in (`/v1/dns`).",
+        "properties": {
+          "available": {
+            "description": "This server offers opdns DNS.",
+            "type": "boolean"
+          },
+          "error": {
+            "description": "The last problem, in plain words (what happened, whose doing, what to do).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "linked_ips": {
+            "description": "The addresses opdns has linked to the profile now.",
+            "items": {
+              "format": "ipv4",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "opdns_account": {
+            "description": "Your op account has an opdns account; null when opdns couldn't be asked just now.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "profile": {
+            "description": "The profile picked; null when opdns DNS is off.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DNSProfile"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "profiles": {
+            "description": "Your opdns profiles to pick from (empty without an opdns account).",
+            "items": {
+              "$ref": "#/components/schemas/DNSProfile"
+            },
+            "type": "array"
+          },
+          "resolver": {
+            "description": "opdns's resolver; with opdns DNS on, lookups from your static addresses to it are filtered with your profile.",
+            "format": "ipv4",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "off",
+              "pending",
+              "linked",
+              "error"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "available",
+          "resolver",
+          "opdns_account",
+          "profiles",
+          "profile",
+          "state",
+          "linked_ips",
+          "error"
         ],
         "type": "object"
       },
@@ -514,6 +774,178 @@
         ],
         "type": "object"
       },
+      "InterestAnswers": {
+        "description": "The form's answers (site/src/lib/interest.ts and\ninternal/cp/interest check them alike). Text is trimmed, control\ncharacters and runs of spaces become one space; lengths count\nUTF-16 code units, as the page does. Members not listed are\nignored.\n",
+        "properties": {
+          "country": {
+            "description": "Where they are, ISO 3166-1 alpha-2.",
+            "type": "string"
+          },
+          "email": {
+            "description": "Lowercased; one @ and a dot in the domain.",
+            "maxLength": 254,
+            "type": "string"
+          },
+          "ip_count": {
+            "enum": [
+              "1",
+              "2-4",
+              "5-8",
+              "29plus",
+              "unsure",
+              "",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isp_name": {
+            "maxLength": 80,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isp_type": {
+            "enum": [
+              "cgnat",
+              "dynamic",
+              "ipv6only",
+              "other",
+              "",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "locations": {
+            "description": "Candidate exit locations' ids (site/src/lib/locations.ts), without repeats; at least one, or `other_location`.",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 34,
+            "type": "array"
+          },
+          "notify": {
+            "description": "Email them when one of their cities opens.",
+            "type": "boolean"
+          },
+          "other_location": {
+            "description": "Cities not in the list, joined with \"; \".",
+            "maxLength": 80,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "region": {
+            "maxLength": 80,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "router": {
+            "enum": [
+              "mikrotik",
+              "openwrt",
+              "pfsense",
+              "opnsense",
+              "linux",
+              "other",
+              "unsure",
+              "",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "services": {
+            "items": {
+              "enum": [
+                "web",
+                "game",
+                "mail",
+                "vpn",
+                "homelab",
+                "cctv",
+                "other"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "speed_mbps": {
+            "description": "Speed wanted (null, not sure).",
+            "enum": [
+              100,
+              500,
+              1000,
+              2500,
+              5000,
+              10000,
+              null
+            ],
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "turnstile_token": {
+            "description": "The Cloudflare Turnstile token of the form's widget (single use).",
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "usage_tb": {
+            "description": "Monthly data in TB, 20 meaning 20 or more (null, not sure).",
+            "maximum": 20,
+            "minimum": 1,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "use_case": {
+            "maxLength": 280,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "website": {
+            "description": "The honeypot, hidden from people; filled, the answer is dropped.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "country"
+        ],
+        "type": "object"
+      },
+      "InterestState": {
+        "properties": {
+          "state": {
+            "description": "sent: a confirmation link was emailed; recent: one was sent less than 10 minutes ago (or 5 today) and still works; updated: the address was already confirmed and its answers are replaced.",
+            "enum": [
+              "sent",
+              "recent",
+              "updated"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "type": "object"
+      },
       "Location": {
         "properties": {
           "available": {
@@ -588,6 +1020,13 @@
               "string",
               "null"
             ]
+          },
+          "tunnel_types": {
+            "description": "The tunnel types offered here now.",
+            "items": {
+              "$ref": "#/components/schemas/TunnelType"
+            },
+            "type": "array"
           }
         },
         "required": [
@@ -599,7 +1038,8 @@
           "test_ip",
           "ping_host",
           "available",
-          "maintenance"
+          "maintenance",
+          "tunnel_types"
         ],
         "type": "object"
       },
@@ -634,6 +1074,13 @@
               }
             ]
           },
+          "tunnels": {
+            "description": "Every tunnel (`tunnel` is the first, kept for older clients).",
+            "items": {
+              "$ref": "#/components/schemas/TunnelItem"
+            },
+            "type": "array"
+          },
           "usage": {
             "$ref": "#/components/schemas/MonthUsage"
           }
@@ -642,6 +1089,7 @@
           "account",
           "subscription",
           "tunnel",
+          "tunnels",
           "addresses",
           "usage"
         ],
@@ -783,13 +1231,12 @@
         "additionalProperties": false,
         "properties": {
           "extra_ips": {
-            "default": 0,
-            "maximum": 2,
+            "description": "The account's extra addresses (no cap but the location's free\nspace: 409 `location_full`). Absent at a change, the current\nnumber is kept. Lowering it releases the addresses named in\n`release`, else the most recently added, a block always whole.\nBuying and releasing blocks: `POST /v1/addresses`, `DELETE\n/v1/addresses/{ip}`.\n",
             "minimum": 0,
             "type": "integer"
           },
           "monthly_tb": {
-            "description": "Monthly data, TB. Absent, the current amount is kept.",
+            "description": "Monthly data, TB, the account's (pooled across its tunnels). Absent, the current amount is kept.",
             "maximum": 50,
             "minimum": 0,
             "type": "integer"
@@ -799,11 +1246,16 @@
           },
           "plan": {
             "$ref": "#/components/schemas/PlanID"
+          },
+          "release": {
+            "description": "When fewer addresses are paid for than the account has, the ones\nto release (30-day quarantine); default the most recently added.\n",
+            "items": {
+              "format": "ipv4",
+              "type": "string"
+            },
+            "type": "array"
           }
         },
-        "required": [
-          "plan"
-        ],
         "type": "object"
       },
       "PlanID": {
@@ -841,6 +1293,34 @@
               "no_addresses_free",
               "oidc_unavailable",
               "billing_unavailable",
+              "dns_unavailable",
+              "opdns_unavailable",
+              "no_opdns_account",
+              "tunnel_limit",
+              "location_full",
+              "type_unavailable",
+              "endpoint_in_use",
+              "release_required",
+              "last_tunnel",
+              "not_l2tp",
+              "not_wireguard",
+              "bgp_unavailable",
+              "bgp_off",
+              "bgp_no_auth",
+              "full_table_unavailable",
+              "full_table_full",
+              "credentials_unavailable",
+              "asn_unavailable",
+              "below_included",
+              "origin_refused",
+              "unsupported_media_type",
+              "interest_unavailable",
+              "verification_failed",
+              "verification_unavailable",
+              "email_failed",
+              "link_incomplete",
+              "link_invalid",
+              "link_expired",
               "internal"
             ],
             "type": "string"
@@ -868,6 +1348,10 @@
               "type": "object"
             },
             "type": "array"
+          },
+          "release_count": {
+            "description": "`release_required`: how many more addresses the change must release (`release`).",
+            "type": "integer"
           },
           "request_id": {
             "description": "The reference our logs carry for this request; mention it to support.",
@@ -917,7 +1401,7 @@
             ]
           },
           "extra_ips": {
-            "maximum": 2,
+            "description": "The account's extra addresses (no cap but the location's free space).",
             "minimum": 0,
             "type": "integer"
           },
@@ -1046,8 +1530,290 @@
         ],
         "type": "object"
       },
+      "TunnelBGP": {
+        "properties": {
+          "accepted": {
+            "description": "The routes we accepted (your account's addresses, as /32s).",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "asn": {
+            "description": "Your account's AS number, chosen by us: private 32-bit\n(4201000000 to 4294967294), unique to your account and used by\nthe sessions of all its tunnels. Null until your account first\nturns BGP on; it never changes after.\n",
+            "format": "int64",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "auth": {
+            "enum": [
+              "none",
+              "md5",
+              "ao"
+            ],
+            "type": "string"
+          },
+          "available": {
+            "description": "The tunnel's location offers BGP now.",
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "export": {
+            "description": "What we send you, a default route or the full table and a default.",
+            "enum": [
+              "default",
+              "full",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "full_table_available": {
+            "description": "The location can send the full table now (`export` `full`).",
+            "type": "boolean"
+          },
+          "hold_time": {
+            "description": "The hold time we offer, in seconds (you may negotiate down to 3).",
+            "type": "integer"
+          },
+          "last_error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "limit_trips": {
+            "description": "Times the session was closed for sending too many routes since the node's agent started.",
+            "type": "integer"
+          },
+          "local": {
+            "description": "Our session address (your neighbor).",
+            "format": "ipv4",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "max_routes": {
+            "description": "Routes your router may send before the session is closed (64).",
+            "type": "integer"
+          },
+          "our_asn": {
+            "description": "Our AS number, 403104.",
+            "type": "integer"
+          },
+          "peer": {
+            "description": "Your session address, to configure on your end of the tunnel.",
+            "format": "ipv4",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "received": {
+            "description": "Routes your router sent us.",
+            "type": "integer"
+          },
+          "refused": {
+            "description": "Routes we refused, with why (at most 20).",
+            "items": {
+              "properties": {
+                "prefix": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "prefix",
+                "reason"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "since": {
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/BGPState"
+          },
+          "ttl_security": {
+            "description": "GTSM (ttl-security hops 1), on by default: the router\nterminating the tunnel must speak BGP and send TTL 255. Off only\nwhen your BGP speaker is one hop behind that router (we then\naccept TTL 2, multihop): less protected.\n",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled",
+          "available",
+          "full_table_available",
+          "asn",
+          "export",
+          "auth",
+          "our_asn",
+          "local",
+          "peer",
+          "hold_time",
+          "ttl_security",
+          "max_routes",
+          "state",
+          "since",
+          "last_error",
+          "received",
+          "accepted",
+          "refused",
+          "limit_trips"
+        ],
+        "type": "object"
+      },
+      "TunnelBGPConfig": {
+        "properties": {
+          "announce": {
+            "description": "What the session may announce, as /32s (your BGP addresses and this tunnel's own).",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "auth": {
+            "enum": [
+              "none",
+              "md5",
+              "ao"
+            ],
+            "type": "string"
+          },
+          "examples": {
+            "items": {
+              "properties": {
+                "config": {
+                  "type": "string"
+                },
+                "router": {
+                  "enum": [
+                    "bird",
+                    "frr",
+                    "mikrotik",
+                    "edgeos",
+                    "openwrt"
+                  ],
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "router",
+                "title",
+                "config"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "export": {
+            "enum": [
+              "default",
+              "full"
+            ],
+            "type": "string"
+          },
+          "hold_time": {
+            "type": "integer"
+          },
+          "keepalive": {
+            "type": "integer"
+          },
+          "key": {
+            "description": "The TCP-MD5 password or TCP-AO key (HMAC-SHA-256, key id 0 both ways); null without authentication.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "local": {
+            "description": "Our session address (your neighbor).",
+            "format": "ipv4",
+            "type": "string"
+          },
+          "our_asn": {
+            "type": "integer"
+          },
+          "peer": {
+            "description": "Your session address.",
+            "format": "ipv4",
+            "type": "string"
+          },
+          "ttl_security": {
+            "type": "boolean"
+          },
+          "your_asn": {
+            "description": "Your account's AS number (we chose it; the same on all your tunnels).",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "our_asn",
+          "your_asn",
+          "local",
+          "peer",
+          "hold_time",
+          "keepalive",
+          "ttl_security",
+          "auth",
+          "key",
+          "export",
+          "announce",
+          "examples"
+        ],
+        "type": "object"
+      },
+      "TunnelBGPRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "auth": {
+            "enum": [
+              "none",
+              "md5",
+              "ao"
+            ],
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "export": {
+            "enum": [
+              "default",
+              "full"
+            ],
+            "type": "string"
+          },
+          "ttl_security": {
+            "description": "Keep true (the default) unless your BGP speaker is one hop behind the router terminating the tunnel; off is less protected.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "type": "object"
+      },
       "TunnelConfig": {
-        "description": "Everything a WireGuard client configuration needs besides its private key.",
+        "description": "Everything a WireGuard client configuration needs besides its private\nkey. opwan routes only your static addresses (it isn't a VPN): the\ndashboard's file sends only traffic from them into the tunnel, and has\nno DNS line.\n",
         "properties": {
           "addresses": {
             "description": "The tunnel's addresses as /32s (the wg-quick `Address`); empty until the subscription is active.",
@@ -1057,7 +1823,7 @@
             "type": "array"
           },
           "allowed_ips": {
-            "description": "Suggested `AllowedIPs` of the peer on the client.",
+            "description": "The `AllowedIPs` of our side on your router: 0.0.0.0/0, so traffic\nfrom anyone to your static addresses comes through the tunnel and\nyour replies go back. Don't let your router route its whole\nconnection there: route only traffic from your static addresses\ninto the tunnel (the dashboard's file does it on Linux).\n",
             "items": {
               "type": "string"
             },
@@ -1096,6 +1862,196 @@
         ],
         "type": "object"
       },
+      "TunnelCredentials": {
+        "description": "Shown once; we can't show them again (make new ones instead).",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "psk": {
+            "description": "The IPsec pre-shared key.",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password",
+          "psk"
+        ],
+        "type": "object"
+      },
+      "TunnelItem": {
+        "properties": {
+          "addresses": {
+            "description": "The addresses routed down this tunnel, as /32s.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "allowance_bytes": {
+            "description": "The account's data this month, pooled across its tunnels (every\ntunnel's plan's, plus monthly data and add-ons, which are the\naccount's): the same on every tunnel. Past it, every tunnel is\nslowed to its plan's slowed speed.\n",
+            "format": "int64",
+            "type": "integer"
+          },
+          "bgp": {
+            "description": "Customer BGP over this tunnel, in brief (GET /v1/tunnels/{id}/bgp for the rest).",
+            "properties": {
+              "asn": {
+                "description": "The account's AS number (the same on each of its tunnels); null until the account first turns BGP on.",
+                "format": "int64",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "export": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "state": {
+                "$ref": "#/components/schemas/BGPState"
+              }
+            },
+            "required": [
+              "enabled"
+            ],
+            "type": "object"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "customer_pubkey": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "endpoint": {
+            "description": "Your registered fixed public IPv4 (l2tp_ipsec over IKEv1).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "ike": {
+            "enum": [
+              "ikev2",
+              "ikev1",
+              null
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ipsec_id": {
+            "description": "The IKEv2 identity your router sends (its \"local ID\").",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "l2tp_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "location": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "number": {
+            "description": "1, 2, … in the account (\"Tunnel 2\").",
+            "type": "integer"
+          },
+          "peak_mbps": {
+            "description": "The speed ceiling in effect (the plan's or its peak tier's).",
+            "type": "integer"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanID"
+          },
+          "setup": {
+            "$ref": "#/components/schemas/TunnelSetup"
+          },
+          "state": {
+            "description": "`pending_payment`, `setup_required` (a WireGuard tunnel without a\nkey yet), `active`, `suspended`, `canceled`.\n",
+            "enum": [
+              "pending_payment",
+              "setup_required",
+              "active",
+              "suspended",
+              "canceled"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TunnelStatus"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TunnelType"
+          },
+          "used_bytes": {
+            "description": "This tunnel's share of the account's month, both directions.",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "number",
+          "name",
+          "type",
+          "location",
+          "state",
+          "plan",
+          "peak_mbps",
+          "allowance_bytes",
+          "used_bytes",
+          "customer_pubkey",
+          "endpoint",
+          "ike",
+          "l2tp_username",
+          "ipsec_id",
+          "addresses",
+          "setup",
+          "status",
+          "bgp",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "TunnelPlanRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "peak_mbps": {
+            "$ref": "#/components/schemas/PeakMbps"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanID"
+          }
+        },
+        "required": [
+          "plan"
+        ],
+        "type": "object"
+      },
       "TunnelRequest": {
         "additionalProperties": false,
         "properties": {
@@ -1113,6 +2069,41 @@
         "required": [
           "location",
           "pubkey"
+        ],
+        "type": "object"
+      },
+      "TunnelSetup": {
+        "description": "What the router's configuration needs besides the tunnel's own\nfields (never a secret). WireGuard: `wireguard` (as\n`TunnelConfig`). L2TP/IPsec: `server` (the user name, the IPsec\nidentity and IKE version are the tunnel's `l2tp_username`,\n`ipsec_id`, `ike`; `ipsec_server_id` is ours) and `mtu`.\n",
+        "properties": {
+          "ipsec_server_id": {
+            "description": "Our IKE identity (l2tp_ipsec), the router's \"remote ID\".",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mtu": {
+            "type": "integer"
+          },
+          "server": {
+            "description": "The host name your router connects to.",
+            "type": "string"
+          },
+          "wireguard": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TunnelConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "server",
+          "mtu",
+          "ipsec_server_id"
         ],
         "type": "object"
       },
@@ -1161,6 +2152,67 @@
           "updated_at"
         ],
         "type": "object"
+      },
+      "TunnelType": {
+        "description": "`wireguard` (encrypted; works behind any NAT) or `l2tp_ipsec`\n(encrypted; IKEv2 works behind any NAT, IKEv1 needs a fixed public\naddress). Both are encrypted.\n",
+        "enum": [
+          "wireguard",
+          "l2tp_ipsec"
+        ],
+        "type": "string"
+      },
+      "TunnelTypeRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "endpoint": {
+            "description": "Your fixed public IPv4 (l2tp_ipsec with ikev1).",
+            "format": "ipv4",
+            "type": "string"
+          },
+          "ike": {
+            "enum": [
+              "ikev2",
+              "ikev1"
+            ],
+            "type": "string"
+          },
+          "pubkey": {
+            "description": "WireGuard's public key (optional: set it later with `PUT /v1/tunnels/{id}/key`).",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TunnelType"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "TunnelWithCredentials": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TunnelItem"
+          },
+          {
+            "properties": {
+              "credentials": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TunnelCredentials"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "credentials"
+            ],
+            "type": "object"
+          }
+        ]
       },
       "Usage": {
         "properties": {
@@ -1258,10 +2310,275 @@
     },
     "summary": "The control plane API of opwan, a static public IPv4 address over WireGuard.",
     "title": "opwan API",
-    "version": "0.9.0"
+    "version": "0.16.0"
   },
   "openapi": "3.1.0",
   "paths": {
+    "/v1/addresses": {
+      "get": {
+        "description": "Every address of the account (the account owns them: one per\ntunnel plus its extra addresses), lowest first, with where each goes\n(a tunnel, BGP, or unassigned), and how many the account pays for.\n",
+        "operationId": "listAddresses",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "addresses": {
+                      "items": {
+                        "$ref": "#/components/schemas/Address"
+                      },
+                      "type": "array"
+                    },
+                    "entitlement": {
+                      "description": "How many addresses the account pays for (one per tunnel plus the extra addresses).",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "addresses",
+                    "entitlement"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The addresses, lowest first, and the entitlement."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "The account's addresses and where each is assigned.",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "post": {
+        "description": "Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses\n(/32 to /29) at the account's location, routed whole down one\ntunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the\ndefault). Every address of the block is usable. Each is an extra\naddress ($3 a month, from `GET /v1/plans`), prorated and charged at\nonce; a refused card keeps nothing (402). No cap but the location's\nfree space: 409 `location_full` when it has no free aligned block of\nthat size (nothing charged).\n",
+        "operationId": "buyAddresses",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "size": 4,
+                "tunnel": "tun_3f9a1c2b4d5e6f708192"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/BuyAddressesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "addresses": [
+                    {
+                      "assigned_at": "2026-10-31T18:00:00Z",
+                      "assignment": {
+                        "kind": "tunnel",
+                        "tunnel": "tun_3f9a1c2b4d5e6f708192"
+                      },
+                      "block": "72.244.89.16/30",
+                      "ip": "72.244.89.16",
+                      "location": "dfw"
+                    }
+                  ]
+                },
+                "schema": {
+                  "properties": {
+                    "addresses": {
+                      "items": {
+                        "$ref": "#/components/schemas/Address"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "addresses"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The addresses bought."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentFailed"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "summary": "Buy addresses, as one block (billed at once).",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/addresses/{ip}": {
+      "delete": {
+        "description": "Releases the address, or every address of its block, into the\nusual 30-day quarantine, and lowers the extra addresses as many\n(credited, prorated). 409 `below_included`: each tunnel includes\none address the account keeps.\n",
+        "operationId": "releaseAddress",
+        "responses": {
+          "204": {
+            "description": "Released."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "summary": "Give up an address, or the whole block it belongs to.",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "ip",
+          "required": true,
+          "schema": {
+            "format": "ipv4",
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/v1/addresses/{ip}/assignment": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "ip",
+          "required": true,
+          "schema": {
+            "format": "ipv4",
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "description": "Instant and free: the address stays the account's (no release, no\nquarantine) and its firewall rules follow it. An address bought in a\nblock moves with its whole block (`Address.block`). `{\"tunnel\": id}`\nroutes it down that tunnel; `{\"kind\": \"unassigned\"}` keeps it\nwithout routing it (traffic to it is dropped); `{\"kind\": \"bgp\"}`\nmakes it float: it goes to whichever of the account's BGP tunnels\nannounces it, and is dropped while none does (409\n`bgp_unavailable` until the account has a tunnel with BGP on at\nthe address's location).\n",
+        "operationId": "assignAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            },
+            "description": "The address."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Route an address down a tunnel, to BGP, or nowhere.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
     "/v1/addresses/{ip}/firewall": {
       "get": {
         "description": "The default inbound policy and the ordered rules of one of your\naddresses (first match wins). TCP port 25 is always blocked in both\ndirections, whatever the rules say. A new address allows everything\ninbound (except TCP 25). 404 `not_found` for an address that is not\nyours.\n",
@@ -1652,7 +2969,7 @@
           "content": {
             "application/json": {
               "example": {
-                "accept_terms_version": "2026-10-30",
+                "accept_terms_version": "2026-11-01.1",
                 "extra_ips": 1,
                 "location": "dfw",
                 "monthly_tb": 2,
@@ -1695,6 +3012,537 @@
         ]
       }
     },
+    "/v1/dns": {
+      "delete": {
+        "description": "Your addresses are unlinked from the opdns profile (at once when opdns\nanswers, else we keep trying: `linked_ips` shows what is still\nlinked). Your tunnel's configuration doesn't change.\n",
+        "operationId": "deleteDNS",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DNSSettings"
+                }
+              }
+            },
+            "description": "The opt-in now."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Turn opdns DNS off.",
+        "tags": [
+          "dns"
+        ]
+      },
+      "get": {
+        "description": "opdns DNS: with it on, opwan links your static addresses to the opdns\nprofile you picked, so lookups that reach opdns's resolver (`resolver`,\n23.166.164.53) from them are filtered by it. opwan's configurations\nnever set DNS (opwan isn't a VPN: only your static addresses' traffic\nuses the tunnel): point a device or server that uses a static address\nat `resolver` for its lookups. Offered when your op account also has an opdns\naccount (`opdns_account`; null when opdns couldn't be asked just now):\n`profiles` are your opdns profiles. `state` is `off`, `pending` (opdns\nnot updated yet; we keep trying), `linked` or `error` (`error` says what\nhappened in plain words); `linked_ips` are the addresses opdns has\nlinked now (addresses released or quarantined are unlinked within a\nminute). `available` is false when this server doesn't offer it.\n",
+        "operationId": "getDNS",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "available": true,
+                  "error": null,
+                  "linked_ips": [],
+                  "opdns_account": true,
+                  "profile": null,
+                  "profiles": [
+                    {
+                      "id": "a1b2c3",
+                      "name": "Home"
+                    },
+                    {
+                      "id": "k1d5x9",
+                      "name": "Kids"
+                    }
+                  ],
+                  "resolver": "23.166.164.53",
+                  "state": "off"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/DNSSettings"
+                }
+              }
+            },
+            "description": "The opt-in."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "The opdns DNS opt-in, and the opdns profiles to pick from.",
+        "tags": [
+          "dns"
+        ]
+      },
+      "put": {
+        "description": "`profile_id` must be one of the `profiles` `GET /v1/dns` lists (422\notherwise; opdns checks again that it is yours). 409\n`no_opdns_account` when your op account has no opdns account; 503\n`opdns_unavailable` when opdns couldn't be asked (nothing changed).\nYour addresses are linked at once when opdns answers, else `state` is\n`pending` and we keep trying. Your tunnel's configuration doesn't\nchange: it has no DNS line either way.\n",
+        "operationId": "putDNS",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "profile_id": "a1b2c3"
+              },
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "profile_id": {
+                    "maxLength": 64,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "profile_id"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "available": true,
+                  "error": null,
+                  "linked_ips": [
+                    "72.244.89.10"
+                  ],
+                  "opdns_account": true,
+                  "profile": {
+                    "id": "a1b2c3",
+                    "name": "Home"
+                  },
+                  "profiles": [
+                    {
+                      "id": "a1b2c3",
+                      "name": "Home"
+                    },
+                    {
+                      "id": "k1d5x9",
+                      "name": "Kids"
+                    }
+                  ],
+                  "resolver": "23.166.164.53",
+                  "state": "linked"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/DNSSettings"
+                }
+              }
+            },
+            "description": "The opt-in now."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Turn opdns DNS on with one of your opdns profiles, or change the profile.",
+        "tags": [
+          "dns"
+        ]
+      }
+    },
+    "/v1/interest": {
+      "post": {
+        "description": "One answer of the register-interest form on https://opwan.io (the\nnext locations people want, and how they'd use opwan), kept until\nits email address is confirmed (double opt-in). No sign-in; CORS for\nthe site's origin only (`Access-Control-Allow-Origin:\nhttps://opwan.io`, never with credentials), and a request from any\nother page's `Origin` is 403 `origin_refused`. `Content-Type:\napplication/json` only (415), at most 8 KiB (413).\n\nIn order: the honeypot (a filled `website` gets `sent` and nothing\nis kept); the answers' checks (422 `validation_failed`, one entry\nof `errors[]` per answer to change, with the form's own message);\nthe Cloudflare Turnstile token (403 `verification_failed`; 503\n`verification_unavailable` when Turnstile doesn't answer); then\n`state`:\n  - `updated`: the address is already confirmed; its answers are\n    replaced, no email.\n  - `sent`: the answers are kept as pending and a confirmation link\n    (`https://opwan.io/confirm/?t=...`, 48 hours, single use) is\n    emailed.\n  - `recent`: the address got a link less than 10 minutes ago, or 5\n    in 24 hours; its answers are replaced and the earlier link\n    still works.\n429 `rate_limited`: 10 requests a minute per network, or 10\nconfirmation emails an hour to one network (`Retry-After: 3600`).\n502 `email_failed`: the confirmation email couldn't be sent. 503\n`interest_unavailable`: the form is not set up on this deployment.\nThe raw IP address is never kept, only a salted one-way hash.\n",
+        "operationId": "registerInterest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "country": "CA",
+                "email": "someone@example.com",
+                "ip_count": "2-4",
+                "isp_name": "Videotron",
+                "isp_type": "cgnat",
+                "locations": [
+                  "yul",
+                  "fra"
+                ],
+                "notify": true,
+                "other_location": "Lyon",
+                "region": "Laval, QC",
+                "router": "mikrotik",
+                "services": [
+                  "web",
+                  "game"
+                ],
+                "speed_mbps": 500,
+                "turnstile_token": "0.zRu2...",
+                "usage_tb": 5,
+                "use_case": "Home lab and a game server",
+                "website": ""
+              },
+              "schema": {
+                "$ref": "#/components/schemas/InterestAnswers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "state": "sent"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/InterestState"
+                }
+              }
+            },
+            "description": "Taken."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "verification_failed",
+                  "detail": "We couldn't confirm that you're a person. Please reload the page, then send the form again.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 403,
+                  "title": "Forbidden",
+                  "type": "https://opwan.io/problems/verification_failed"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "From another page than opwan.io, or the person check (Turnstile) failed."
+          },
+          "413": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "body_too_large",
+                  "detail": "What you sent is longer than we can accept. Please shorten your answers, then try again.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 413,
+                  "title": "Request Entity Too Large",
+                  "type": "https://opwan.io/problems/body_too_large"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Longer than 8 KiB."
+          },
+          "415": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "unsupported_media_type",
+                  "detail": "We couldn't read what your browser sent. Please reload the page and try again.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 415,
+                  "title": "Unsupported Media Type",
+                  "type": "https://opwan.io/problems/unsupported_media_type"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not JSON."
+          },
+          "422": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "validation_failed",
+                  "detail": "Some answers need a small change. Look for the notes next to them, then send the form again.",
+                  "errors": [
+                    {
+                      "field": "email",
+                      "message": "Enter an email address like name@example.com."
+                    }
+                  ],
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 422,
+                  "title": "Unprocessable Entity",
+                  "type": "https://opwan.io/problems/validation_failed"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Some answers need a change."
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "502": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "email_failed",
+                  "detail": "We couldn't send the confirmation email. Please check that your email address is spelled correctly. If it is, the problem is on our side: please try again in a few minutes. If it keeps happening, email us at the address at the bottom of the page and mention the reference below.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 502,
+                  "title": "Bad Gateway",
+                  "type": "https://opwan.io/problems/email_failed"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The confirmation email couldn't be sent."
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "interest_unavailable",
+                  "detail": "We can't take new registrations right now because we can't send confirmation emails. This isn't something you did. Please try again later. If it keeps happening, email us at the address at the bottom of the page and mention the reference below.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 503,
+                  "title": "Service Unavailable",
+                  "type": "https://opwan.io/problems/interest_unavailable"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The form or Turnstile is unavailable."
+          }
+        },
+        "security": [],
+        "summary": "Register interest (the form on opwan.io).",
+        "tags": [
+          "interest"
+        ]
+      }
+    },
+    "/v1/interest/confirm": {
+      "post": {
+        "description": "Called by the site's `/confirm/` page with the token of the emailed\nlink (never by the link itself, so a mail scanner that follows\nlinks confirms nothing). The token works once and for 48 hours;\nthe answer then counts. Links emailed before the form moved here\nkeep working. No sign-in; the same CORS, origin and body rules as\n`POST /v1/interest` (at most 1 KiB). 400 `link_incomplete` (not a\ntoken), 404 `link_invalid` (unknown, used, or its answer deleted),\n410 `link_expired`.\n",
+        "operationId": "confirmInterest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "token": "q3ElG4oOrc8bU1G0mHkO6vI7XxYbJm2yK9tC0dVwZsA"
+              },
+              "schema": {
+                "properties": {
+                  "token": {
+                    "description": "The link's `t`, 43 characters of base64url.",
+                    "pattern": "^[A-Za-z0-9_-]{43}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "state": "confirmed"
+                },
+                "schema": {
+                  "properties": {
+                    "state": {
+                      "enum": [
+                        "confirmed"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "state"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Confirmed."
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "link_incomplete",
+                  "detail": "This link looks incomplete. Please open it again from your confirmation email, or copy the whole link into your browser.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 400,
+                  "title": "Bad Request",
+                  "type": "https://opwan.io/problems/link_incomplete"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not a link's token, or the request can't be read."
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "origin_refused",
+                  "detail": "This form only takes answers from opwan.io. Please use the form on https://opwan.io.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 403,
+                  "title": "Forbidden",
+                  "type": "https://opwan.io/problems/origin_refused"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "From another page than opwan.io."
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "link_invalid",
+                  "detail": "This link no longer works. If you already confirmed your email, you're all set and there's nothing more to do. If not, send the form again and we'll email you a new link.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 404,
+                  "title": "Not Found",
+                  "type": "https://opwan.io/problems/link_invalid"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "No pending answer has this link."
+          },
+          "410": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "link_expired",
+                  "detail": "This link has expired: links work for 48 hours. Please send the form again and we'll email you a new one.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 410,
+                  "title": "Gone",
+                  "type": "https://opwan.io/problems/link_expired"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "The link's 48 hours are over."
+          },
+          "415": {
+            "content": {
+              "application/problem+json": {
+                "example": {
+                  "code": "unsupported_media_type",
+                  "detail": "We couldn't read what your browser sent. Please reload the page and try again.",
+                  "request_id": "01JBX4Y2Q8Z9",
+                  "status": 415,
+                  "title": "Unsupported Media Type",
+                  "type": "https://opwan.io/problems/unsupported_media_type"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description": "Not JSON."
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [],
+        "summary": "Confirm an interest's email address.",
+        "tags": [
+          "interest"
+        ]
+      }
+    },
     "/v1/locations": {
       "get": {
         "description": "The enabled locations (v1 Dallas only) with what the location step\nshows: city and country, the location's network capacity in Gbps,\nits ping-test address (answers ICMP echo from anywhere, so you can\nmeasure your latency before buying), whether it has a free\naddress now, and its maintenance window in progress or next\n(`maintenance`). Never lists or counts servers. No sign-in;\n`Access-Control-Allow-Origin: *` (no credentials), so the site\n(https://opwan.io) can show a location under maintenance.\n",
@@ -1714,7 +3562,10 @@
                       "name": "Dallas",
                       "network_gbps": 50,
                       "ping_host": "ping.dfw.opwan.io",
-                      "test_ip": "72.244.89.1"
+                      "test_ip": "72.244.89.1",
+                      "tunnel_types": [
+                        "wireguard"
+                      ]
                     }
                   ]
                 },
@@ -1749,7 +3600,7 @@
     },
     "/v1/me": {
       "get": {
-        "description": "The signed-in account, its subscription (null before the first\ncheckout), its tunnel (null before one is created), its addresses and\nthis month's usage. 401 `unauthenticated` when signed out.\n",
+        "description": "The signed-in account, its subscription (null before the first\ncheckout), its first tunnel (`tunnel`: null before one is created, or\nwhen the first tunnel isn't WireGuard), every tunnel (`tunnels`),\nits addresses and where each goes, and this month's usage (the\naccount's, pooled across its tunnels). 401 `unauthenticated` when\nsigned out.\n",
         "operationId": "getMe",
         "responses": {
           "200": {
@@ -1765,10 +3616,22 @@
                   },
                   "addresses": [
                     {
+                      "assigned_at": "2026-10-29T18:05:00Z",
+                      "assignment": {
+                        "kind": "tunnel",
+                        "tunnel": "tun_3f9a1c2b4d5e6f708192"
+                      },
+                      "block": null,
                       "ip": "72.244.89.10",
                       "location": "dfw"
                     },
                     {
+                      "assigned_at": "2026-10-29T18:05:00Z",
+                      "assignment": {
+                        "kind": "tunnel",
+                        "tunnel": "tun_3f9a1c2b4d5e6f708192"
+                      },
+                      "block": null,
                       "ip": "72.244.89.11",
                       "location": "dfw"
                     }
@@ -1815,6 +3678,7 @@
                       "updated_at": "2026-10-29T18:10:30Z"
                     }
                   },
+                  "tunnels": [],
                   "usage": {
                     "allowance_bytes": 4000000000000,
                     "month": "2026-10",
@@ -1865,7 +3729,7 @@
                 "example": {
                   "api_version": "0.7.0",
                   "terms_url": "https://opwan.io/terms/",
-                  "terms_version": "2026-10-30",
+                  "terms_version": "2026-11-01.1",
                   "version": "v0.1.0"
                 },
                 "schema": {
@@ -1950,11 +3814,18 @@
               "application/json": {
                 "example": {
                   "add_ons": {
+                    "block_sizes": [
+                      1,
+                      2,
+                      4,
+                      8
+                    ],
                     "extra_ip_price_cents": 300,
                     "extra_tb_price_cents": 200,
-                    "max_extra_ips": 2,
+                    "max_extra_ips": 7,
                     "max_extra_tb": 20,
                     "max_monthly_tb": 50,
+                    "max_tunnels": 10,
                     "monthly_tb_price_cents": 200,
                     "peak_plan": "plus",
                     "peak_tiers": [
@@ -2398,6 +4269,877 @@
         ]
       }
     },
+    "/v1/tunnels": {
+      "get": {
+        "description": "Every tunnel of the account, by number (docs/tunnels.md): each one is\na billing line with its own plan, type, allowance, usage, status and\nclient configuration. Never a secret.\n",
+        "operationId": "listTunnels",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "max_tunnels": {
+                      "description": "How many tunnels an account may have.",
+                      "type": "integer"
+                    },
+                    "tunnels": {
+                      "items": {
+                        "$ref": "#/components/schemas/TunnelItem"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "tunnels",
+                    "max_tunnels"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The tunnels."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "The account's tunnels.",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "post": {
+        "description": "Adds a tunnel to the live subscription: its plan's price (and its\npeak tier) is prorated and charged to the saved card at once; a\nrefused card creates nothing (402). The tunnel gets one new address\nof the account's location, assigned to it, and its plan's data joins\nthe account's pool. The account's first tunnel (paid at checkout,\nnone made yet) is made on the subscription's own line, without a\ncharge (`plan` and `peak_mbps` are then ignored). For\nL2TP/IPsec the answer carries `credentials`, **shown this once**.\n409 `no_subscription` (subscribe first: the first tunnel is bought\nthrough checkout), `tunnel_limit`, `location_full` (nothing was\ncharged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.\n",
+        "operationId": "createTunnel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "ike": "ikev2",
+                "name": "Office",
+                "plan": "plus",
+                "type": "l2tp_ipsec"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CreateTunnelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelWithCredentials"
+                }
+              }
+            },
+            "description": "The new tunnel, with its credentials for L2TP/IPsec."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentFailed"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "summary": "Add a tunnel (billed at once).",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}": {
+      "delete": {
+        "description": "Removes the tunnel and its billing line (the rest of the period is\ncredited, as Stripe prorates). Extra addresses above 2 per remaining\ntunnel are lowered to that (credited too). The tunnel's addresses\nstay the account's, unassigned, as long as the account's\nentitlement (one per tunnel plus the extra addresses) covers them;\notherwise `release` names the ones to give up (the usual 30-day\nquarantine), and without it the most recently added go, a block\nalways whole (single addresses are not preferred: newest first). 409\n`release_required` (with `release_count`) when `release` names too\nfew. 409 `last_tunnel` (cancel the\nsubscription in Billing instead).\n",
+        "operationId": "deleteTunnel",
+        "parameters": [
+          {
+            "description": "Addresses to release, comma separated.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentFailed"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "summary": "Delete a tunnel (credited).",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "get": {
+        "description": "One of the account's tunnels, as in `GET /v1/tunnels` (never a\nsecret). 404 `not_found` for another account's tunnel.\n",
+        "operationId": "getTunnel",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelItem"
+                }
+              }
+            },
+            "description": "The tunnel."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "One tunnel.",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "patch": {
+        "description": "Sets the tunnel's name (1 to 40 characters, one line), shown in the\ndashboard only. 422 on `name`.\n",
+        "operationId": "renameTunnel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "maxLength": 40,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelItem"
+                }
+              }
+            },
+            "description": "The tunnel."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Rename a tunnel.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}/bgp": {
+      "get": {
+        "description": "Customer BGP over the tunnel (free, off by default): its settings,\nour side's values, the session's state, and the routes received,\naccepted and refused (with the reason). `available` says whether\nthe tunnel's location offers BGP; `full_table_available` whether\nit can send the full table.\n",
+        "operationId": "getTunnelBGP",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "accepted": [
+                    "72.244.89.10/32",
+                    "72.244.89.100/32"
+                  ],
+                  "asn": 4237915604,
+                  "auth": "ao",
+                  "available": true,
+                  "enabled": true,
+                  "export": "default",
+                  "full_table_available": false,
+                  "hold_time": 9,
+                  "last_error": null,
+                  "limit_trips": 0,
+                  "local": "169.254.64.2",
+                  "max_routes": 64,
+                  "our_asn": 403104,
+                  "peer": "169.254.64.3",
+                  "received": 3,
+                  "refused": [
+                    {
+                      "prefix": "192.168.1.0/24",
+                      "reason": "Only single addresses (/32) of your account are accepted."
+                    }
+                  ],
+                  "since": "2026-10-31T16:28:01Z",
+                  "state": "established",
+                  "ttl_security": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelBGP"
+                }
+              }
+            },
+            "description": "The tunnel's BGP."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "read"
+            ]
+          }
+        ],
+        "summary": "The tunnel's BGP session and what it announces.",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "put": {
+        "description": "`enabled` true takes `export` (`default`, the default; or `full`)\nand `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make\nthe key). Turning it on gives the tunnel its session addresses,\nkept while the tunnel exists, and, the first time for the account,\nthe account its AS number: a private 32-bit number we choose\n(`asn` in the reply), unique to the account and the same for all\nits tunnels' sessions. You don't choose it: a request with `asn` is\nrefused (422 on `asn`). 503 `asn_unavailable`: no number could be\ngiven just now (BGP stays off; try again).\nTurning it off ends the session; addresses assigned to BGP stay\nassigned and are dropped while none of the account's tunnels\nannounces them. 409 `bgp_unavailable` (the location doesn't offer\nBGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.\n",
+        "operationId": "putTunnelBGP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TunnelBGPRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "accepted": [
+                    "72.244.89.10/32",
+                    "72.244.89.100/32"
+                  ],
+                  "asn": 4237915604,
+                  "auth": "ao",
+                  "available": true,
+                  "enabled": true,
+                  "export": "default",
+                  "full_table_available": false,
+                  "hold_time": 9,
+                  "last_error": null,
+                  "limit_trips": 0,
+                  "local": "169.254.64.2",
+                  "max_routes": 64,
+                  "our_asn": 403104,
+                  "peer": "169.254.64.3",
+                  "received": 3,
+                  "refused": [
+                    {
+                      "prefix": "192.168.1.0/24",
+                      "reason": "Only single addresses (/32) of your account are accepted."
+                    }
+                  ],
+                  "since": "2026-10-31T16:28:01Z",
+                  "state": "established",
+                  "ttl_security": true
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelBGP"
+                }
+              }
+            },
+            "description": "The tunnel's BGP."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Turn BGP on or off for the tunnel, or change its settings.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}/bgp/config": {
+      "get": {
+        "description": "Our AS number and address, yours, the key if the session has one,\nthe addresses the session may announce, and configuration examples\nfor BIRD, FRR (and UniFi gateways), MikroTik RouterOS 7, Ubiquiti\nEdgeOS and OpenWrt. It holds the key: a session or a write token.\n409 `bgp_off` while BGP is off for the tunnel.\n",
+        "operationId": "getTunnelBGPConfig",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "announce": [
+                    "72.244.89.10/32",
+                    "72.244.89.100/32"
+                  ],
+                  "auth": "none",
+                  "examples": [
+                    {
+                      "config": "protocol bgp opwan { local 169.254.64.3 as 4200000001; neighbor 169.254.64.2 as 403104; ttl security yes; ... }",
+                      "router": "bird",
+                      "title": "BIRD 2"
+                    }
+                  ],
+                  "export": "default",
+                  "hold_time": 9,
+                  "keepalive": 3,
+                  "key": null,
+                  "local": "169.254.64.2",
+                  "our_asn": 403104,
+                  "peer": "169.254.64.3",
+                  "ttl_security": true,
+                  "your_asn": 4237915604
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelBGPConfig"
+                }
+              }
+            },
+            "description": "The values and examples."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "The session's values to paste into your router, with examples.",
+        "tags": [
+          "tunnel"
+        ]
+      },
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ]
+    },
+    "/v1/tunnels/{id}/bgp/key": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "post": {
+        "description": "A new TCP-MD5 password or TCP-AO key for a session with\nauthentication; the old one stops at the next desired state\n(seconds), so the session restarts once your router has the new\none. 409 `bgp_no_auth` when the session has none.\n",
+        "operationId": "resetTunnelBGPKey",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "announce": [
+                    "72.244.89.10/32",
+                    "72.244.89.100/32"
+                  ],
+                  "auth": "none",
+                  "examples": [
+                    {
+                      "config": "protocol bgp opwan { local 169.254.64.3 as 4200000001; neighbor 169.254.64.2 as 403104; ttl security yes; ... }",
+                      "router": "bird",
+                      "title": "BIRD 2"
+                    }
+                  ],
+                  "export": "default",
+                  "hold_time": 9,
+                  "keepalive": 3,
+                  "key": null,
+                  "local": "169.254.64.2",
+                  "our_asn": 403104,
+                  "peer": "169.254.64.3",
+                  "ttl_security": true,
+                  "your_asn": 4237915604
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelBGPConfig"
+                }
+              }
+            },
+            "description": "The session's values to paste, with the new key."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "A new key for the tunnel's BGP session.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}/credentials": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "post": {
+        "description": "A new IPsec pre-shared key and L2TP password; the old ones stop\nworking at the next desired state (seconds). 409 `not_l2tp` for a\nWireGuard tunnel.\n",
+        "operationId": "resetTunnelCredentials",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelWithCredentials"
+                }
+              }
+            },
+            "description": "The tunnel and its new credentials."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "New credentials for an L2TP/IPsec tunnel (shown once).",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}/key": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "put": {
+        "description": "As `PUT /v1/tunnel` (re-keying, bring your own key) for any\nWireGuard tunnel. 409 `not_wireguard` for the other types.\n",
+        "operationId": "putTunnelKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "pubkey": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pubkey"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelItem"
+                }
+              }
+            },
+            "description": "The tunnel."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Set or replace a WireGuard tunnel's public key.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}/plan": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "put": {
+        "description": "This tunnel's plan and peak tier, prorated and charged (or\ncredited) at once. Monthly data and extra addresses are the\naccount's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the\ncurrent one.\n",
+        "operationId": "changeTunnelPlan",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TunnelPlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelItem"
+                }
+              }
+            },
+            "description": "The tunnel."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentFailed"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          }
+        ],
+        "summary": "Change a tunnel's plan, monthly data or peak speed.",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
+    "/v1/tunnels/{id}/type": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/TunnelID"
+        }
+      ],
+      "put": {
+        "description": "Sets the tunnel's type and what that type needs: a WireGuard public\nkey; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed\npublic IPv4 in `endpoint`). The price doesn't change. The old setup\nstops at the next desired state. L2TP/IPsec gets new\n`credentials`, shown this once. 409\n`type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.\n",
+        "operationId": "changeTunnelType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TunnelTypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TunnelWithCredentials"
+                }
+              }
+            },
+            "description": "The tunnel, with credentials for L2TP/IPsec."
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        },
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "bearer": [
+              "write"
+            ]
+          }
+        ],
+        "summary": "Change a tunnel's type (and its setup).",
+        "tags": [
+          "tunnel"
+        ]
+      }
+    },
     "/v1/usage": {
       "get": {
         "description": "Totals and the daily series (UTC days) of a calendar month (default\nthe current one), the month's allowance (plan plus data add-ons) and\nthe tunnel's live state (`live`, null without a tunnel). Months before\nthe account existed answer zeros.\n",
@@ -2491,6 +5233,10 @@
       "name": "meta"
     },
     {
+      "description": "The register-interest form of https://opwan.io: answers, and their confirmation by email (no sign-in).",
+      "name": "interest"
+    },
+    {
       "description": "Sign-in with the op account (opauth) and sign-out.",
       "name": "auth"
     },
@@ -2517,6 +5263,10 @@
     {
       "description": "API tokens for scripts (managed from the dashboard only).",
       "name": "tokens"
+    },
+    {
+      "description": "opdns DNS: lookups from your static addresses to opdns's resolver are filtered with one of your opdns profiles (for op accounts that also have opdns).",
+      "name": "dns"
     }
   ]
 }

@@ -2,7 +2,6 @@ package provider
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -27,10 +26,6 @@ func clientFromProviderData(providerData any, diags *diag.Diagnostics) *client.C
 		return nil
 	}
 	return c
-}
-
-func timeValue(t time.Time) types.String {
-	return types.StringValue(t.Format(time.RFC3339))
 }
 
 func stringListValue(values []string) types.List {

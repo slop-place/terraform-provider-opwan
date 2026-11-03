@@ -45,7 +45,8 @@ func (p *opwanProvider) Metadata(_ context.Context, _ provider.MetadataRequest, 
 
 func (p *opwanProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manage an [opwan](https://opwan.io) tunnel and the inbound firewalls of its addresses.",
+		MarkdownDescription: "Manage [opwan](https://opwan.io) tunnels, their BGP, where addresses are routed, " +
+			"their inbound firewalls, and opdns DNS.",
 		Attributes: map[string]schema.Attribute{
 			"api_token": schema.StringAttribute{
 				MarkdownDescription: "An opwan API token (`opwan_...`) from the dashboard's Settings → API tokens. " +
@@ -115,6 +116,9 @@ func (p *opwanProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewTunnelResource,
 		NewFirewallResource,
 		NewWireguardKeyResource,
+		NewTunnelBGPResource,
+		NewAddressAssignmentResource,
+		NewDNSResource,
 	}
 }
 
@@ -122,6 +126,9 @@ func (p *opwanProvider) DataSources(_ context.Context) []func() datasource.DataS
 	return []func() datasource.DataSource{
 		NewAccountDataSource,
 		NewTunnelDataSource,
+		NewTunnelsDataSource,
+		NewAddressesDataSource,
+		NewDNSDataSource,
 		NewFirewallDataSource,
 		NewUsageDataSource,
 		NewLocationsDataSource,

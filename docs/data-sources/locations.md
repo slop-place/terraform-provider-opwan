@@ -41,6 +41,7 @@ Read-Only:
 - `network_gbps` (Number) Network capacity in Gbps.
 - `ping_host` (String) Host name of the HTTPS latency test (`GET https://<ping_host>/ping`). Null: none.
 - `test_ip` (String) An address that answers ping, to measure latency. Null: none.
+- `tunnel_types` (List of String) The tunnel types offered here now: `wireguard`, `l2tp_ipsec`.
 
 <a id="nestedatt--locations--maintenance"></a>
 ### Nested Schema for `locations.maintenance`

@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 
 	"github.com/slop-place/terraform-provider-opwan/internal/client"
+	"github.com/slop-place/terraform-provider-opwan/internal/opwanapi"
 )
 
 var _ datasource.DataSourceWithConfigure = (*locationsDataSource)(nil)
@@ -30,6 +31,7 @@ type locationModel struct {
 	PingHost    *string           `tfsdk:"ping_host"`
 	Available   bool              `tfsdk:"available"`
 	Maintenance *maintenanceModel `tfsdk:"maintenance"`
+	TunnelTypes []string          `tfsdk:"tunnel_types"`
 }
 
 type maintenanceModel struct {
@@ -70,7 +72,8 @@ func (d *locationsDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 						"ping_host": computedString(
 							"Host name of the HTTPS latency test (`GET https://<ping_host>/ping`). Null: none.",
 						),
-						"available": computedBool("Has a free address for a new customer now."),
+						"available":    computedBool("Has a free address for a new customer now."),
+						"tunnel_types": computedStringList("The tunnel types offered here now: `wireguard`, `l2tp_ipsec`."),
 						"maintenance": schema.SingleNestedAttribute{
 							Computed:            true,
 							MarkdownDescription: "The maintenance window in progress, else the next one. Null: none ahead.",
@@ -114,6 +117,7 @@ func (d *locationsDataSource) Read(ctx context.Context, _ datasource.ReadRequest
 			TestIP:      location.TestIp,
 			PingHost:    location.PingHost,
 			Available:   location.Available,
+			TunnelTypes: tunnelTypeStrings(location.TunnelTypes),
 		}
 		if m := location.Maintenance; m != nil {
 			locations[i].Maintenance = &maintenanceModel{
@@ -125,4 +129,12 @@ func (d *locationsDataSource) Read(ctx context.Context, _ datasource.ReadRequest
 		}
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, locationsModel{Locations: locations})...)
+}
+
+func tunnelTypeStrings(types []opwanapi.TunnelType) []string {
+	values := make([]string, len(types))
+	for i, t := range types {
+		values[i] = string(t)
+	}
+	return values
 }

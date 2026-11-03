@@ -112,3 +112,137 @@ func (c *Client) GetMeta(ctx context.Context) (*opwanapi.Meta, error) {
 	}
 	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
 }
+
+// TunnelList is the account's tunnels and how many it may have.
+type TunnelList struct {
+	Tunnels    []opwanapi.TunnelItem
+	MaxTunnels int
+}
+
+// ListTunnels returns the account's tunnels, by number.
+func (c *Client) ListTunnels(ctx context.Context) (*TunnelList, error) {
+	resp, err := c.api.ListTunnelsWithResponse(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("list tunnels: %w", err)
+	}
+	if err := checkResponse(resp.HTTPResponse, resp.Body); err != nil {
+		return nil, err
+	}
+	return &TunnelList{Tunnels: resp.JSON200.Tunnels, MaxTunnels: resp.JSON200.MaxTunnels}, nil
+}
+
+// GetTunnel returns one of the account's tunnels.
+func (c *Client) GetTunnel(ctx context.Context, id string) (*opwanapi.TunnelItem, error) {
+	resp, err := c.api.GetTunnelWithResponse(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("read tunnel %s: %w", id, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// RenameTunnel sets a tunnel's name.
+func (c *Client) RenameTunnel(ctx context.Context, id, name string) (*opwanapi.TunnelItem, error) {
+	resp, err := c.api.RenameTunnelWithResponse(ctx, id, opwanapi.RenameTunnelJSONRequestBody{Name: name})
+	if err != nil {
+		return nil, fmt.Errorf("rename tunnel %s: %w", id, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// PutTunnelKey sets or replaces a WireGuard tunnel's public key.
+func (c *Client) PutTunnelKey(ctx context.Context, id, pubkey string) (*opwanapi.TunnelItem, error) {
+	resp, err := c.api.PutTunnelKeyWithResponse(ctx, id, opwanapi.PutTunnelKeyJSONRequestBody{Pubkey: pubkey})
+	if err != nil {
+		return nil, fmt.Errorf("set the key of tunnel %s: %w", id, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// GetTunnelBGP returns a tunnel's BGP session.
+func (c *Client) GetTunnelBGP(ctx context.Context, id string) (*opwanapi.TunnelBGP, error) {
+	resp, err := c.api.GetTunnelBGPWithResponse(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("read the BGP of tunnel %s: %w", id, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// PutTunnelBGP turns a tunnel's BGP on or off, or changes its settings.
+func (c *Client) PutTunnelBGP(
+	ctx context.Context,
+	id string,
+	req opwanapi.TunnelBGPRequest,
+) (*opwanapi.TunnelBGP, error) {
+	resp, err := c.api.PutTunnelBGPWithResponse(ctx, id, req)
+	if err != nil {
+		return nil, fmt.Errorf("write the BGP of tunnel %s: %w", id, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// GetTunnelBGPConfig returns the values a router needs for a tunnel's BGP session, its key included.
+func (c *Client) GetTunnelBGPConfig(ctx context.Context, id string) (*opwanapi.TunnelBGPConfig, error) {
+	resp, err := c.api.GetTunnelBGPConfigWithResponse(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("read the BGP config of tunnel %s: %w", id, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// AddressList is the account's addresses and how many it pays for.
+type AddressList struct {
+	Addresses   []opwanapi.Address
+	Entitlement int
+}
+
+// ListAddresses returns the account's addresses, lowest first.
+func (c *Client) ListAddresses(ctx context.Context) (*AddressList, error) {
+	resp, err := c.api.ListAddressesWithResponse(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("list addresses: %w", err)
+	}
+	if err := checkResponse(resp.HTTPResponse, resp.Body); err != nil {
+		return nil, err
+	}
+	return &AddressList{Addresses: resp.JSON200.Addresses, Entitlement: resp.JSON200.Entitlement}, nil
+}
+
+// AssignAddress routes an address down a tunnel, to BGP, or nowhere.
+func (c *Client) AssignAddress(
+	ctx context.Context,
+	ip string,
+	req opwanapi.AssignmentRequest,
+) (*opwanapi.Address, error) {
+	resp, err := c.api.AssignAddressWithResponse(ctx, ip, req)
+	if err != nil {
+		return nil, fmt.Errorf("assign %s: %w", ip, err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// GetDNS returns the opdns DNS opt-in.
+func (c *Client) GetDNS(ctx context.Context) (*opwanapi.DNSSettings, error) {
+	resp, err := c.api.GetDNSWithResponse(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("read DNS: %w", err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// PutDNS turns opdns DNS on with profileID.
+func (c *Client) PutDNS(ctx context.Context, profileID string) (*opwanapi.DNSSettings, error) {
+	resp, err := c.api.PutDNSWithResponse(ctx, opwanapi.PutDNSJSONRequestBody{ProfileId: profileID})
+	if err != nil {
+		return nil, fmt.Errorf("write DNS: %w", err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}
+
+// DeleteDNS turns opdns DNS off.
+func (c *Client) DeleteDNS(ctx context.Context) (*opwanapi.DNSSettings, error) {
+	resp, err := c.api.DeleteDNSWithResponse(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("turn DNS off: %w", err)
+	}
+	return resp.JSON200, checkResponse(resp.HTTPResponse, resp.Body)
+}

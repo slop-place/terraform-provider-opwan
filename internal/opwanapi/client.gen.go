@@ -39,6 +39,117 @@ func (e AccountStatus) Valid() bool {
 	}
 }
 
+// Defines values for AssignmentKind.
+const (
+	AssignmentKindBgp        AssignmentKind = "bgp"
+	AssignmentKindTunnel     AssignmentKind = "tunnel"
+	AssignmentKindUnassigned AssignmentKind = "unassigned"
+)
+
+// Valid indicates whether the value is a known member of the AssignmentKind enum.
+func (e AssignmentKind) Valid() bool {
+	switch e {
+	case AssignmentKindBgp:
+		return true
+	case AssignmentKindTunnel:
+		return true
+	case AssignmentKindUnassigned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for AssignmentRequestKind.
+const (
+	AssignmentRequestKindBgp        AssignmentRequestKind = "bgp"
+	AssignmentRequestKindUnassigned AssignmentRequestKind = "unassigned"
+)
+
+// Valid indicates whether the value is a known member of the AssignmentRequestKind enum.
+func (e AssignmentRequestKind) Valid() bool {
+	switch e {
+	case AssignmentRequestKindBgp:
+		return true
+	case AssignmentRequestKindUnassigned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BGPState.
+const (
+	BGPStateConnecting  BGPState = "connecting"
+	BGPStateDisabled    BGPState = "disabled"
+	BGPStateDown        BGPState = "down"
+	BGPStateEstablished BGPState = "established"
+	BGPStateLessThannil BGPState = "<nil>"
+	BGPStateLimit       BGPState = "limit"
+)
+
+// Valid indicates whether the value is a known member of the BGPState enum.
+func (e BGPState) Valid() bool {
+	switch e {
+	case BGPStateConnecting:
+		return true
+	case BGPStateDisabled:
+		return true
+	case BGPStateDown:
+		return true
+	case BGPStateEstablished:
+		return true
+	case BGPStateLessThannil:
+		return true
+	case BGPStateLimit:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BuyAddressesRequestKind.
+const (
+	BuyAddressesRequestKindBgp        BuyAddressesRequestKind = "bgp"
+	BuyAddressesRequestKindUnassigned BuyAddressesRequestKind = "unassigned"
+)
+
+// Valid indicates whether the value is a known member of the BuyAddressesRequestKind enum.
+func (e BuyAddressesRequestKind) Valid() bool {
+	switch e {
+	case BuyAddressesRequestKindBgp:
+		return true
+	case BuyAddressesRequestKindUnassigned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for BuyAddressesRequestSize.
+const (
+	N1 BuyAddressesRequestSize = 1
+	N2 BuyAddressesRequestSize = 2
+	N4 BuyAddressesRequestSize = 4
+	N8 BuyAddressesRequestSize = 8
+)
+
+// Valid indicates whether the value is a known member of the BuyAddressesRequestSize enum.
+func (e BuyAddressesRequestSize) Valid() bool {
+	switch e {
+	case N1:
+		return true
+	case N2:
+		return true
+	case N4:
+		return true
+	case N8:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CatalogueCurrency.
 const (
 	Usd CatalogueCurrency = "usd"
@@ -48,6 +159,48 @@ const (
 func (e CatalogueCurrency) Valid() bool {
 	switch e {
 	case Usd:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateTunnelRequestIke.
+const (
+	CreateTunnelRequestIkeIkev1 CreateTunnelRequestIke = "ikev1"
+	CreateTunnelRequestIkeIkev2 CreateTunnelRequestIke = "ikev2"
+)
+
+// Valid indicates whether the value is a known member of the CreateTunnelRequestIke enum.
+func (e CreateTunnelRequestIke) Valid() bool {
+	switch e {
+	case CreateTunnelRequestIkeIkev1:
+		return true
+	case CreateTunnelRequestIkeIkev2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for DNSSettingsState.
+const (
+	Error   DNSSettingsState = "error"
+	Linked  DNSSettingsState = "linked"
+	Off     DNSSettingsState = "off"
+	Pending DNSSettingsState = "pending"
+)
+
+// Valid indicates whether the value is a known member of the DNSSettingsState enum.
+func (e DNSSettingsState) Valid() bool {
+	switch e {
+	case Error:
+		return true
+	case Linked:
+		return true
+	case Off:
+		return true
+	case Pending:
 		return true
 	default:
 		return false
@@ -161,29 +314,57 @@ func (e PlanID) Valid() bool {
 
 // Defines values for ProblemCode.
 const (
-	ProblemCodeAccountClosed        ProblemCode = "account_closed"
-	ProblemCodeAlreadySubscribed    ProblemCode = "already_subscribed"
-	ProblemCodeBadRequest           ProblemCode = "bad_request"
-	ProblemCodeBillingUnavailable   ProblemCode = "billing_unavailable"
-	ProblemCodeBodyTooLarge         ProblemCode = "body_too_large"
-	ProblemCodeCsrfRejected         ProblemCode = "csrf_rejected"
-	ProblemCodeInsufficientScope    ProblemCode = "insufficient_scope"
-	ProblemCodeInternal             ProblemCode = "internal"
-	ProblemCodeLocationLocked       ProblemCode = "location_locked"
-	ProblemCodeLocationUnavailable  ProblemCode = "location_unavailable"
-	ProblemCodeMethodNotAllowed     ProblemCode = "method_not_allowed"
-	ProblemCodeNoAddressesFree      ProblemCode = "no_addresses_free"
-	ProblemCodeNoSubscription       ProblemCode = "no_subscription"
-	ProblemCodeNotFound             ProblemCode = "not_found"
-	ProblemCodeOidcUnavailable      ProblemCode = "oidc_unavailable"
-	ProblemCodePaymentFailed        ProblemCode = "payment_failed"
-	ProblemCodePubkeyInUse          ProblemCode = "pubkey_in_use"
-	ProblemCodeRateLimited          ProblemCode = "rate_limited"
-	ProblemCodeSessionRequired      ProblemCode = "session_required"
-	ProblemCodeSubscriptionInactive ProblemCode = "subscription_inactive"
-	ProblemCodeTooManyTokens        ProblemCode = "too_many_tokens"
-	ProblemCodeUnauthenticated      ProblemCode = "unauthenticated"
-	ProblemCodeValidationFailed     ProblemCode = "validation_failed"
+	ProblemCodeAccountClosed           ProblemCode = "account_closed"
+	ProblemCodeAlreadySubscribed       ProblemCode = "already_subscribed"
+	ProblemCodeAsnUnavailable          ProblemCode = "asn_unavailable"
+	ProblemCodeBadRequest              ProblemCode = "bad_request"
+	ProblemCodeBelowIncluded           ProblemCode = "below_included"
+	ProblemCodeBgpNoAuth               ProblemCode = "bgp_no_auth"
+	ProblemCodeBgpOff                  ProblemCode = "bgp_off"
+	ProblemCodeBgpUnavailable          ProblemCode = "bgp_unavailable"
+	ProblemCodeBillingUnavailable      ProblemCode = "billing_unavailable"
+	ProblemCodeBodyTooLarge            ProblemCode = "body_too_large"
+	ProblemCodeCredentialsUnavailable  ProblemCode = "credentials_unavailable"
+	ProblemCodeCsrfRejected            ProblemCode = "csrf_rejected"
+	ProblemCodeDnsUnavailable          ProblemCode = "dns_unavailable"
+	ProblemCodeEmailFailed             ProblemCode = "email_failed"
+	ProblemCodeEndpointInUse           ProblemCode = "endpoint_in_use"
+	ProblemCodeFullTableFull           ProblemCode = "full_table_full"
+	ProblemCodeFullTableUnavailable    ProblemCode = "full_table_unavailable"
+	ProblemCodeInsufficientScope       ProblemCode = "insufficient_scope"
+	ProblemCodeInterestUnavailable     ProblemCode = "interest_unavailable"
+	ProblemCodeInternal                ProblemCode = "internal"
+	ProblemCodeLastTunnel              ProblemCode = "last_tunnel"
+	ProblemCodeLinkExpired             ProblemCode = "link_expired"
+	ProblemCodeLinkIncomplete          ProblemCode = "link_incomplete"
+	ProblemCodeLinkInvalid             ProblemCode = "link_invalid"
+	ProblemCodeLocationFull            ProblemCode = "location_full"
+	ProblemCodeLocationLocked          ProblemCode = "location_locked"
+	ProblemCodeLocationUnavailable     ProblemCode = "location_unavailable"
+	ProblemCodeMethodNotAllowed        ProblemCode = "method_not_allowed"
+	ProblemCodeNoAddressesFree         ProblemCode = "no_addresses_free"
+	ProblemCodeNoOpdnsAccount          ProblemCode = "no_opdns_account"
+	ProblemCodeNoSubscription          ProblemCode = "no_subscription"
+	ProblemCodeNotFound                ProblemCode = "not_found"
+	ProblemCodeNotL2tp                 ProblemCode = "not_l2tp"
+	ProblemCodeNotWireguard            ProblemCode = "not_wireguard"
+	ProblemCodeOidcUnavailable         ProblemCode = "oidc_unavailable"
+	ProblemCodeOpdnsUnavailable        ProblemCode = "opdns_unavailable"
+	ProblemCodeOriginRefused           ProblemCode = "origin_refused"
+	ProblemCodePaymentFailed           ProblemCode = "payment_failed"
+	ProblemCodePubkeyInUse             ProblemCode = "pubkey_in_use"
+	ProblemCodeRateLimited             ProblemCode = "rate_limited"
+	ProblemCodeReleaseRequired         ProblemCode = "release_required"
+	ProblemCodeSessionRequired         ProblemCode = "session_required"
+	ProblemCodeSubscriptionInactive    ProblemCode = "subscription_inactive"
+	ProblemCodeTooManyTokens           ProblemCode = "too_many_tokens"
+	ProblemCodeTunnelLimit             ProblemCode = "tunnel_limit"
+	ProblemCodeTypeUnavailable         ProblemCode = "type_unavailable"
+	ProblemCodeUnauthenticated         ProblemCode = "unauthenticated"
+	ProblemCodeUnsupportedMediaType    ProblemCode = "unsupported_media_type"
+	ProblemCodeValidationFailed        ProblemCode = "validation_failed"
+	ProblemCodeVerificationFailed      ProblemCode = "verification_failed"
+	ProblemCodeVerificationUnavailable ProblemCode = "verification_unavailable"
 )
 
 // Valid indicates whether the value is a known member of the ProblemCode enum.
@@ -193,17 +374,51 @@ func (e ProblemCode) Valid() bool {
 		return true
 	case ProblemCodeAlreadySubscribed:
 		return true
+	case ProblemCodeAsnUnavailable:
+		return true
 	case ProblemCodeBadRequest:
+		return true
+	case ProblemCodeBelowIncluded:
+		return true
+	case ProblemCodeBgpNoAuth:
+		return true
+	case ProblemCodeBgpOff:
+		return true
+	case ProblemCodeBgpUnavailable:
 		return true
 	case ProblemCodeBillingUnavailable:
 		return true
 	case ProblemCodeBodyTooLarge:
 		return true
+	case ProblemCodeCredentialsUnavailable:
+		return true
 	case ProblemCodeCsrfRejected:
+		return true
+	case ProblemCodeDnsUnavailable:
+		return true
+	case ProblemCodeEmailFailed:
+		return true
+	case ProblemCodeEndpointInUse:
+		return true
+	case ProblemCodeFullTableFull:
+		return true
+	case ProblemCodeFullTableUnavailable:
 		return true
 	case ProblemCodeInsufficientScope:
 		return true
+	case ProblemCodeInterestUnavailable:
+		return true
 	case ProblemCodeInternal:
+		return true
+	case ProblemCodeLastTunnel:
+		return true
+	case ProblemCodeLinkExpired:
+		return true
+	case ProblemCodeLinkIncomplete:
+		return true
+	case ProblemCodeLinkInvalid:
+		return true
+	case ProblemCodeLocationFull:
 		return true
 	case ProblemCodeLocationLocked:
 		return true
@@ -213,11 +428,21 @@ func (e ProblemCode) Valid() bool {
 		return true
 	case ProblemCodeNoAddressesFree:
 		return true
+	case ProblemCodeNoOpdnsAccount:
+		return true
 	case ProblemCodeNoSubscription:
 		return true
 	case ProblemCodeNotFound:
 		return true
+	case ProblemCodeNotL2tp:
+		return true
+	case ProblemCodeNotWireguard:
+		return true
 	case ProblemCodeOidcUnavailable:
+		return true
+	case ProblemCodeOpdnsUnavailable:
+		return true
+	case ProblemCodeOriginRefused:
 		return true
 	case ProblemCodePaymentFailed:
 		return true
@@ -225,15 +450,27 @@ func (e ProblemCode) Valid() bool {
 		return true
 	case ProblemCodeRateLimited:
 		return true
+	case ProblemCodeReleaseRequired:
+		return true
 	case ProblemCodeSessionRequired:
 		return true
 	case ProblemCodeSubscriptionInactive:
 		return true
 	case ProblemCodeTooManyTokens:
 		return true
+	case ProblemCodeTunnelLimit:
+		return true
+	case ProblemCodeTypeUnavailable:
+		return true
 	case ProblemCodeUnauthenticated:
 		return true
+	case ProblemCodeUnsupportedMediaType:
+		return true
 	case ProblemCodeValidationFailed:
+		return true
+	case ProblemCodeVerificationFailed:
+		return true
+	case ProblemCodeVerificationUnavailable:
 		return true
 	default:
 		return false
@@ -278,22 +515,22 @@ func (e SubscriptionStatus) Valid() bool {
 
 // Defines values for Throttled.
 const (
-	Allowance Throttled = "allowance"
-	Burst     Throttled = "burst"
-	None      Throttled = "none"
-	Pacing    Throttled = "pacing"
+	ThrottledAllowance Throttled = "allowance"
+	ThrottledBurst     Throttled = "burst"
+	ThrottledNone      Throttled = "none"
+	ThrottledPacing    Throttled = "pacing"
 )
 
 // Valid indicates whether the value is a known member of the Throttled enum.
 func (e Throttled) Valid() bool {
 	switch e {
-	case Allowance:
+	case ThrottledAllowance:
 		return true
-	case Burst:
+	case ThrottledBurst:
 		return true
-	case None:
+	case ThrottledNone:
 		return true
-	case Pacing:
+	case ThrottledPacing:
 		return true
 	default:
 		return false
@@ -336,6 +573,285 @@ func (e TunnelState) Valid() bool {
 	case TunnelStatePendingPayment:
 		return true
 	case TunnelStateSuspended:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPAuth.
+const (
+	TunnelBGPAuthAo   TunnelBGPAuth = "ao"
+	TunnelBGPAuthMd5  TunnelBGPAuth = "md5"
+	TunnelBGPAuthNone TunnelBGPAuth = "none"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPAuth enum.
+func (e TunnelBGPAuth) Valid() bool {
+	switch e {
+	case TunnelBGPAuthAo:
+		return true
+	case TunnelBGPAuthMd5:
+		return true
+	case TunnelBGPAuthNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPExport.
+const (
+	TunnelBGPExportDefault     TunnelBGPExport = "default"
+	TunnelBGPExportFull        TunnelBGPExport = "full"
+	TunnelBGPExportLessThannil TunnelBGPExport = "<nil>"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPExport enum.
+func (e TunnelBGPExport) Valid() bool {
+	switch e {
+	case TunnelBGPExportDefault:
+		return true
+	case TunnelBGPExportFull:
+		return true
+	case TunnelBGPExportLessThannil:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPConfigAuth.
+const (
+	TunnelBGPConfigAuthAo   TunnelBGPConfigAuth = "ao"
+	TunnelBGPConfigAuthMd5  TunnelBGPConfigAuth = "md5"
+	TunnelBGPConfigAuthNone TunnelBGPConfigAuth = "none"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPConfigAuth enum.
+func (e TunnelBGPConfigAuth) Valid() bool {
+	switch e {
+	case TunnelBGPConfigAuthAo:
+		return true
+	case TunnelBGPConfigAuthMd5:
+		return true
+	case TunnelBGPConfigAuthNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPConfigExamplesRouter.
+const (
+	Bird     TunnelBGPConfigExamplesRouter = "bird"
+	Edgeos   TunnelBGPConfigExamplesRouter = "edgeos"
+	Frr      TunnelBGPConfigExamplesRouter = "frr"
+	Mikrotik TunnelBGPConfigExamplesRouter = "mikrotik"
+	Openwrt  TunnelBGPConfigExamplesRouter = "openwrt"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPConfigExamplesRouter enum.
+func (e TunnelBGPConfigExamplesRouter) Valid() bool {
+	switch e {
+	case Bird:
+		return true
+	case Edgeos:
+		return true
+	case Frr:
+		return true
+	case Mikrotik:
+		return true
+	case Openwrt:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPConfigExport.
+const (
+	TunnelBGPConfigExportDefault TunnelBGPConfigExport = "default"
+	TunnelBGPConfigExportFull    TunnelBGPConfigExport = "full"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPConfigExport enum.
+func (e TunnelBGPConfigExport) Valid() bool {
+	switch e {
+	case TunnelBGPConfigExportDefault:
+		return true
+	case TunnelBGPConfigExportFull:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPRequestAuth.
+const (
+	TunnelBGPRequestAuthAo   TunnelBGPRequestAuth = "ao"
+	TunnelBGPRequestAuthMd5  TunnelBGPRequestAuth = "md5"
+	TunnelBGPRequestAuthNone TunnelBGPRequestAuth = "none"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPRequestAuth enum.
+func (e TunnelBGPRequestAuth) Valid() bool {
+	switch e {
+	case TunnelBGPRequestAuthAo:
+		return true
+	case TunnelBGPRequestAuthMd5:
+		return true
+	case TunnelBGPRequestAuthNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelBGPRequestExport.
+const (
+	TunnelBGPRequestExportDefault TunnelBGPRequestExport = "default"
+	TunnelBGPRequestExportFull    TunnelBGPRequestExport = "full"
+)
+
+// Valid indicates whether the value is a known member of the TunnelBGPRequestExport enum.
+func (e TunnelBGPRequestExport) Valid() bool {
+	switch e {
+	case TunnelBGPRequestExportDefault:
+		return true
+	case TunnelBGPRequestExportFull:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelItemIke.
+const (
+	TunnelItemIkeIkev1       TunnelItemIke = "ikev1"
+	TunnelItemIkeIkev2       TunnelItemIke = "ikev2"
+	TunnelItemIkeLessThannil TunnelItemIke = "<nil>"
+)
+
+// Valid indicates whether the value is a known member of the TunnelItemIke enum.
+func (e TunnelItemIke) Valid() bool {
+	switch e {
+	case TunnelItemIkeIkev1:
+		return true
+	case TunnelItemIkeIkev2:
+		return true
+	case TunnelItemIkeLessThannil:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelItemState.
+const (
+	TunnelItemStateActive         TunnelItemState = "active"
+	TunnelItemStateCanceled       TunnelItemState = "canceled"
+	TunnelItemStatePendingPayment TunnelItemState = "pending_payment"
+	TunnelItemStateSetupRequired  TunnelItemState = "setup_required"
+	TunnelItemStateSuspended      TunnelItemState = "suspended"
+)
+
+// Valid indicates whether the value is a known member of the TunnelItemState enum.
+func (e TunnelItemState) Valid() bool {
+	switch e {
+	case TunnelItemStateActive:
+		return true
+	case TunnelItemStateCanceled:
+		return true
+	case TunnelItemStatePendingPayment:
+		return true
+	case TunnelItemStateSetupRequired:
+		return true
+	case TunnelItemStateSuspended:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelType.
+const (
+	L2tpIpsec TunnelType = "l2tp_ipsec"
+	Wireguard TunnelType = "wireguard"
+)
+
+// Valid indicates whether the value is a known member of the TunnelType enum.
+func (e TunnelType) Valid() bool {
+	switch e {
+	case L2tpIpsec:
+		return true
+	case Wireguard:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelTypeRequestIke.
+const (
+	TunnelTypeRequestIkeIkev1 TunnelTypeRequestIke = "ikev1"
+	TunnelTypeRequestIkeIkev2 TunnelTypeRequestIke = "ikev2"
+)
+
+// Valid indicates whether the value is a known member of the TunnelTypeRequestIke enum.
+func (e TunnelTypeRequestIke) Valid() bool {
+	switch e {
+	case TunnelTypeRequestIkeIkev1:
+		return true
+	case TunnelTypeRequestIkeIkev2:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelWithCredentialsIke.
+const (
+	TunnelWithCredentialsIkeIkev1       TunnelWithCredentialsIke = "ikev1"
+	TunnelWithCredentialsIkeIkev2       TunnelWithCredentialsIke = "ikev2"
+	TunnelWithCredentialsIkeLessThannil TunnelWithCredentialsIke = "<nil>"
+)
+
+// Valid indicates whether the value is a known member of the TunnelWithCredentialsIke enum.
+func (e TunnelWithCredentialsIke) Valid() bool {
+	switch e {
+	case TunnelWithCredentialsIkeIkev1:
+		return true
+	case TunnelWithCredentialsIkeIkev2:
+		return true
+	case TunnelWithCredentialsIkeLessThannil:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TunnelWithCredentialsState.
+const (
+	TunnelWithCredentialsStateActive         TunnelWithCredentialsState = "active"
+	TunnelWithCredentialsStateCanceled       TunnelWithCredentialsState = "canceled"
+	TunnelWithCredentialsStatePendingPayment TunnelWithCredentialsState = "pending_payment"
+	TunnelWithCredentialsStateSetupRequired  TunnelWithCredentialsState = "setup_required"
+	TunnelWithCredentialsStateSuspended      TunnelWithCredentialsState = "suspended"
+)
+
+// Valid indicates whether the value is a known member of the TunnelWithCredentialsState enum.
+func (e TunnelWithCredentialsState) Valid() bool {
+	switch e {
+	case TunnelWithCredentialsStateActive:
+		return true
+	case TunnelWithCredentialsStateCanceled:
+		return true
+	case TunnelWithCredentialsStatePendingPayment:
+		return true
+	case TunnelWithCredentialsStateSetupRequired:
+		return true
+	case TunnelWithCredentialsStateSuspended:
 		return true
 	default:
 		return false
@@ -391,25 +907,83 @@ type AccountStatus string
 
 // Address defines model for Address.
 type Address struct {
-	Ip       string `json:"ip"`
-	Location string `json:"location"`
+	// AssignedAt When the account got it ("most recently added" is the latest).
+	AssignedAt *time.Time `json:"assigned_at"`
+	Assignment Assignment `json:"assignment"`
+
+	// Block The block it was bought in (`72.244.89.16/30`), null for a single address. A block is routed and released whole.
+	Block    *string `json:"block"`
+	Ip       string  `json:"ip"`
+	Location string  `json:"location"`
 }
+
+// Assignment defines model for Assignment.
+type Assignment struct {
+	Kind AssignmentKind `json:"kind"`
+
+	// Tunnel The tunnel it's routed down (`tunnel`), or for `bgp` the one announcing it now (null when none).
+	Tunnel *string `json:"tunnel"`
+}
+
+// AssignmentKind defines model for Assignment.Kind.
+type AssignmentKind string
+
+// AssignmentRequest defines model for AssignmentRequest.
+type AssignmentRequest struct {
+	Kind   *AssignmentRequestKind `json:"kind,omitempty"`
+	Tunnel *string                `json:"tunnel,omitempty"`
+}
+
+// AssignmentRequestKind defines model for AssignmentRequest.Kind.
+type AssignmentRequestKind string
+
+// BGPState The session as the node last saw it: `established`, `connecting`
+// (we're trying; your side isn't answering yet), `down`, `limit`
+// (your router sent more than 64 routes: the session was closed and
+// is retried after a wait), `disabled` (the tunnel is suspended);
+// null while BGP is off or before the node's first report.
+type BGPState string
+
+// BuyAddressesRequest defines model for BuyAddressesRequest.
+type BuyAddressesRequest struct {
+	Kind *BuyAddressesRequestKind `json:"kind,omitempty"`
+
+	// Size Addresses in the block (/32, /31, /30, /29).
+	Size BuyAddressesRequestSize `json:"size"`
+
+	// Tunnel The tunnel the block goes down (default none).
+	Tunnel *string `json:"tunnel,omitempty"`
+}
+
+// BuyAddressesRequestKind defines model for BuyAddressesRequest.Kind.
+type BuyAddressesRequestKind string
+
+// BuyAddressesRequestSize Addresses in the block (/32, /31, /30, /29).
+type BuyAddressesRequestSize int
 
 // Catalogue defines model for Catalogue.
 type Catalogue struct {
 	AddOns struct {
+		// BlockSizes The block sizes an account may buy at once (1, 2, 4, 8).
+		BlockSizes []int `json:"block_sizes"`
+
 		// ExtraIpPriceCents Per extra address per month.
 		ExtraIpPriceCents int `json:"extra_ip_price_cents"`
 
 		// ExtraTbPriceCents Per TB, one-time, added to the current month.
 		ExtraTbPriceCents int `json:"extra_tb_price_cents"`
-		MaxExtraIps       int `json:"max_extra_ips"`
+
+		// MaxExtraIps Extra addresses at checkout. Afterwards addresses are bought in blocks (`block_sizes`), with no cap but the location's free space.
+		MaxExtraIps int `json:"max_extra_ips"`
 
 		// MaxExtraTb The most TB one data add-on purchase can buy.
 		MaxExtraTb int `json:"max_extra_tb"`
 
 		// MaxMonthlyTb The most monthly data a subscription can have, TB.
 		MaxMonthlyTb int `json:"max_monthly_tb"`
+
+		// MaxTunnels Tunnels per account. Each is billed at its plan's price; every type costs the same.
+		MaxTunnels int `json:"max_tunnels"`
 
 		// MonthlyTbPriceCents Monthly data, per TB per month, added to every month's allowance.
 		MonthlyTbPriceCents int    `json:"monthly_tb_price_cents"`
@@ -429,7 +1003,9 @@ type CatalogueCurrency string
 type CheckoutRequest struct {
 	// AcceptTermsVersion The terms of service version the customer accepted by continuing (`GET /v1/meta`, `terms_version`).
 	AcceptTermsVersion string `json:"accept_terms_version"`
-	ExtraIps           *int   `json:"extra_ips,omitempty"`
+
+	// ExtraIps Extra addresses at checkout (more afterwards, in blocks, on the Addresses page).
+	ExtraIps *int `json:"extra_ips,omitempty"`
 
 	// Location The location chosen in the location step (an id of `GET /v1/locations`); the addresses come from there.
 	Location *string `json:"location,omitempty"`
@@ -451,6 +1027,60 @@ type CreateTokenRequest struct {
 	// Scope `read`: the GET operations that allow tokens. `write`: those and the writes that allow tokens.
 	Scope TokenScope `json:"scope"`
 }
+
+// CreateTunnelRequest defines model for CreateTunnelRequest.
+type CreateTunnelRequest struct {
+	Endpoint *string                 `json:"endpoint,omitempty"`
+	Ike      *CreateTunnelRequestIke `json:"ike,omitempty"`
+	Name     *string                 `json:"name,omitempty"`
+
+	// PeakMbps The speed ceiling, Mbps (`GET /v1/plans`, `add_ons.peak_tiers`): on Plus 1000 (its own) or a peak tier, on Base 500 only. At checkout absent is the plan's own; on a change absent keeps Plus's tier (Base has none).
+	PeakMbps *PeakMbps `json:"peak_mbps,omitempty"`
+	Plan     PlanID    `json:"plan"`
+	Pubkey   *string   `json:"pubkey,omitempty"`
+
+	// Type `wireguard` (encrypted; works behind any NAT) or `l2tp_ipsec`
+	// (encrypted; IKEv2 works behind any NAT, IKEv1 needs a fixed public
+	// address). Both are encrypted.
+	Type TunnelType `json:"type"`
+}
+
+// CreateTunnelRequestIke defines model for CreateTunnelRequest.Ike.
+type CreateTunnelRequestIke string
+
+// DNSProfile defines model for DNSProfile.
+type DNSProfile struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// DNSSettings The opdns DNS opt-in (`/v1/dns`).
+type DNSSettings struct {
+	// Available This server offers opdns DNS.
+	Available bool `json:"available"`
+
+	// Error The last problem, in plain words (what happened, whose doing, what to do).
+	Error *string `json:"error"`
+
+	// LinkedIps The addresses opdns has linked to the profile now.
+	LinkedIps []string `json:"linked_ips"`
+
+	// OpdnsAccount Your op account has an opdns account; null when opdns couldn't be asked just now.
+	OpdnsAccount *bool `json:"opdns_account"`
+
+	// Profile The profile picked; null when opdns DNS is off.
+	Profile *DNSProfile `json:"profile"`
+
+	// Profiles Your opdns profiles to pick from (empty without an opdns account).
+	Profiles []DNSProfile `json:"profiles"`
+
+	// Resolver opdns's resolver; with opdns DNS on, lookups from your static addresses to it are filtered with your profile.
+	Resolver string           `json:"resolver"`
+	State    DNSSettingsState `json:"state"`
+}
+
+// DNSSettingsState defines model for DNSSettings.State.
+type DNSSettingsState string
 
 // DataAddonRequest defines model for DataAddonRequest.
 type DataAddonRequest struct {
@@ -520,6 +1150,9 @@ type Location struct {
 
 	// TestIp An address of the location that answers ping from anywhere (rate limited), to measure latency before buying; besides `ping_host`'s HTTPS endpoint nothing else answers on it.
 	TestIp *string `json:"test_ip"`
+
+	// TunnelTypes The tunnel types offered here now.
+	TunnelTypes []TunnelType `json:"tunnel_types"`
 }
 
 // Me defines model for Me.
@@ -528,7 +1161,10 @@ type Me struct {
 	Addresses    []Address     `json:"addresses"`
 	Subscription *Subscription `json:"subscription"`
 	Tunnel       *Tunnel       `json:"tunnel"`
-	Usage        MonthUsage    `json:"usage"`
+
+	// Tunnels Every tunnel (`tunnel` is the first, kept for older clients).
+	Tunnels []TunnelItem `json:"tunnels"`
+	Usage   MonthUsage   `json:"usage"`
 }
 
 // Meta defines model for Meta.
@@ -592,14 +1228,24 @@ type Plan struct {
 
 // PlanChange defines model for PlanChange.
 type PlanChange struct {
+	// ExtraIps The account's extra addresses (no cap but the location's free
+	// space: 409 `location_full`). Absent at a change, the current
+	// number is kept. Lowering it releases the addresses named in
+	// `release`, else the most recently added, a block always whole.
+	// Buying and releasing blocks: `POST /v1/addresses`, `DELETE
+	// /v1/addresses/{ip}`.
 	ExtraIps *int `json:"extra_ips,omitempty"`
 
-	// MonthlyTb Monthly data, TB. Absent, the current amount is kept.
+	// MonthlyTb Monthly data, TB, the account's (pooled across its tunnels). Absent, the current amount is kept.
 	MonthlyTb *int `json:"monthly_tb,omitempty"`
 
 	// PeakMbps The speed ceiling, Mbps (`GET /v1/plans`, `add_ons.peak_tiers`): on Plus 1000 (its own) or a peak tier, on Base 500 only. At checkout absent is the plan's own; on a change absent keeps Plus's tier (Base has none).
 	PeakMbps *PeakMbps `json:"peak_mbps,omitempty"`
-	Plan     PlanID    `json:"plan"`
+	Plan     *PlanID   `json:"plan,omitempty"`
+
+	// Release When fewer addresses are paid for than the account has, the ones
+	// to release (30-day quarantine); default the most recently added.
+	Release *[]string `json:"release,omitempty"`
 }
 
 // PlanID defines model for PlanID.
@@ -620,6 +1266,9 @@ type Problem struct {
 		Message string `json:"message"`
 	} `json:"errors,omitempty"`
 
+	// ReleaseCount `release_required`: how many more addresses the change must release (`release`).
+	ReleaseCount *int `json:"release_count,omitempty"`
+
 	// RequestId The reference our logs carry for this request; mention it to support.
 	RequestId *string `json:"request_id,omitempty"`
 
@@ -638,7 +1287,9 @@ type Subscription struct {
 	CancelAtPeriodEnd  bool       `json:"cancel_at_period_end"`
 	CurrentPeriodEnd   *time.Time `json:"current_period_end"`
 	CurrentPeriodStart *time.Time `json:"current_period_start"`
-	ExtraIps           int        `json:"extra_ips"`
+
+	// ExtraIps The account's extra addresses (no cap but the location's free space).
+	ExtraIps int `json:"extra_ips"`
 
 	// ExtraTb TB bought as one-time data add-ons for the current month. The allowance is the plan's plus `monthly_tb_counted` plus `extra_tb`.
 	ExtraTb int `json:"extra_tb"`
@@ -674,7 +1325,10 @@ type TokenScope string
 
 // Tunnel defines model for Tunnel.
 type Tunnel struct {
-	// Config Everything a WireGuard client configuration needs besides its private key.
+	// Config Everything a WireGuard client configuration needs besides its private
+	// key. opwan routes only your static addresses (it isn't a VPN): the
+	// dashboard's file sends only traffic from them into the tunnel, and has
+	// no DNS line.
 	Config         TunnelConfig `json:"config"`
 	CreatedAt      time.Time    `json:"created_at"`
 	CustomerPubkey string       `json:"customer_pubkey"`
@@ -696,12 +1350,144 @@ type Tunnel struct {
 // addresses are released).
 type TunnelState string
 
-// TunnelConfig Everything a WireGuard client configuration needs besides its private key.
+// TunnelBGP defines model for TunnelBGP.
+type TunnelBGP struct {
+	// Accepted The routes we accepted (your account's addresses, as /32s).
+	Accepted []string `json:"accepted"`
+
+	// Asn Your account's AS number, chosen by us: private 32-bit
+	// (4201000000 to 4294967294), unique to your account and used by
+	// the sessions of all its tunnels. Null until your account first
+	// turns BGP on; it never changes after.
+	Asn  *int64        `json:"asn"`
+	Auth TunnelBGPAuth `json:"auth"`
+
+	// Available The tunnel's location offers BGP now.
+	Available bool `json:"available"`
+	Enabled   bool `json:"enabled"`
+
+	// Export What we send you, a default route or the full table and a default.
+	Export *TunnelBGPExport `json:"export"`
+
+	// FullTableAvailable The location can send the full table now (`export` `full`).
+	FullTableAvailable bool `json:"full_table_available"`
+
+	// HoldTime The hold time we offer, in seconds (you may negotiate down to 3).
+	HoldTime  int     `json:"hold_time"`
+	LastError *string `json:"last_error"`
+
+	// LimitTrips Times the session was closed for sending too many routes since the node's agent started.
+	LimitTrips int `json:"limit_trips"`
+
+	// Local Our session address (your neighbor).
+	Local *string `json:"local"`
+
+	// MaxRoutes Routes your router may send before the session is closed (64).
+	MaxRoutes int `json:"max_routes"`
+
+	// OurAsn Our AS number, 403104.
+	OurAsn int `json:"our_asn"`
+
+	// Peer Your session address, to configure on your end of the tunnel.
+	Peer *string `json:"peer"`
+
+	// Received Routes your router sent us.
+	Received int `json:"received"`
+
+	// Refused Routes we refused, with why (at most 20).
+	Refused []struct {
+		Prefix string `json:"prefix"`
+		Reason string `json:"reason"`
+	} `json:"refused"`
+	Since *time.Time `json:"since"`
+
+	// State The session as the node last saw it: `established`, `connecting`
+	// (we're trying; your side isn't answering yet), `down`, `limit`
+	// (your router sent more than 64 routes: the session was closed and
+	// is retried after a wait), `disabled` (the tunnel is suspended);
+	// null while BGP is off or before the node's first report.
+	State *BGPState `json:"state"`
+
+	// TtlSecurity GTSM (ttl-security hops 1), on by default: the router
+	// terminating the tunnel must speak BGP and send TTL 255. Off only
+	// when your BGP speaker is one hop behind that router (we then
+	// accept TTL 2, multihop): less protected.
+	TtlSecurity bool `json:"ttl_security"`
+}
+
+// TunnelBGPAuth defines model for TunnelBGP.Auth.
+type TunnelBGPAuth string
+
+// TunnelBGPExport What we send you, a default route or the full table and a default.
+type TunnelBGPExport string
+
+// TunnelBGPConfig defines model for TunnelBGPConfig.
+type TunnelBGPConfig struct {
+	// Announce What the session may announce, as /32s (your BGP addresses and this tunnel's own).
+	Announce []string            `json:"announce"`
+	Auth     TunnelBGPConfigAuth `json:"auth"`
+	Examples []struct {
+		Config string                        `json:"config"`
+		Router TunnelBGPConfigExamplesRouter `json:"router"`
+		Title  string                        `json:"title"`
+	} `json:"examples"`
+	Export    TunnelBGPConfigExport `json:"export"`
+	HoldTime  int                   `json:"hold_time"`
+	Keepalive int                   `json:"keepalive"`
+
+	// Key The TCP-MD5 password or TCP-AO key (HMAC-SHA-256, key id 0 both ways); null without authentication.
+	Key *string `json:"key"`
+
+	// Local Our session address (your neighbor).
+	Local  string `json:"local"`
+	OurAsn int    `json:"our_asn"`
+
+	// Peer Your session address.
+	Peer        string `json:"peer"`
+	TtlSecurity bool   `json:"ttl_security"`
+
+	// YourAsn Your account's AS number (we chose it; the same on all your tunnels).
+	YourAsn int64 `json:"your_asn"`
+}
+
+// TunnelBGPConfigAuth defines model for TunnelBGPConfig.Auth.
+type TunnelBGPConfigAuth string
+
+// TunnelBGPConfigExamplesRouter defines model for TunnelBGPConfig.Examples.Router.
+type TunnelBGPConfigExamplesRouter string
+
+// TunnelBGPConfigExport defines model for TunnelBGPConfig.Export.
+type TunnelBGPConfigExport string
+
+// TunnelBGPRequest defines model for TunnelBGPRequest.
+type TunnelBGPRequest struct {
+	Auth    *TunnelBGPRequestAuth   `json:"auth,omitempty"`
+	Enabled bool                    `json:"enabled"`
+	Export  *TunnelBGPRequestExport `json:"export,omitempty"`
+
+	// TtlSecurity Keep true (the default) unless your BGP speaker is one hop behind the router terminating the tunnel; off is less protected.
+	TtlSecurity *bool `json:"ttl_security,omitempty"`
+}
+
+// TunnelBGPRequestAuth defines model for TunnelBGPRequest.Auth.
+type TunnelBGPRequestAuth string
+
+// TunnelBGPRequestExport defines model for TunnelBGPRequest.Export.
+type TunnelBGPRequestExport string
+
+// TunnelConfig Everything a WireGuard client configuration needs besides its private
+// key. opwan routes only your static addresses (it isn't a VPN): the
+// dashboard's file sends only traffic from them into the tunnel, and has
+// no DNS line.
 type TunnelConfig struct {
 	// Addresses The tunnel's addresses as /32s (the wg-quick `Address`); empty until the subscription is active.
 	Addresses []string `json:"addresses"`
 
-	// AllowedIps Suggested `AllowedIPs` of the peer on the client.
+	// AllowedIps The `AllowedIPs` of our side on your router: 0.0.0.0/0, so traffic
+	// from anyone to your static addresses comes through the tunnel and
+	// your replies go back. Don't let your router route its whole
+	// connection there: route only traffic from your static addresses
+	// into the tunnel (the dashboard's file does it on Linux).
 	AllowedIps []string `json:"allowed_ips"`
 
 	// Endpoint The exit's WireGuard endpoint, `host:port`.
@@ -716,6 +1502,98 @@ type TunnelConfig struct {
 	ServerPubkey *string `json:"server_pubkey"`
 }
 
+// TunnelCredentials Shown once; we can't show them again (make new ones instead).
+type TunnelCredentials struct {
+	Password string `json:"password"`
+
+	// Psk The IPsec pre-shared key.
+	Psk      string `json:"psk"`
+	Username string `json:"username"`
+}
+
+// TunnelItem defines model for TunnelItem.
+type TunnelItem struct {
+	// Addresses The addresses routed down this tunnel, as /32s.
+	Addresses []string `json:"addresses"`
+
+	// AllowanceBytes The account's data this month, pooled across its tunnels (every
+	// tunnel's plan's, plus monthly data and add-ons, which are the
+	// account's): the same on every tunnel. Past it, every tunnel is
+	// slowed to its plan's slowed speed.
+	AllowanceBytes int64 `json:"allowance_bytes"`
+
+	// Bgp Customer BGP over this tunnel, in brief (GET /v1/tunnels/{id}/bgp for the rest).
+	Bgp struct {
+		// Asn The account's AS number (the same on each of its tunnels); null until the account first turns BGP on.
+		Asn     *int64  `json:"asn,omitempty"`
+		Enabled bool    `json:"enabled"`
+		Export  *string `json:"export,omitempty"`
+
+		// State The session as the node last saw it: `established`, `connecting`
+		// (we're trying; your side isn't answering yet), `down`, `limit`
+		// (your router sent more than 64 routes: the session was closed and
+		// is retried after a wait), `disabled` (the tunnel is suspended);
+		// null while BGP is off or before the node's first report.
+		State *BGPState `json:"state,omitempty"`
+	} `json:"bgp"`
+	CreatedAt      time.Time `json:"created_at"`
+	CustomerPubkey *string   `json:"customer_pubkey"`
+
+	// Endpoint Your registered fixed public IPv4 (l2tp_ipsec over IKEv1).
+	Endpoint *string        `json:"endpoint"`
+	Id       string         `json:"id"`
+	Ike      *TunnelItemIke `json:"ike"`
+
+	// IpsecId The IKEv2 identity your router sends (its "local ID").
+	IpsecId      *string `json:"ipsec_id"`
+	L2tpUsername *string `json:"l2tp_username"`
+	Location     string  `json:"location"`
+	Name         string  `json:"name"`
+
+	// Number 1, 2, … in the account ("Tunnel 2").
+	Number int `json:"number"`
+
+	// PeakMbps The speed ceiling in effect (the plan's or its peak tier's).
+	PeakMbps int    `json:"peak_mbps"`
+	Plan     PlanID `json:"plan"`
+
+	// Setup What the router's configuration needs besides the tunnel's own
+	// fields (never a secret). WireGuard: `wireguard` (as
+	// `TunnelConfig`). L2TP/IPsec: `server` (the user name, the IPsec
+	// identity and IKE version are the tunnel's `l2tp_username`,
+	// `ipsec_id`, `ike`; `ipsec_server_id` is ours) and `mtu`.
+	Setup TunnelSetup `json:"setup"`
+
+	// State `pending_payment`, `setup_required` (a WireGuard tunnel without a
+	// key yet), `active`, `suspended`, `canceled`.
+	State TunnelItemState `json:"state"`
+
+	// Status The tunnel's live state, as the exit last reported it.
+	Status TunnelStatus `json:"status"`
+
+	// Type `wireguard` (encrypted; works behind any NAT) or `l2tp_ipsec`
+	// (encrypted; IKEv2 works behind any NAT, IKEv1 needs a fixed public
+	// address). Both are encrypted.
+	Type TunnelType `json:"type"`
+
+	// UsedBytes This tunnel's share of the account's month, both directions.
+	UsedBytes int64 `json:"used_bytes"`
+}
+
+// TunnelItemIke defines model for TunnelItem.Ike.
+type TunnelItemIke string
+
+// TunnelItemState `pending_payment`, `setup_required` (a WireGuard tunnel without a
+// key yet), `active`, `suspended`, `canceled`.
+type TunnelItemState string
+
+// TunnelPlanRequest defines model for TunnelPlanRequest.
+type TunnelPlanRequest struct {
+	// PeakMbps The speed ceiling, Mbps (`GET /v1/plans`, `add_ons.peak_tiers`): on Plus 1000 (its own) or a peak tier, on Base 500 only. At checkout absent is the plan's own; on a change absent keeps Plus's tier (Base has none).
+	PeakMbps *PeakMbps `json:"peak_mbps,omitempty"`
+	Plan     PlanID    `json:"plan"`
+}
+
 // TunnelRequest defines model for TunnelRequest.
 type TunnelRequest struct {
 	// Location A location id from `GET /v1/locations`.
@@ -723,6 +1601,21 @@ type TunnelRequest struct {
 
 	// Pubkey The client's WireGuard public key, base64 of 32 bytes (not all zeros nor of low order, not a server's key). Never the private key.
 	Pubkey string `json:"pubkey"`
+}
+
+// TunnelSetup What the router's configuration needs besides the tunnel's own
+// fields (never a secret). WireGuard: `wireguard` (as
+// `TunnelConfig`). L2TP/IPsec: `server` (the user name, the IPsec
+// identity and IKE version are the tunnel's `l2tp_username`,
+// `ipsec_id`, `ike`; `ipsec_server_id` is ours) and `mtu`.
+type TunnelSetup struct {
+	// IpsecServerId Our IKE identity (l2tp_ipsec), the router's "remote ID".
+	IpsecServerId *string `json:"ipsec_server_id"`
+	Mtu           int     `json:"mtu"`
+
+	// Server The host name your router connects to.
+	Server    string        `json:"server"`
+	Wireguard *TunnelConfig `json:"wireguard,omitempty"`
 }
 
 // TunnelStatus The tunnel's live state, as the exit last reported it.
@@ -745,6 +1638,106 @@ type TunnelStatus struct {
 	UpdatedAt *time.Time `json:"updated_at"`
 }
 
+// TunnelType `wireguard` (encrypted; works behind any NAT) or `l2tp_ipsec`
+// (encrypted; IKEv2 works behind any NAT, IKEv1 needs a fixed public
+// address). Both are encrypted.
+type TunnelType string
+
+// TunnelTypeRequest defines model for TunnelTypeRequest.
+type TunnelTypeRequest struct {
+	// Endpoint Your fixed public IPv4 (l2tp_ipsec with ikev1).
+	Endpoint *string               `json:"endpoint,omitempty"`
+	Ike      *TunnelTypeRequestIke `json:"ike,omitempty"`
+
+	// Pubkey WireGuard's public key (optional: set it later with `PUT /v1/tunnels/{id}/key`).
+	Pubkey *string `json:"pubkey,omitempty"`
+
+	// Type `wireguard` (encrypted; works behind any NAT) or `l2tp_ipsec`
+	// (encrypted; IKEv2 works behind any NAT, IKEv1 needs a fixed public
+	// address). Both are encrypted.
+	Type TunnelType `json:"type"`
+}
+
+// TunnelTypeRequestIke defines model for TunnelTypeRequest.Ike.
+type TunnelTypeRequestIke string
+
+// TunnelWithCredentials defines model for TunnelWithCredentials.
+type TunnelWithCredentials struct {
+	// Addresses The addresses routed down this tunnel, as /32s.
+	Addresses []string `json:"addresses"`
+
+	// AllowanceBytes The account's data this month, pooled across its tunnels (every
+	// tunnel's plan's, plus monthly data and add-ons, which are the
+	// account's): the same on every tunnel. Past it, every tunnel is
+	// slowed to its plan's slowed speed.
+	AllowanceBytes int64 `json:"allowance_bytes"`
+
+	// Bgp Customer BGP over this tunnel, in brief (GET /v1/tunnels/{id}/bgp for the rest).
+	Bgp struct {
+		// Asn The account's AS number (the same on each of its tunnels); null until the account first turns BGP on.
+		Asn     *int64  `json:"asn,omitempty"`
+		Enabled bool    `json:"enabled"`
+		Export  *string `json:"export,omitempty"`
+
+		// State The session as the node last saw it: `established`, `connecting`
+		// (we're trying; your side isn't answering yet), `down`, `limit`
+		// (your router sent more than 64 routes: the session was closed and
+		// is retried after a wait), `disabled` (the tunnel is suspended);
+		// null while BGP is off or before the node's first report.
+		State *BGPState `json:"state,omitempty"`
+	} `json:"bgp"`
+	CreatedAt      time.Time          `json:"created_at"`
+	Credentials    *TunnelCredentials `json:"credentials"`
+	CustomerPubkey *string            `json:"customer_pubkey"`
+
+	// Endpoint Your registered fixed public IPv4 (l2tp_ipsec over IKEv1).
+	Endpoint *string                   `json:"endpoint"`
+	Id       string                    `json:"id"`
+	Ike      *TunnelWithCredentialsIke `json:"ike"`
+
+	// IpsecId The IKEv2 identity your router sends (its "local ID").
+	IpsecId      *string `json:"ipsec_id"`
+	L2tpUsername *string `json:"l2tp_username"`
+	Location     string  `json:"location"`
+	Name         string  `json:"name"`
+
+	// Number 1, 2, … in the account ("Tunnel 2").
+	Number int `json:"number"`
+
+	// PeakMbps The speed ceiling in effect (the plan's or its peak tier's).
+	PeakMbps int    `json:"peak_mbps"`
+	Plan     PlanID `json:"plan"`
+
+	// Setup What the router's configuration needs besides the tunnel's own
+	// fields (never a secret). WireGuard: `wireguard` (as
+	// `TunnelConfig`). L2TP/IPsec: `server` (the user name, the IPsec
+	// identity and IKE version are the tunnel's `l2tp_username`,
+	// `ipsec_id`, `ike`; `ipsec_server_id` is ours) and `mtu`.
+	Setup TunnelSetup `json:"setup"`
+
+	// State `pending_payment`, `setup_required` (a WireGuard tunnel without a
+	// key yet), `active`, `suspended`, `canceled`.
+	State TunnelWithCredentialsState `json:"state"`
+
+	// Status The tunnel's live state, as the exit last reported it.
+	Status TunnelStatus `json:"status"`
+
+	// Type `wireguard` (encrypted; works behind any NAT) or `l2tp_ipsec`
+	// (encrypted; IKEv2 works behind any NAT, IKEv1 needs a fixed public
+	// address). Both are encrypted.
+	Type TunnelType `json:"type"`
+
+	// UsedBytes This tunnel's share of the account's month, both directions.
+	UsedBytes int64 `json:"used_bytes"`
+}
+
+// TunnelWithCredentialsIke defines model for TunnelWithCredentials.Ike.
+type TunnelWithCredentialsIke string
+
+// TunnelWithCredentialsState `pending_payment`, `setup_required` (a WireGuard tunnel without a
+// key yet), `active`, `suspended`, `canceled`.
+type TunnelWithCredentialsState string
+
 // Usage defines model for Usage.
 type Usage struct {
 	AllowanceBytes int64 `json:"allowance_bytes"`
@@ -761,6 +1754,12 @@ type Usage struct {
 	TxBytes   int64         `json:"tx_bytes"`
 	UsedBytes int64         `json:"used_bytes"`
 }
+
+// TunnelID defines model for TunnelID.
+type TunnelID = string
+
+// BadRequest An RFC 9457 problem document.
+type BadRequest = Problem
 
 // Conflict An RFC 9457 problem document.
 type Conflict = Problem
@@ -818,6 +1817,11 @@ type StartSignInParams struct {
 // StartSignInParamsPrompt defines parameters for StartSignIn.
 type StartSignInParamsPrompt string
 
+// PutDNSJSONBody defines parameters for PutDNS.
+type PutDNSJSONBody struct {
+	ProfileId string `json:"profile_id"`
+}
+
 // GetOpenAPI200JSONResponseBody defines parameters for GetOpenAPI.
 type GetOpenAPI200JSONResponseBody struct {
 	Info                 map[string]interface{} `json:"info"`
@@ -826,11 +1830,33 @@ type GetOpenAPI200JSONResponseBody struct {
 	AdditionalProperties map[string]interface{} `json:"-"`
 }
 
+// DeleteTunnelParams defines parameters for DeleteTunnel.
+type DeleteTunnelParams struct {
+	// Release Addresses to release, comma separated.
+	Release *string `form:"release,omitempty" json:"release,omitempty"`
+}
+
+// RenameTunnelJSONBody defines parameters for RenameTunnel.
+type RenameTunnelJSONBody struct {
+	Name string `json:"name"`
+}
+
+// PutTunnelKeyJSONBody defines parameters for PutTunnelKey.
+type PutTunnelKeyJSONBody struct {
+	Pubkey string `json:"pubkey"`
+}
+
 // GetUsageParams defines parameters for GetUsage.
 type GetUsageParams struct {
 	// Month `YYYY-MM` (UTC), default the current month.
 	Month *string `form:"month,omitempty" json:"month,omitempty"`
 }
+
+// BuyAddressesJSONRequestBody defines body for BuyAddresses for application/json ContentType.
+type BuyAddressesJSONRequestBody = BuyAddressesRequest
+
+// AssignAddressJSONRequestBody defines body for AssignAddress for application/json ContentType.
+type AssignAddressJSONRequestBody = AssignmentRequest
 
 // PutFirewallJSONRequestBody defines body for PutFirewall for application/json ContentType.
 type PutFirewallJSONRequestBody = Firewall
@@ -841,6 +1867,9 @@ type BuyDataAddonJSONRequestBody = DataAddonRequest
 // StartCheckoutJSONRequestBody defines body for StartCheckout for application/json ContentType.
 type StartCheckoutJSONRequestBody = CheckoutRequest
 
+// PutDNSJSONRequestBody defines body for PutDNS for application/json ContentType.
+type PutDNSJSONRequestBody PutDNSJSONBody
+
 // ChangeSubscriptionJSONRequestBody defines body for ChangeSubscription for application/json ContentType.
 type ChangeSubscriptionJSONRequestBody = PlanChange
 
@@ -849,6 +1878,24 @@ type CreateTokenJSONRequestBody = CreateTokenRequest
 
 // PutTunnelJSONRequestBody defines body for PutTunnel for application/json ContentType.
 type PutTunnelJSONRequestBody = TunnelRequest
+
+// CreateTunnelJSONRequestBody defines body for CreateTunnel for application/json ContentType.
+type CreateTunnelJSONRequestBody = CreateTunnelRequest
+
+// RenameTunnelJSONRequestBody defines body for RenameTunnel for application/json ContentType.
+type RenameTunnelJSONRequestBody RenameTunnelJSONBody
+
+// PutTunnelBGPJSONRequestBody defines body for PutTunnelBGP for application/json ContentType.
+type PutTunnelBGPJSONRequestBody = TunnelBGPRequest
+
+// PutTunnelKeyJSONRequestBody defines body for PutTunnelKey for application/json ContentType.
+type PutTunnelKeyJSONRequestBody PutTunnelKeyJSONBody
+
+// ChangeTunnelPlanJSONRequestBody defines body for ChangeTunnelPlan for application/json ContentType.
+type ChangeTunnelPlanJSONRequestBody = TunnelPlanRequest
+
+// ChangeTunnelTypeJSONRequestBody defines body for ChangeTunnelType for application/json ContentType.
+type ChangeTunnelTypeJSONRequestBody = TunnelTypeRequest
 
 // Getter for additional properties for GetOpenAPI200JSONResponseBody. Returns the specified
 // element and whether it was found
@@ -1020,6 +2067,91 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 
+	// ListAddresses The account's addresses and where each is assigned.
+	//
+	// Every address of the account (the account owns them: one per
+	// tunnel plus its extra addresses), lowest first, with where each goes
+	// (a tunnel, BGP, or unassigned), and how many the account pays for.
+	//
+	// Corresponds with GET /v1/addresses (the `ListAddresses` operationId).
+	ListAddresses(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BuyAddressesWithBody Buy addresses, as one block (billed at once).
+	//
+	// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+	// (/32 to /29) at the account's location, routed whole down one
+	// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+	// default). Every address of the block is usable. Each is an extra
+	// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+	// once; a refused card keeps nothing (402). No cap but the location's
+	// free space: 409 `location_full` when it has no free aligned block of
+	// that size (nothing charged).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+	BuyAddressesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BuyAddresses Buy addresses, as one block (billed at once).
+	//
+	// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+	// (/32 to /29) at the account's location, routed whole down one
+	// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+	// default). Every address of the block is usable. Each is an extra
+	// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+	// once; a refused card keeps nothing (402). No cap but the location's
+	// free space: 409 `location_full` when it has no free aligned block of
+	// that size (nothing charged).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+	BuyAddresses(ctx context.Context, body BuyAddressesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReleaseAddress Give up an address, or the whole block it belongs to.
+	//
+	// Releases the address, or every address of its block, into the
+	// usual 30-day quarantine, and lowers the extra addresses as many
+	// (credited, prorated). 409 `below_included`: each tunnel includes
+	// one address the account keeps.
+	//
+	// Corresponds with DELETE /v1/addresses/{ip} (the `ReleaseAddress` operationId).
+	ReleaseAddress(ctx context.Context, ip string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AssignAddressWithBody Route an address down a tunnel, to BGP, or nowhere.
+	//
+	// Instant and free: the address stays the account's (no release, no
+	// quarantine) and its firewall rules follow it. An address bought in a
+	// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+	// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+	// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+	// makes it float: it goes to whichever of the account's BGP tunnels
+	// announces it, and is dropped while none does (409
+	// `bgp_unavailable` until the account has a tunnel with BGP on at
+	// the address's location).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+	AssignAddressWithBody(ctx context.Context, ip string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AssignAddress Route an address down a tunnel, to BGP, or nowhere.
+	//
+	// Instant and free: the address stays the account's (no release, no
+	// quarantine) and its firewall rules follow it. An address bought in a
+	// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+	// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+	// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+	// makes it float: it goes to whichever of the account's BGP tunnels
+	// announces it, and is dropped while none does (409
+	// `bgp_unavailable` until the account has a tunnel with BGP on at
+	// the address's location).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+	AssignAddress(ctx context.Context, ip string, body AssignAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetFirewall An address's inbound firewall.
 	//
 	// The default inbound policy and the ordered rules of one of your
@@ -1180,6 +2312,63 @@ type ClientInterface interface {
 	// Corresponds with POST /v1/checkout (the `StartCheckout` operationId).
 	StartCheckout(ctx context.Context, body StartCheckoutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteDNS Turn opdns DNS off.
+	//
+	// Your addresses are unlinked from the opdns profile (at once when opdns
+	// answers, else we keep trying: `linked_ips` shows what is still
+	// linked). Your tunnel's configuration doesn't change.
+	//
+	// Corresponds with DELETE /v1/dns (the `DeleteDNS` operationId).
+	DeleteDNS(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetDNS The opdns DNS opt-in, and the opdns profiles to pick from.
+	//
+	// opdns DNS: with it on, opwan links your static addresses to the opdns
+	// profile you picked, so lookups that reach opdns's resolver (`resolver`,
+	// 23.166.164.53) from them are filtered by it. opwan's configurations
+	// never set DNS (opwan isn't a VPN: only your static addresses' traffic
+	// uses the tunnel): point a device or server that uses a static address
+	// at `resolver` for its lookups. Offered when your op account also has an opdns
+	// account (`opdns_account`; null when opdns couldn't be asked just now):
+	// `profiles` are your opdns profiles. `state` is `off`, `pending` (opdns
+	// not updated yet; we keep trying), `linked` or `error` (`error` says what
+	// happened in plain words); `linked_ips` are the addresses opdns has
+	// linked now (addresses released or quarantined are unlinked within a
+	// minute). `available` is false when this server doesn't offer it.
+	//
+	// Corresponds with GET /v1/dns (the `GetDNS` operationId).
+	GetDNS(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutDNSWithBody Turn opdns DNS on with one of your opdns profiles, or change the profile.
+	//
+	// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+	// otherwise; opdns checks again that it is yours). 409
+	// `no_opdns_account` when your op account has no opdns account; 503
+	// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+	// Your addresses are linked at once when opdns answers, else `state` is
+	// `pending` and we keep trying. Your tunnel's configuration doesn't
+	// change: it has no DNS line either way.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+	PutDNSWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutDNS Turn opdns DNS on with one of your opdns profiles, or change the profile.
+	//
+	// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+	// otherwise; opdns checks again that it is yours). 409
+	// `no_opdns_account` when your op account has no opdns account; 503
+	// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+	// Your addresses are linked at once when opdns answers, else `state` is
+	// `pending` and we keep trying. Your tunnel's configuration doesn't
+	// change: it has no DNS line either way.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+	PutDNS(ctx context.Context, body PutDNSJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListLocations The exit locations, for the location step.
 	//
 	// The enabled locations (v1 Dallas only) with what the location step
@@ -1197,8 +2386,11 @@ type ClientInterface interface {
 	// GetMe The account and everything it has.
 	//
 	// The signed-in account, its subscription (null before the first
-	// checkout), its tunnel (null before one is created), its addresses and
-	// this month's usage. 401 `unauthenticated` when signed out.
+	// checkout), its first tunnel (`tunnel`: null before one is created, or
+	// when the first tunnel isn't WireGuard), every tunnel (`tunnels`),
+	// its addresses and where each goes, and this month's usage (the
+	// account's, pooled across its tunnels). 401 `unauthenticated` when
+	// signed out.
 	//
 	// Corresponds with GET /v1/me (the `GetMe` operationId).
 	GetMe(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1378,6 +2570,253 @@ type ClientInterface interface {
 	// Corresponds with GET /v1/tunnel/config (the `GetTunnelConfig` operationId).
 	GetTunnelConfig(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListTunnels The account's tunnels.
+	//
+	// Every tunnel of the account, by number (docs/tunnels.md): each one is
+	// a billing line with its own plan, type, allowance, usage, status and
+	// client configuration. Never a secret.
+	//
+	// Corresponds with GET /v1/tunnels (the `ListTunnels` operationId).
+	ListTunnels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateTunnelWithBody Add a tunnel (billed at once).
+	//
+	// Adds a tunnel to the live subscription: its plan's price (and its
+	// peak tier) is prorated and charged to the saved card at once; a
+	// refused card creates nothing (402). The tunnel gets one new address
+	// of the account's location, assigned to it, and its plan's data joins
+	// the account's pool. The account's first tunnel (paid at checkout,
+	// none made yet) is made on the subscription's own line, without a
+	// charge (`plan` and `peak_mbps` are then ignored). For
+	// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+	// 409 `no_subscription` (subscribe first: the first tunnel is bought
+	// through checkout), `tunnel_limit`, `location_full` (nothing was
+	// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+	CreateTunnelWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateTunnel Add a tunnel (billed at once).
+	//
+	// Adds a tunnel to the live subscription: its plan's price (and its
+	// peak tier) is prorated and charged to the saved card at once; a
+	// refused card creates nothing (402). The tunnel gets one new address
+	// of the account's location, assigned to it, and its plan's data joins
+	// the account's pool. The account's first tunnel (paid at checkout,
+	// none made yet) is made on the subscription's own line, without a
+	// charge (`plan` and `peak_mbps` are then ignored). For
+	// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+	// 409 `no_subscription` (subscribe first: the first tunnel is bought
+	// through checkout), `tunnel_limit`, `location_full` (nothing was
+	// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+	CreateTunnel(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteTunnel Delete a tunnel (credited).
+	//
+	// Removes the tunnel and its billing line (the rest of the period is
+	// credited, as Stripe prorates). Extra addresses above 2 per remaining
+	// tunnel are lowered to that (credited too). The tunnel's addresses
+	// stay the account's, unassigned, as long as the account's
+	// entitlement (one per tunnel plus the extra addresses) covers them;
+	// otherwise `release` names the ones to give up (the usual 30-day
+	// quarantine), and without it the most recently added go, a block
+	// always whole (single addresses are not preferred: newest first). 409
+	// `release_required` (with `release_count`) when `release` names too
+	// few. 409 `last_tunnel` (cancel the
+	// subscription in Billing instead).
+	//
+	// Corresponds with DELETE /v1/tunnels/{id} (the `DeleteTunnel` operationId).
+	DeleteTunnel(ctx context.Context, id TunnelID, params *DeleteTunnelParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTunnel One tunnel.
+	//
+	// One of the account's tunnels, as in `GET /v1/tunnels` (never a
+	// secret). 404 `not_found` for another account's tunnel.
+	//
+	// Corresponds with GET /v1/tunnels/{id} (the `GetTunnel` operationId).
+	GetTunnel(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RenameTunnelWithBody Rename a tunnel.
+	//
+	// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+	// dashboard only. 422 on `name`.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+	RenameTunnelWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RenameTunnel Rename a tunnel.
+	//
+	// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+	// dashboard only. 422 on `name`.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+	RenameTunnel(ctx context.Context, id TunnelID, body RenameTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTunnelBGP The tunnel's BGP session and what it announces.
+	//
+	// Customer BGP over the tunnel (free, off by default): its settings,
+	// our side's values, the session's state, and the routes received,
+	// accepted and refused (with the reason). `available` says whether
+	// the tunnel's location offers BGP; `full_table_available` whether
+	// it can send the full table.
+	//
+	// Corresponds with GET /v1/tunnels/{id}/bgp (the `GetTunnelBGP` operationId).
+	GetTunnelBGP(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutTunnelBGPWithBody Turn BGP on or off for the tunnel, or change its settings.
+	//
+	// `enabled` true takes `export` (`default`, the default; or `full`)
+	// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+	// the key). Turning it on gives the tunnel its session addresses,
+	// kept while the tunnel exists, and, the first time for the account,
+	// the account its AS number: a private 32-bit number we choose
+	// (`asn` in the reply), unique to the account and the same for all
+	// its tunnels' sessions. You don't choose it: a request with `asn` is
+	// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+	// given just now (BGP stays off; try again).
+	// Turning it off ends the session; addresses assigned to BGP stay
+	// assigned and are dropped while none of the account's tunnels
+	// announces them. 409 `bgp_unavailable` (the location doesn't offer
+	// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+	PutTunnelBGPWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutTunnelBGP Turn BGP on or off for the tunnel, or change its settings.
+	//
+	// `enabled` true takes `export` (`default`, the default; or `full`)
+	// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+	// the key). Turning it on gives the tunnel its session addresses,
+	// kept while the tunnel exists, and, the first time for the account,
+	// the account its AS number: a private 32-bit number we choose
+	// (`asn` in the reply), unique to the account and the same for all
+	// its tunnels' sessions. You don't choose it: a request with `asn` is
+	// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+	// given just now (BGP stays off; try again).
+	// Turning it off ends the session; addresses assigned to BGP stay
+	// assigned and are dropped while none of the account's tunnels
+	// announces them. 409 `bgp_unavailable` (the location doesn't offer
+	// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+	PutTunnelBGP(ctx context.Context, id TunnelID, body PutTunnelBGPJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTunnelBGPConfig The session's values to paste into your router, with examples.
+	//
+	// Our AS number and address, yours, the key if the session has one,
+	// the addresses the session may announce, and configuration examples
+	// for BIRD, FRR (and UniFi gateways), MikroTik RouterOS 7, Ubiquiti
+	// EdgeOS and OpenWrt. It holds the key: a session or a write token.
+	// 409 `bgp_off` while BGP is off for the tunnel.
+	//
+	// Corresponds with GET /v1/tunnels/{id}/bgp/config (the `GetTunnelBGPConfig` operationId).
+	GetTunnelBGPConfig(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ResetTunnelBGPKey A new key for the tunnel's BGP session.
+	//
+	// A new TCP-MD5 password or TCP-AO key for a session with
+	// authentication; the old one stops at the next desired state
+	// (seconds), so the session restarts once your router has the new
+	// one. 409 `bgp_no_auth` when the session has none.
+	//
+	// Corresponds with POST /v1/tunnels/{id}/bgp/key (the `ResetTunnelBGPKey` operationId).
+	ResetTunnelBGPKey(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ResetTunnelCredentials New credentials for an L2TP/IPsec tunnel (shown once).
+	//
+	// A new IPsec pre-shared key and L2TP password; the old ones stop
+	// working at the next desired state (seconds). 409 `not_l2tp` for a
+	// WireGuard tunnel.
+	//
+	// Corresponds with POST /v1/tunnels/{id}/credentials (the `ResetTunnelCredentials` operationId).
+	ResetTunnelCredentials(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutTunnelKeyWithBody Set or replace a WireGuard tunnel's public key.
+	//
+	// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+	// WireGuard tunnel. 409 `not_wireguard` for the other types.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+	PutTunnelKeyWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutTunnelKey Set or replace a WireGuard tunnel's public key.
+	//
+	// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+	// WireGuard tunnel. 409 `not_wireguard` for the other types.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+	PutTunnelKey(ctx context.Context, id TunnelID, body PutTunnelKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeTunnelPlanWithBody Change a tunnel's plan, monthly data or peak speed.
+	//
+	// This tunnel's plan and peak tier, prorated and charged (or
+	// credited) at once. Monthly data and extra addresses are the
+	// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+	// current one.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+	ChangeTunnelPlanWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeTunnelPlan Change a tunnel's plan, monthly data or peak speed.
+	//
+	// This tunnel's plan and peak tier, prorated and charged (or
+	// credited) at once. Monthly data and extra addresses are the
+	// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+	// current one.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+	ChangeTunnelPlan(ctx context.Context, id TunnelID, body ChangeTunnelPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeTunnelTypeWithBody Change a tunnel's type (and its setup).
+	//
+	// Sets the tunnel's type and what that type needs: a WireGuard public
+	// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+	// public IPv4 in `endpoint`). The price doesn't change. The old setup
+	// stops at the next desired state. L2TP/IPsec gets new
+	// `credentials`, shown this once. 409
+	// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+	ChangeTunnelTypeWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ChangeTunnelType Change a tunnel's type (and its setup).
+	//
+	// Sets the tunnel's type and what that type needs: a WireGuard public
+	// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+	// public IPv4 in `endpoint`). The price doesn't change. The old setup
+	// stops at the next desired state. L2TP/IPsec gets new
+	// `credentials`, shown this once. 409
+	// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+	ChangeTunnelType(ctx context.Context, id TunnelID, body ChangeTunnelTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetUsage Data used in a month, per day, and live throughput.
 	//
 	// Totals and the daily series (UTC days) of a calendar month (default
@@ -1387,6 +2826,151 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /v1/usage (the `GetUsage` operationId).
 	GetUsage(ctx context.Context, params *GetUsageParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+// ListAddresses The account's addresses and where each is assigned.
+//
+// Every address of the account (the account owns them: one per
+// tunnel plus its extra addresses), lowest first, with where each goes
+// (a tunnel, BGP, or unassigned), and how many the account pays for.
+//
+// Corresponds with GET /v1/addresses (the `ListAddresses` operationId).
+func (c *Client) ListAddresses(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAddressesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BuyAddressesWithBody Buy addresses, as one block (billed at once).
+//
+// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+// (/32 to /29) at the account's location, routed whole down one
+// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+// default). Every address of the block is usable. Each is an extra
+// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+// once; a refused card keeps nothing (402). No cap but the location's
+// free space: 409 `location_full` when it has no free aligned block of
+// that size (nothing charged).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+func (c *Client) BuyAddressesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBuyAddressesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// BuyAddresses Buy addresses, as one block (billed at once).
+//
+// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+// (/32 to /29) at the account's location, routed whole down one
+// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+// default). Every address of the block is usable. Each is an extra
+// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+// once; a refused card keeps nothing (402). No cap but the location's
+// free space: 409 `location_full` when it has no free aligned block of
+// that size (nothing charged).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+func (c *Client) BuyAddresses(ctx context.Context, body BuyAddressesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBuyAddressesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ReleaseAddress Give up an address, or the whole block it belongs to.
+//
+// Releases the address, or every address of its block, into the
+// usual 30-day quarantine, and lowers the extra addresses as many
+// (credited, prorated). 409 `below_included`: each tunnel includes
+// one address the account keeps.
+//
+// Corresponds with DELETE /v1/addresses/{ip} (the `ReleaseAddress` operationId).
+func (c *Client) ReleaseAddress(ctx context.Context, ip string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReleaseAddressRequest(c.Server, ip)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AssignAddressWithBody Route an address down a tunnel, to BGP, or nowhere.
+//
+// Instant and free: the address stays the account's (no release, no
+// quarantine) and its firewall rules follow it. An address bought in a
+// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+// makes it float: it goes to whichever of the account's BGP tunnels
+// announces it, and is dropped while none does (409
+// `bgp_unavailable` until the account has a tunnel with BGP on at
+// the address's location).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+func (c *Client) AssignAddressWithBody(ctx context.Context, ip string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignAddressRequestWithBody(c.Server, ip, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AssignAddress Route an address down a tunnel, to BGP, or nowhere.
+//
+// Instant and free: the address stays the account's (no release, no
+// quarantine) and its firewall rules follow it. An address bought in a
+// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+// makes it float: it goes to whichever of the account's BGP tunnels
+// announces it, and is dropped while none does (409
+// `bgp_unavailable` until the account has a tunnel with BGP on at
+// the address's location).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+func (c *Client) AssignAddress(ctx context.Context, ip string, body AssignAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignAddressRequest(c.Server, ip, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 // GetFirewall An address's inbound firewall.
@@ -1659,6 +3243,103 @@ func (c *Client) StartCheckout(ctx context.Context, body StartCheckoutJSONReques
 	return c.Client.Do(req)
 }
 
+// DeleteDNS Turn opdns DNS off.
+//
+// Your addresses are unlinked from the opdns profile (at once when opdns
+// answers, else we keep trying: `linked_ips` shows what is still
+// linked). Your tunnel's configuration doesn't change.
+//
+// Corresponds with DELETE /v1/dns (the `DeleteDNS` operationId).
+func (c *Client) DeleteDNS(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteDNSRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetDNS The opdns DNS opt-in, and the opdns profiles to pick from.
+//
+// opdns DNS: with it on, opwan links your static addresses to the opdns
+// profile you picked, so lookups that reach opdns's resolver (`resolver`,
+// 23.166.164.53) from them are filtered by it. opwan's configurations
+// never set DNS (opwan isn't a VPN: only your static addresses' traffic
+// uses the tunnel): point a device or server that uses a static address
+// at `resolver` for its lookups. Offered when your op account also has an opdns
+// account (`opdns_account`; null when opdns couldn't be asked just now):
+// `profiles` are your opdns profiles. `state` is `off`, `pending` (opdns
+// not updated yet; we keep trying), `linked` or `error` (`error` says what
+// happened in plain words); `linked_ips` are the addresses opdns has
+// linked now (addresses released or quarantined are unlinked within a
+// minute). `available` is false when this server doesn't offer it.
+//
+// Corresponds with GET /v1/dns (the `GetDNS` operationId).
+func (c *Client) GetDNS(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetDNSRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutDNSWithBody Turn opdns DNS on with one of your opdns profiles, or change the profile.
+//
+// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+// otherwise; opdns checks again that it is yours). 409
+// `no_opdns_account` when your op account has no opdns account; 503
+// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+// Your addresses are linked at once when opdns answers, else `state` is
+// `pending` and we keep trying. Your tunnel's configuration doesn't
+// change: it has no DNS line either way.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+func (c *Client) PutDNSWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutDNSRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutDNS Turn opdns DNS on with one of your opdns profiles, or change the profile.
+//
+// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+// otherwise; opdns checks again that it is yours). 409
+// `no_opdns_account` when your op account has no opdns account; 503
+// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+// Your addresses are linked at once when opdns answers, else `state` is
+// `pending` and we keep trying. Your tunnel's configuration doesn't
+// change: it has no DNS line either way.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+func (c *Client) PutDNS(ctx context.Context, body PutDNSJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutDNSRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ListLocations The exit locations, for the location step.
 //
 // The enabled locations (v1 Dallas only) with what the location step
@@ -1686,8 +3367,11 @@ func (c *Client) ListLocations(ctx context.Context, reqEditors ...RequestEditorF
 // GetMe The account and everything it has.
 //
 // The signed-in account, its subscription (null before the first
-// checkout), its tunnel (null before one is created), its addresses and
-// this month's usage. 401 `unauthenticated` when signed out.
+// checkout), its first tunnel (`tunnel`: null before one is created, or
+// when the first tunnel isn't WireGuard), every tunnel (`tunnels`),
+// its addresses and where each goes, and this month's usage (the
+// account's, pooled across its tunnels). 401 `unauthenticated` when
+// signed out.
 //
 // Corresponds with GET /v1/me (the `GetMe` operationId).
 func (c *Client) GetMe(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -1997,6 +3681,443 @@ func (c *Client) GetTunnelConfig(ctx context.Context, reqEditors ...RequestEdito
 	return c.Client.Do(req)
 }
 
+// ListTunnels The account's tunnels.
+//
+// Every tunnel of the account, by number (docs/tunnels.md): each one is
+// a billing line with its own plan, type, allowance, usage, status and
+// client configuration. Never a secret.
+//
+// Corresponds with GET /v1/tunnels (the `ListTunnels` operationId).
+func (c *Client) ListTunnels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTunnelsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateTunnelWithBody Add a tunnel (billed at once).
+//
+// Adds a tunnel to the live subscription: its plan's price (and its
+// peak tier) is prorated and charged to the saved card at once; a
+// refused card creates nothing (402). The tunnel gets one new address
+// of the account's location, assigned to it, and its plan's data joins
+// the account's pool. The account's first tunnel (paid at checkout,
+// none made yet) is made on the subscription's own line, without a
+// charge (`plan` and `peak_mbps` are then ignored). For
+// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+// 409 `no_subscription` (subscribe first: the first tunnel is bought
+// through checkout), `tunnel_limit`, `location_full` (nothing was
+// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+func (c *Client) CreateTunnelWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTunnelRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// CreateTunnel Add a tunnel (billed at once).
+//
+// Adds a tunnel to the live subscription: its plan's price (and its
+// peak tier) is prorated and charged to the saved card at once; a
+// refused card creates nothing (402). The tunnel gets one new address
+// of the account's location, assigned to it, and its plan's data joins
+// the account's pool. The account's first tunnel (paid at checkout,
+// none made yet) is made on the subscription's own line, without a
+// charge (`plan` and `peak_mbps` are then ignored). For
+// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+// 409 `no_subscription` (subscribe first: the first tunnel is bought
+// through checkout), `tunnel_limit`, `location_full` (nothing was
+// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+func (c *Client) CreateTunnel(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateTunnelRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteTunnel Delete a tunnel (credited).
+//
+// Removes the tunnel and its billing line (the rest of the period is
+// credited, as Stripe prorates). Extra addresses above 2 per remaining
+// tunnel are lowered to that (credited too). The tunnel's addresses
+// stay the account's, unassigned, as long as the account's
+// entitlement (one per tunnel plus the extra addresses) covers them;
+// otherwise `release` names the ones to give up (the usual 30-day
+// quarantine), and without it the most recently added go, a block
+// always whole (single addresses are not preferred: newest first). 409
+// `release_required` (with `release_count`) when `release` names too
+// few. 409 `last_tunnel` (cancel the
+// subscription in Billing instead).
+//
+// Corresponds with DELETE /v1/tunnels/{id} (the `DeleteTunnel` operationId).
+func (c *Client) DeleteTunnel(ctx context.Context, id TunnelID, params *DeleteTunnelParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTunnelRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetTunnel One tunnel.
+//
+// One of the account's tunnels, as in `GET /v1/tunnels` (never a
+// secret). 404 `not_found` for another account's tunnel.
+//
+// Corresponds with GET /v1/tunnels/{id} (the `GetTunnel` operationId).
+func (c *Client) GetTunnel(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTunnelRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RenameTunnelWithBody Rename a tunnel.
+//
+// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+// dashboard only. 422 on `name`.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+func (c *Client) RenameTunnelWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRenameTunnelRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// RenameTunnel Rename a tunnel.
+//
+// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+// dashboard only. 422 on `name`.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+func (c *Client) RenameTunnel(ctx context.Context, id TunnelID, body RenameTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRenameTunnelRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetTunnelBGP The tunnel's BGP session and what it announces.
+//
+// Customer BGP over the tunnel (free, off by default): its settings,
+// our side's values, the session's state, and the routes received,
+// accepted and refused (with the reason). `available` says whether
+// the tunnel's location offers BGP; `full_table_available` whether
+// it can send the full table.
+//
+// Corresponds with GET /v1/tunnels/{id}/bgp (the `GetTunnelBGP` operationId).
+func (c *Client) GetTunnelBGP(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTunnelBGPRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutTunnelBGPWithBody Turn BGP on or off for the tunnel, or change its settings.
+//
+// `enabled` true takes `export` (`default`, the default; or `full`)
+// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+// the key). Turning it on gives the tunnel its session addresses,
+// kept while the tunnel exists, and, the first time for the account,
+// the account its AS number: a private 32-bit number we choose
+// (`asn` in the reply), unique to the account and the same for all
+// its tunnels' sessions. You don't choose it: a request with `asn` is
+// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+// given just now (BGP stays off; try again).
+// Turning it off ends the session; addresses assigned to BGP stay
+// assigned and are dropped while none of the account's tunnels
+// announces them. 409 `bgp_unavailable` (the location doesn't offer
+// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+func (c *Client) PutTunnelBGPWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutTunnelBGPRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutTunnelBGP Turn BGP on or off for the tunnel, or change its settings.
+//
+// `enabled` true takes `export` (`default`, the default; or `full`)
+// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+// the key). Turning it on gives the tunnel its session addresses,
+// kept while the tunnel exists, and, the first time for the account,
+// the account its AS number: a private 32-bit number we choose
+// (`asn` in the reply), unique to the account and the same for all
+// its tunnels' sessions. You don't choose it: a request with `asn` is
+// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+// given just now (BGP stays off; try again).
+// Turning it off ends the session; addresses assigned to BGP stay
+// assigned and are dropped while none of the account's tunnels
+// announces them. 409 `bgp_unavailable` (the location doesn't offer
+// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+func (c *Client) PutTunnelBGP(ctx context.Context, id TunnelID, body PutTunnelBGPJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutTunnelBGPRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetTunnelBGPConfig The session's values to paste into your router, with examples.
+//
+// Our AS number and address, yours, the key if the session has one,
+// the addresses the session may announce, and configuration examples
+// for BIRD, FRR (and UniFi gateways), MikroTik RouterOS 7, Ubiquiti
+// EdgeOS and OpenWrt. It holds the key: a session or a write token.
+// 409 `bgp_off` while BGP is off for the tunnel.
+//
+// Corresponds with GET /v1/tunnels/{id}/bgp/config (the `GetTunnelBGPConfig` operationId).
+func (c *Client) GetTunnelBGPConfig(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTunnelBGPConfigRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ResetTunnelBGPKey A new key for the tunnel's BGP session.
+//
+// A new TCP-MD5 password or TCP-AO key for a session with
+// authentication; the old one stops at the next desired state
+// (seconds), so the session restarts once your router has the new
+// one. 409 `bgp_no_auth` when the session has none.
+//
+// Corresponds with POST /v1/tunnels/{id}/bgp/key (the `ResetTunnelBGPKey` operationId).
+func (c *Client) ResetTunnelBGPKey(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResetTunnelBGPKeyRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ResetTunnelCredentials New credentials for an L2TP/IPsec tunnel (shown once).
+//
+// A new IPsec pre-shared key and L2TP password; the old ones stop
+// working at the next desired state (seconds). 409 `not_l2tp` for a
+// WireGuard tunnel.
+//
+// Corresponds with POST /v1/tunnels/{id}/credentials (the `ResetTunnelCredentials` operationId).
+func (c *Client) ResetTunnelCredentials(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewResetTunnelCredentialsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutTunnelKeyWithBody Set or replace a WireGuard tunnel's public key.
+//
+// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+// WireGuard tunnel. 409 `not_wireguard` for the other types.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+func (c *Client) PutTunnelKeyWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutTunnelKeyRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutTunnelKey Set or replace a WireGuard tunnel's public key.
+//
+// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+// WireGuard tunnel. 409 `not_wireguard` for the other types.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+func (c *Client) PutTunnelKey(ctx context.Context, id TunnelID, body PutTunnelKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutTunnelKeyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ChangeTunnelPlanWithBody Change a tunnel's plan, monthly data or peak speed.
+//
+// This tunnel's plan and peak tier, prorated and charged (or
+// credited) at once. Monthly data and extra addresses are the
+// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+// current one.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+func (c *Client) ChangeTunnelPlanWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeTunnelPlanRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ChangeTunnelPlan Change a tunnel's plan, monthly data or peak speed.
+//
+// This tunnel's plan and peak tier, prorated and charged (or
+// credited) at once. Monthly data and extra addresses are the
+// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+// current one.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+func (c *Client) ChangeTunnelPlan(ctx context.Context, id TunnelID, body ChangeTunnelPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeTunnelPlanRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ChangeTunnelTypeWithBody Change a tunnel's type (and its setup).
+//
+// Sets the tunnel's type and what that type needs: a WireGuard public
+// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+// public IPv4 in `endpoint`). The price doesn't change. The old setup
+// stops at the next desired state. L2TP/IPsec gets new
+// `credentials`, shown this once. 409
+// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+func (c *Client) ChangeTunnelTypeWithBody(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeTunnelTypeRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ChangeTunnelType Change a tunnel's type (and its setup).
+//
+// Sets the tunnel's type and what that type needs: a WireGuard public
+// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+// public IPv4 in `endpoint`). The price doesn't change. The old setup
+// stops at the next desired state. L2TP/IPsec gets new
+// `credentials`, shown this once. 409
+// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+func (c *Client) ChangeTunnelType(ctx context.Context, id TunnelID, body ChangeTunnelTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewChangeTunnelTypeRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetUsage Data used in a month, per day, and live throughput.
 //
 // Totals and the daily series (UTC days) of a calendar month (default
@@ -2015,6 +4136,154 @@ func (c *Client) GetUsage(ctx context.Context, params *GetUsageParams, reqEditor
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewListAddressesRequest constructs an http.Request for the ListAddresses method
+func NewListAddressesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/addresses")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewBuyAddressesRequest calls the generic BuyAddresses builder with application/json body
+func NewBuyAddressesRequest(server string, body BuyAddressesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBuyAddressesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewBuyAddressesRequestWithBody constructs an http.Request for the BuyAddresses method, with any body, and a specified content type
+func NewBuyAddressesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/addresses")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewReleaseAddressRequest constructs an http.Request for the ReleaseAddress method
+func NewReleaseAddressRequest(server string, ip string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "ip", ip, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "ipv4"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/addresses/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAssignAddressRequest calls the generic AssignAddress builder with application/json body
+func NewAssignAddressRequest(server string, ip string, body AssignAddressJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAssignAddressRequestWithBody(server, ip, "application/json", bodyReader)
+}
+
+// NewAssignAddressRequestWithBody constructs an http.Request for the AssignAddress method, with any body, and a specified content type
+func NewAssignAddressRequestWithBody(server string, ip string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "ip", ip, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "ipv4"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/addresses/%s/assignment", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewGetFirewallRequest constructs an http.Request for the GetFirewall method
@@ -2388,6 +4657,100 @@ func NewStartCheckoutRequestWithBody(server string, contentType string, body io.
 	return req, nil
 }
 
+// NewDeleteDNSRequest constructs an http.Request for the DeleteDNS method
+func NewDeleteDNSRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/dns")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetDNSRequest constructs an http.Request for the GetDNS method
+func NewGetDNSRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/dns")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutDNSRequest calls the generic PutDNS builder with application/json body
+func NewPutDNSRequest(server string, body PutDNSJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutDNSRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutDNSRequestWithBody constructs an http.Request for the PutDNS method, with any body, and a specified content type
+func NewPutDNSRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/dns")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListLocationsRequest constructs an http.Request for the ListLocations method
 func NewListLocationsRequest(server string) (*http.Request, error) {
 	var err error
@@ -2731,6 +5094,539 @@ func NewGetTunnelConfigRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewListTunnelsRequest constructs an http.Request for the ListTunnels method
+func NewListTunnelsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateTunnelRequest calls the generic CreateTunnel builder with application/json body
+func NewCreateTunnelRequest(server string, body CreateTunnelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateTunnelRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateTunnelRequestWithBody constructs an http.Request for the CreateTunnel method, with any body, and a specified content type
+func NewCreateTunnelRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteTunnelRequest constructs an http.Request for the DeleteTunnel method
+func NewDeleteTunnelRequest(server string, id TunnelID, params *DeleteTunnelParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Release != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "release", *params.Release, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetTunnelRequest constructs an http.Request for the GetTunnel method
+func NewGetTunnelRequest(server string, id TunnelID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRenameTunnelRequest calls the generic RenameTunnel builder with application/json body
+func NewRenameTunnelRequest(server string, id TunnelID, body RenameTunnelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRenameTunnelRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewRenameTunnelRequestWithBody constructs an http.Request for the RenameTunnel method, with any body, and a specified content type
+func NewRenameTunnelRequestWithBody(server string, id TunnelID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetTunnelBGPRequest constructs an http.Request for the GetTunnelBGP method
+func NewGetTunnelBGPRequest(server string, id TunnelID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/bgp", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutTunnelBGPRequest calls the generic PutTunnelBGP builder with application/json body
+func NewPutTunnelBGPRequest(server string, id TunnelID, body PutTunnelBGPJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutTunnelBGPRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewPutTunnelBGPRequestWithBody constructs an http.Request for the PutTunnelBGP method, with any body, and a specified content type
+func NewPutTunnelBGPRequestWithBody(server string, id TunnelID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/bgp", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetTunnelBGPConfigRequest constructs an http.Request for the GetTunnelBGPConfig method
+func NewGetTunnelBGPConfigRequest(server string, id TunnelID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/bgp/config", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewResetTunnelBGPKeyRequest constructs an http.Request for the ResetTunnelBGPKey method
+func NewResetTunnelBGPKeyRequest(server string, id TunnelID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/bgp/key", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewResetTunnelCredentialsRequest constructs an http.Request for the ResetTunnelCredentials method
+func NewResetTunnelCredentialsRequest(server string, id TunnelID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/credentials", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutTunnelKeyRequest calls the generic PutTunnelKey builder with application/json body
+func NewPutTunnelKeyRequest(server string, id TunnelID, body PutTunnelKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutTunnelKeyRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewPutTunnelKeyRequestWithBody constructs an http.Request for the PutTunnelKey method, with any body, and a specified content type
+func NewPutTunnelKeyRequestWithBody(server string, id TunnelID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/key", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewChangeTunnelPlanRequest calls the generic ChangeTunnelPlan builder with application/json body
+func NewChangeTunnelPlanRequest(server string, id TunnelID, body ChangeTunnelPlanJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeTunnelPlanRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewChangeTunnelPlanRequestWithBody constructs an http.Request for the ChangeTunnelPlan method, with any body, and a specified content type
+func NewChangeTunnelPlanRequestWithBody(server string, id TunnelID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewChangeTunnelTypeRequest calls the generic ChangeTunnelType builder with application/json body
+func NewChangeTunnelTypeRequest(server string, id TunnelID, body ChangeTunnelTypeJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewChangeTunnelTypeRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewChangeTunnelTypeRequestWithBody constructs an http.Request for the ChangeTunnelType method, with any body, and a specified content type
+func NewChangeTunnelTypeRequestWithBody(server string, id TunnelID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/tunnels/%s/type", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetUsageRequest constructs an http.Request for the GetUsage method
 func NewGetUsageRequest(server string, params *GetUsageParams) (*http.Request, error) {
 	var err error
@@ -2828,6 +5724,95 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+
+	// ListAddressesWithResponse The account's addresses and where each is assigned.
+	//
+	// Every address of the account (the account owns them: one per
+	// tunnel plus its extra addresses), lowest first, with where each goes
+	// (a tunnel, BGP, or unassigned), and how many the account pays for.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /v1/addresses (the `ListAddresses` operationId).
+	ListAddressesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListAddressesResponse, error)
+
+	// BuyAddressesWithBodyWithResponse Buy addresses, as one block (billed at once).
+	//
+	// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+	// (/32 to /29) at the account's location, routed whole down one
+	// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+	// default). Every address of the block is usable. Each is an extra
+	// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+	// once; a refused card keeps nothing (402). No cap but the location's
+	// free space: 409 `location_full` when it has no free aligned block of
+	// that size (nothing charged).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+	BuyAddressesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BuyAddressesResponse, error)
+
+	// BuyAddressesWithResponse Buy addresses, as one block (billed at once).
+	//
+	// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+	// (/32 to /29) at the account's location, routed whole down one
+	// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+	// default). Every address of the block is usable. Each is an extra
+	// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+	// once; a refused card keeps nothing (402). No cap but the location's
+	// free space: 409 `location_full` when it has no free aligned block of
+	// that size (nothing charged).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+	BuyAddressesWithResponse(ctx context.Context, body BuyAddressesJSONRequestBody, reqEditors ...RequestEditorFn) (*BuyAddressesResponse, error)
+
+	// ReleaseAddressWithResponse Give up an address, or the whole block it belongs to.
+	//
+	// Releases the address, or every address of its block, into the
+	// usual 30-day quarantine, and lowers the extra addresses as many
+	// (credited, prorated). 409 `below_included`: each tunnel includes
+	// one address the account keeps.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /v1/addresses/{ip} (the `ReleaseAddress` operationId).
+	ReleaseAddressWithResponse(ctx context.Context, ip string, reqEditors ...RequestEditorFn) (*ReleaseAddressResponse, error)
+
+	// AssignAddressWithBodyWithResponse Route an address down a tunnel, to BGP, or nowhere.
+	//
+	// Instant and free: the address stays the account's (no release, no
+	// quarantine) and its firewall rules follow it. An address bought in a
+	// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+	// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+	// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+	// makes it float: it goes to whichever of the account's BGP tunnels
+	// announces it, and is dropped while none does (409
+	// `bgp_unavailable` until the account has a tunnel with BGP on at
+	// the address's location).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+	AssignAddressWithBodyWithResponse(ctx context.Context, ip string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignAddressResponse, error)
+
+	// AssignAddressWithResponse Route an address down a tunnel, to BGP, or nowhere.
+	//
+	// Instant and free: the address stays the account's (no release, no
+	// quarantine) and its firewall rules follow it. An address bought in a
+	// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+	// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+	// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+	// makes it float: it goes to whichever of the account's BGP tunnels
+	// announces it, and is dropped while none does (409
+	// `bgp_unavailable` until the account has a tunnel with BGP on at
+	// the address's location).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+	AssignAddressWithResponse(ctx context.Context, ip string, body AssignAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignAddressResponse, error)
 
 	// GetFirewallWithResponse An address's inbound firewall.
 	//
@@ -2999,6 +5984,67 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /v1/checkout (the `StartCheckout` operationId).
 	StartCheckoutWithResponse(ctx context.Context, body StartCheckoutJSONRequestBody, reqEditors ...RequestEditorFn) (*StartCheckoutResponse, error)
 
+	// DeleteDNSWithResponse Turn opdns DNS off.
+	//
+	// Your addresses are unlinked from the opdns profile (at once when opdns
+	// answers, else we keep trying: `linked_ips` shows what is still
+	// linked). Your tunnel's configuration doesn't change.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /v1/dns (the `DeleteDNS` operationId).
+	DeleteDNSWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteDNSResponse, error)
+
+	// GetDNSWithResponse The opdns DNS opt-in, and the opdns profiles to pick from.
+	//
+	// opdns DNS: with it on, opwan links your static addresses to the opdns
+	// profile you picked, so lookups that reach opdns's resolver (`resolver`,
+	// 23.166.164.53) from them are filtered by it. opwan's configurations
+	// never set DNS (opwan isn't a VPN: only your static addresses' traffic
+	// uses the tunnel): point a device or server that uses a static address
+	// at `resolver` for its lookups. Offered when your op account also has an opdns
+	// account (`opdns_account`; null when opdns couldn't be asked just now):
+	// `profiles` are your opdns profiles. `state` is `off`, `pending` (opdns
+	// not updated yet; we keep trying), `linked` or `error` (`error` says what
+	// happened in plain words); `linked_ips` are the addresses opdns has
+	// linked now (addresses released or quarantined are unlinked within a
+	// minute). `available` is false when this server doesn't offer it.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /v1/dns (the `GetDNS` operationId).
+	GetDNSWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDNSResponse, error)
+
+	// PutDNSWithBodyWithResponse Turn opdns DNS on with one of your opdns profiles, or change the profile.
+	//
+	// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+	// otherwise; opdns checks again that it is yours). 409
+	// `no_opdns_account` when your op account has no opdns account; 503
+	// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+	// Your addresses are linked at once when opdns answers, else `state` is
+	// `pending` and we keep trying. Your tunnel's configuration doesn't
+	// change: it has no DNS line either way.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+	PutDNSWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutDNSResponse, error)
+
+	// PutDNSWithResponse Turn opdns DNS on with one of your opdns profiles, or change the profile.
+	//
+	// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+	// otherwise; opdns checks again that it is yours). 409
+	// `no_opdns_account` when your op account has no opdns account; 503
+	// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+	// Your addresses are linked at once when opdns answers, else `state` is
+	// `pending` and we keep trying. Your tunnel's configuration doesn't
+	// change: it has no DNS line either way.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+	PutDNSWithResponse(ctx context.Context, body PutDNSJSONRequestBody, reqEditors ...RequestEditorFn) (*PutDNSResponse, error)
+
 	// ListLocationsWithResponse The exit locations, for the location step.
 	//
 	// The enabled locations (v1 Dallas only) with what the location step
@@ -3018,8 +6064,11 @@ type ClientWithResponsesInterface interface {
 	// GetMeWithResponse The account and everything it has.
 	//
 	// The signed-in account, its subscription (null before the first
-	// checkout), its tunnel (null before one is created), its addresses and
-	// this month's usage. 401 `unauthenticated` when signed out.
+	// checkout), its first tunnel (`tunnel`: null before one is created, or
+	// when the first tunnel isn't WireGuard), every tunnel (`tunnels`),
+	// its addresses and where each goes, and this month's usage (the
+	// account's, pooled across its tunnels). 401 `unauthenticated` when
+	// signed out.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -3213,6 +6262,267 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /v1/tunnel/config (the `GetTunnelConfig` operationId).
 	GetTunnelConfigWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTunnelConfigResponse, error)
 
+	// ListTunnelsWithResponse The account's tunnels.
+	//
+	// Every tunnel of the account, by number (docs/tunnels.md): each one is
+	// a billing line with its own plan, type, allowance, usage, status and
+	// client configuration. Never a secret.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /v1/tunnels (the `ListTunnels` operationId).
+	ListTunnelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelsResponse, error)
+
+	// CreateTunnelWithBodyWithResponse Add a tunnel (billed at once).
+	//
+	// Adds a tunnel to the live subscription: its plan's price (and its
+	// peak tier) is prorated and charged to the saved card at once; a
+	// refused card creates nothing (402). The tunnel gets one new address
+	// of the account's location, assigned to it, and its plan's data joins
+	// the account's pool. The account's first tunnel (paid at checkout,
+	// none made yet) is made on the subscription's own line, without a
+	// charge (`plan` and `peak_mbps` are then ignored). For
+	// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+	// 409 `no_subscription` (subscribe first: the first tunnel is bought
+	// through checkout), `tunnel_limit`, `location_full` (nothing was
+	// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+	CreateTunnelWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error)
+
+	// CreateTunnelWithResponse Add a tunnel (billed at once).
+	//
+	// Adds a tunnel to the live subscription: its plan's price (and its
+	// peak tier) is prorated and charged to the saved card at once; a
+	// refused card creates nothing (402). The tunnel gets one new address
+	// of the account's location, assigned to it, and its plan's data joins
+	// the account's pool. The account's first tunnel (paid at checkout,
+	// none made yet) is made on the subscription's own line, without a
+	// charge (`plan` and `peak_mbps` are then ignored). For
+	// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+	// 409 `no_subscription` (subscribe first: the first tunnel is bought
+	// through checkout), `tunnel_limit`, `location_full` (nothing was
+	// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+	CreateTunnelWithResponse(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error)
+
+	// DeleteTunnelWithResponse Delete a tunnel (credited).
+	//
+	// Removes the tunnel and its billing line (the rest of the period is
+	// credited, as Stripe prorates). Extra addresses above 2 per remaining
+	// tunnel are lowered to that (credited too). The tunnel's addresses
+	// stay the account's, unassigned, as long as the account's
+	// entitlement (one per tunnel plus the extra addresses) covers them;
+	// otherwise `release` names the ones to give up (the usual 30-day
+	// quarantine), and without it the most recently added go, a block
+	// always whole (single addresses are not preferred: newest first). 409
+	// `release_required` (with `release_count`) when `release` names too
+	// few. 409 `last_tunnel` (cancel the
+	// subscription in Billing instead).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /v1/tunnels/{id} (the `DeleteTunnel` operationId).
+	DeleteTunnelWithResponse(ctx context.Context, id TunnelID, params *DeleteTunnelParams, reqEditors ...RequestEditorFn) (*DeleteTunnelResponse, error)
+
+	// GetTunnelWithResponse One tunnel.
+	//
+	// One of the account's tunnels, as in `GET /v1/tunnels` (never a
+	// secret). 404 `not_found` for another account's tunnel.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /v1/tunnels/{id} (the `GetTunnel` operationId).
+	GetTunnelWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*GetTunnelResponse, error)
+
+	// RenameTunnelWithBodyWithResponse Rename a tunnel.
+	//
+	// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+	// dashboard only. 422 on `name`.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+	RenameTunnelWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RenameTunnelResponse, error)
+
+	// RenameTunnelWithResponse Rename a tunnel.
+	//
+	// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+	// dashboard only. 422 on `name`.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+	RenameTunnelWithResponse(ctx context.Context, id TunnelID, body RenameTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*RenameTunnelResponse, error)
+
+	// GetTunnelBGPWithResponse The tunnel's BGP session and what it announces.
+	//
+	// Customer BGP over the tunnel (free, off by default): its settings,
+	// our side's values, the session's state, and the routes received,
+	// accepted and refused (with the reason). `available` says whether
+	// the tunnel's location offers BGP; `full_table_available` whether
+	// it can send the full table.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /v1/tunnels/{id}/bgp (the `GetTunnelBGP` operationId).
+	GetTunnelBGPWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*GetTunnelBGPResponse, error)
+
+	// PutTunnelBGPWithBodyWithResponse Turn BGP on or off for the tunnel, or change its settings.
+	//
+	// `enabled` true takes `export` (`default`, the default; or `full`)
+	// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+	// the key). Turning it on gives the tunnel its session addresses,
+	// kept while the tunnel exists, and, the first time for the account,
+	// the account its AS number: a private 32-bit number we choose
+	// (`asn` in the reply), unique to the account and the same for all
+	// its tunnels' sessions. You don't choose it: a request with `asn` is
+	// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+	// given just now (BGP stays off; try again).
+	// Turning it off ends the session; addresses assigned to BGP stay
+	// assigned and are dropped while none of the account's tunnels
+	// announces them. 409 `bgp_unavailable` (the location doesn't offer
+	// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+	PutTunnelBGPWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutTunnelBGPResponse, error)
+
+	// PutTunnelBGPWithResponse Turn BGP on or off for the tunnel, or change its settings.
+	//
+	// `enabled` true takes `export` (`default`, the default; or `full`)
+	// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+	// the key). Turning it on gives the tunnel its session addresses,
+	// kept while the tunnel exists, and, the first time for the account,
+	// the account its AS number: a private 32-bit number we choose
+	// (`asn` in the reply), unique to the account and the same for all
+	// its tunnels' sessions. You don't choose it: a request with `asn` is
+	// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+	// given just now (BGP stays off; try again).
+	// Turning it off ends the session; addresses assigned to BGP stay
+	// assigned and are dropped while none of the account's tunnels
+	// announces them. 409 `bgp_unavailable` (the location doesn't offer
+	// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+	PutTunnelBGPWithResponse(ctx context.Context, id TunnelID, body PutTunnelBGPJSONRequestBody, reqEditors ...RequestEditorFn) (*PutTunnelBGPResponse, error)
+
+	// GetTunnelBGPConfigWithResponse The session's values to paste into your router, with examples.
+	//
+	// Our AS number and address, yours, the key if the session has one,
+	// the addresses the session may announce, and configuration examples
+	// for BIRD, FRR (and UniFi gateways), MikroTik RouterOS 7, Ubiquiti
+	// EdgeOS and OpenWrt. It holds the key: a session or a write token.
+	// 409 `bgp_off` while BGP is off for the tunnel.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /v1/tunnels/{id}/bgp/config (the `GetTunnelBGPConfig` operationId).
+	GetTunnelBGPConfigWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*GetTunnelBGPConfigResponse, error)
+
+	// ResetTunnelBGPKeyWithResponse A new key for the tunnel's BGP session.
+	//
+	// A new TCP-MD5 password or TCP-AO key for a session with
+	// authentication; the old one stops at the next desired state
+	// (seconds), so the session restarts once your router has the new
+	// one. 409 `bgp_no_auth` when the session has none.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /v1/tunnels/{id}/bgp/key (the `ResetTunnelBGPKey` operationId).
+	ResetTunnelBGPKeyWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*ResetTunnelBGPKeyResponse, error)
+
+	// ResetTunnelCredentialsWithResponse New credentials for an L2TP/IPsec tunnel (shown once).
+	//
+	// A new IPsec pre-shared key and L2TP password; the old ones stop
+	// working at the next desired state (seconds). 409 `not_l2tp` for a
+	// WireGuard tunnel.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /v1/tunnels/{id}/credentials (the `ResetTunnelCredentials` operationId).
+	ResetTunnelCredentialsWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*ResetTunnelCredentialsResponse, error)
+
+	// PutTunnelKeyWithBodyWithResponse Set or replace a WireGuard tunnel's public key.
+	//
+	// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+	// WireGuard tunnel. 409 `not_wireguard` for the other types.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+	PutTunnelKeyWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutTunnelKeyResponse, error)
+
+	// PutTunnelKeyWithResponse Set or replace a WireGuard tunnel's public key.
+	//
+	// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+	// WireGuard tunnel. 409 `not_wireguard` for the other types.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+	PutTunnelKeyWithResponse(ctx context.Context, id TunnelID, body PutTunnelKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*PutTunnelKeyResponse, error)
+
+	// ChangeTunnelPlanWithBodyWithResponse Change a tunnel's plan, monthly data or peak speed.
+	//
+	// This tunnel's plan and peak tier, prorated and charged (or
+	// credited) at once. Monthly data and extra addresses are the
+	// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+	// current one.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+	ChangeTunnelPlanWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeTunnelPlanResponse, error)
+
+	// ChangeTunnelPlanWithResponse Change a tunnel's plan, monthly data or peak speed.
+	//
+	// This tunnel's plan and peak tier, prorated and charged (or
+	// credited) at once. Monthly data and extra addresses are the
+	// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+	// current one.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+	ChangeTunnelPlanWithResponse(ctx context.Context, id TunnelID, body ChangeTunnelPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeTunnelPlanResponse, error)
+
+	// ChangeTunnelTypeWithBodyWithResponse Change a tunnel's type (and its setup).
+	//
+	// Sets the tunnel's type and what that type needs: a WireGuard public
+	// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+	// public IPv4 in `endpoint`). The price doesn't change. The old setup
+	// stops at the next desired state. L2TP/IPsec gets new
+	// `credentials`, shown this once. 409
+	// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+	ChangeTunnelTypeWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeTunnelTypeResponse, error)
+
+	// ChangeTunnelTypeWithResponse Change a tunnel's type (and its setup).
+	//
+	// Sets the tunnel's type and what that type needs: a WireGuard public
+	// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+	// public IPv4 in `endpoint`). The price doesn't change. The old setup
+	// stops at the next desired state. L2TP/IPsec gets new
+	// `credentials`, shown this once. 409
+	// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+	ChangeTunnelTypeWithResponse(ctx context.Context, id TunnelID, body ChangeTunnelTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeTunnelTypeResponse, error)
+
 	// GetUsageWithResponse Data used in a month, per day, and live throughput.
 	//
 	// Totals and the daily series (UTC days) of a calendar month (default
@@ -3224,6 +6534,366 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /v1/usage (the `GetUsage` operationId).
 	GetUsageWithResponse(ctx context.Context, params *GetUsageParams, reqEditors ...RequestEditorFn) (*GetUsageResponse, error)
+}
+
+// ListAddressesResponse429Headers the declared response headers of an HTTP 429 response for ListAddresses
+type ListAddressesResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ListAddressesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *struct {
+		Addresses []Address `json:"addresses"`
+
+		// Entitlement How many addresses the account pays for (one per tunnel plus the extra addresses).
+		Entitlement int `json:"entitlement"`
+	}
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ListAddressesResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListAddressesResponse) GetJSON200() *struct {
+	Addresses []Address `json:"addresses"`
+
+	// Entitlement How many addresses the account pays for (one per tunnel plus the extra addresses).
+	Entitlement int `json:"entitlement"`
+} {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ListAddressesResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ListAddressesResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ListAddressesResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r ListAddressesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListAddressesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListAddressesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListAddressesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// BuyAddressesResponse429Headers the declared response headers of an HTTP 429 response for BuyAddresses
+type BuyAddressesResponse429Headers struct {
+	RetryAfter *int
+}
+
+type BuyAddressesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *struct {
+		Addresses []Address `json:"addresses"`
+	}
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON402 the response for an HTTP 402 `application/problem+json` response
+	ApplicationproblemJSON402 *PaymentFailed
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *BuyAddressesResponse429Headers
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r BuyAddressesResponse) GetJSON201() *struct {
+	Addresses []Address `json:"addresses"`
+} {
+	return r.JSON201
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON402 returns the response for an HTTP 402 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON402() *PaymentFailed {
+	return r.ApplicationproblemJSON402
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r BuyAddressesResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r BuyAddressesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r BuyAddressesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BuyAddressesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r BuyAddressesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ReleaseAddressResponse429Headers the declared response headers of an HTTP 429 response for ReleaseAddress
+type ReleaseAddressResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ReleaseAddressResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ReleaseAddressResponse429Headers
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ReleaseAddressResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ReleaseAddressResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ReleaseAddressResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ReleaseAddressResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ReleaseAddressResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ReleaseAddressResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r ReleaseAddressResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ReleaseAddressResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReleaseAddressResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ReleaseAddressResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// AssignAddressResponse429Headers the declared response headers of an HTTP 429 response for AssignAddress
+type AssignAddressResponse429Headers struct {
+	RetryAfter *int
+}
+
+type AssignAddressResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *Address
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *AssignAddressResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AssignAddressResponse) GetJSON200() *Address {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r AssignAddressResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r AssignAddressResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r AssignAddressResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r AssignAddressResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r AssignAddressResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r AssignAddressResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r AssignAddressResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AssignAddressResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AssignAddressResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AssignAddressResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
 }
 
 // GetFirewallResponse429Headers the declared response headers of an HTTP 429 response for GetFirewall
@@ -3820,6 +7490,241 @@ func (r StartCheckoutResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r StartCheckoutResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteDNSResponse429Headers the declared response headers of an HTTP 429 response for DeleteDNS
+type DeleteDNSResponse429Headers struct {
+	RetryAfter *int
+}
+
+type DeleteDNSResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DNSSettings
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *DeleteDNSResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DeleteDNSResponse) GetJSON200() *DNSSettings {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r DeleteDNSResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r DeleteDNSResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r DeleteDNSResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r DeleteDNSResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteDNSResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteDNSResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteDNSResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteDNSResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetDNSResponse429Headers the declared response headers of an HTTP 429 response for GetDNS
+type GetDNSResponse429Headers struct {
+	RetryAfter *int
+}
+
+type GetDNSResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DNSSettings
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *GetDNSResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetDNSResponse) GetJSON200() *DNSSettings {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r GetDNSResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r GetDNSResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r GetDNSResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetDNSResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetDNSResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetDNSResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PutDNSResponse429Headers the declared response headers of an HTTP 429 response for PutDNS
+type PutDNSResponse429Headers struct {
+	RetryAfter *int
+}
+
+type PutDNSResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *DNSSettings
+	// ApplicationproblemJSON400 the response for an HTTP 400 `application/problem+json` response
+	ApplicationproblemJSON400 *BadRequest
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *PutDNSResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PutDNSResponse) GetJSON200() *DNSSettings {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON400 returns the response for an HTTP 400 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON400() *BadRequest {
+	return r.ApplicationproblemJSON400
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r PutDNSResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r PutDNSResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PutDNSResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutDNSResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PutDNSResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -4592,6 +8497,1163 @@ func (r GetTunnelConfigResponse) ContentType() string {
 	return ""
 }
 
+// ListTunnelsResponse429Headers the declared response headers of an HTTP 429 response for ListTunnels
+type ListTunnelsResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ListTunnelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *struct {
+		// MaxTunnels How many tunnels an account may have.
+		MaxTunnels int          `json:"max_tunnels"`
+		Tunnels    []TunnelItem `json:"tunnels"`
+	}
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ListTunnelsResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ListTunnelsResponse) GetJSON200() *struct {
+	// MaxTunnels How many tunnels an account may have.
+	MaxTunnels int          `json:"max_tunnels"`
+	Tunnels    []TunnelItem `json:"tunnels"`
+} {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ListTunnelsResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ListTunnelsResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ListTunnelsResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r ListTunnelsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ListTunnelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTunnelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ListTunnelsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// CreateTunnelResponse429Headers the declared response headers of an HTTP 429 response for CreateTunnel
+type CreateTunnelResponse429Headers struct {
+	RetryAfter *int
+}
+
+type CreateTunnelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *TunnelWithCredentials
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON402 the response for an HTTP 402 `application/problem+json` response
+	ApplicationproblemJSON402 *PaymentFailed
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *CreateTunnelResponse429Headers
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r CreateTunnelResponse) GetJSON201() *TunnelWithCredentials {
+	return r.JSON201
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON402 returns the response for an HTTP 402 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON402() *PaymentFailed {
+	return r.ApplicationproblemJSON402
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r CreateTunnelResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r CreateTunnelResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateTunnelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateTunnelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r CreateTunnelResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// DeleteTunnelResponse429Headers the declared response headers of an HTTP 429 response for DeleteTunnel
+type DeleteTunnelResponse429Headers struct {
+	RetryAfter *int
+}
+
+type DeleteTunnelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON402 the response for an HTTP 402 `application/problem+json` response
+	ApplicationproblemJSON402 *PaymentFailed
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *DeleteTunnelResponse429Headers
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON402 returns the response for an HTTP 402 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON402() *PaymentFailed {
+	return r.ApplicationproblemJSON402
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r DeleteTunnelResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteTunnelResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteTunnelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteTunnelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteTunnelResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetTunnelResponse429Headers the declared response headers of an HTTP 429 response for GetTunnel
+type GetTunnelResponse429Headers struct {
+	RetryAfter *int
+}
+
+type GetTunnelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelItem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *GetTunnelResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetTunnelResponse) GetJSON200() *TunnelItem {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r GetTunnelResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r GetTunnelResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r GetTunnelResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r GetTunnelResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r GetTunnelResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTunnelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTunnelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTunnelResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// RenameTunnelResponse429Headers the declared response headers of an HTTP 429 response for RenameTunnel
+type RenameTunnelResponse429Headers struct {
+	RetryAfter *int
+}
+
+type RenameTunnelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelItem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *RenameTunnelResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r RenameTunnelResponse) GetJSON200() *TunnelItem {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r RenameTunnelResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r RenameTunnelResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r RenameTunnelResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r RenameTunnelResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r RenameTunnelResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r RenameTunnelResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r RenameTunnelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RenameTunnelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r RenameTunnelResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetTunnelBGPResponse429Headers the declared response headers of an HTTP 429 response for GetTunnelBGP
+type GetTunnelBGPResponse429Headers struct {
+	RetryAfter *int
+}
+
+type GetTunnelBGPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelBGP
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *GetTunnelBGPResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetTunnelBGPResponse) GetJSON200() *TunnelBGP {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r GetTunnelBGPResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r GetTunnelBGPResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r GetTunnelBGPResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r GetTunnelBGPResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r GetTunnelBGPResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTunnelBGPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTunnelBGPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTunnelBGPResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PutTunnelBGPResponse429Headers the declared response headers of an HTTP 429 response for PutTunnelBGP
+type PutTunnelBGPResponse429Headers struct {
+	RetryAfter *int
+}
+
+type PutTunnelBGPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelBGP
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *PutTunnelBGPResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PutTunnelBGPResponse) GetJSON200() *TunnelBGP {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r PutTunnelBGPResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r PutTunnelBGPResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PutTunnelBGPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutTunnelBGPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PutTunnelBGPResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// GetTunnelBGPConfigResponse429Headers the declared response headers of an HTTP 429 response for GetTunnelBGPConfig
+type GetTunnelBGPConfigResponse429Headers struct {
+	RetryAfter *int
+}
+
+type GetTunnelBGPConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelBGPConfig
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *GetTunnelBGPConfigResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r GetTunnelBGPConfigResponse) GetJSON200() *TunnelBGPConfig {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r GetTunnelBGPConfigResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r GetTunnelBGPConfigResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r GetTunnelBGPConfigResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r GetTunnelBGPConfigResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r GetTunnelBGPConfigResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r GetTunnelBGPConfigResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetTunnelBGPConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTunnelBGPConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetTunnelBGPConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ResetTunnelBGPKeyResponse429Headers the declared response headers of an HTTP 429 response for ResetTunnelBGPKey
+type ResetTunnelBGPKeyResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ResetTunnelBGPKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelBGPConfig
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ResetTunnelBGPKeyResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ResetTunnelBGPKeyResponse) GetJSON200() *TunnelBGPConfig {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ResetTunnelBGPKeyResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ResetTunnelBGPKeyResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ResetTunnelBGPKeyResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ResetTunnelBGPKeyResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ResetTunnelBGPKeyResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ResetTunnelBGPKeyResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r ResetTunnelBGPKeyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ResetTunnelBGPKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ResetTunnelBGPKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ResetTunnelBGPKeyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ResetTunnelCredentialsResponse429Headers the declared response headers of an HTTP 429 response for ResetTunnelCredentials
+type ResetTunnelCredentialsResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ResetTunnelCredentialsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelWithCredentials
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ResetTunnelCredentialsResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ResetTunnelCredentialsResponse) GetJSON200() *TunnelWithCredentials {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ResetTunnelCredentialsResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ResetTunnelCredentialsResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ResetTunnelCredentialsResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ResetTunnelCredentialsResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ResetTunnelCredentialsResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ResetTunnelCredentialsResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r ResetTunnelCredentialsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ResetTunnelCredentialsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ResetTunnelCredentialsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ResetTunnelCredentialsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// PutTunnelKeyResponse429Headers the declared response headers of an HTTP 429 response for PutTunnelKey
+type PutTunnelKeyResponse429Headers struct {
+	RetryAfter *int
+}
+
+type PutTunnelKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelItem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *PutTunnelKeyResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PutTunnelKeyResponse) GetJSON200() *TunnelItem {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r PutTunnelKeyResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r PutTunnelKeyResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r PutTunnelKeyResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r PutTunnelKeyResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r PutTunnelKeyResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r PutTunnelKeyResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetBody returns the raw response body bytes
+func (r PutTunnelKeyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PutTunnelKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutTunnelKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PutTunnelKeyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ChangeTunnelPlanResponse429Headers the declared response headers of an HTTP 429 response for ChangeTunnelPlan
+type ChangeTunnelPlanResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ChangeTunnelPlanResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelItem
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON402 the response for an HTTP 402 `application/problem+json` response
+	ApplicationproblemJSON402 *PaymentFailed
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ChangeTunnelPlanResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ChangeTunnelPlanResponse) GetJSON200() *TunnelItem {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON402 returns the response for an HTTP 402 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON402() *PaymentFailed {
+	return r.ApplicationproblemJSON402
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ChangeTunnelPlanResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r ChangeTunnelPlanResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeTunnelPlanResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeTunnelPlanResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ChangeTunnelPlanResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+// ChangeTunnelTypeResponse429Headers the declared response headers of an HTTP 429 response for ChangeTunnelType
+type ChangeTunnelTypeResponse429Headers struct {
+	RetryAfter *int
+}
+
+type ChangeTunnelTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TunnelWithCredentials
+	// ApplicationproblemJSON401 the response for an HTTP 401 `application/problem+json` response
+	ApplicationproblemJSON401 *Unauthenticated
+	// ApplicationproblemJSON403 the response for an HTTP 403 `application/problem+json` response
+	ApplicationproblemJSON403 *Forbidden
+	// ApplicationproblemJSON404 the response for an HTTP 404 `application/problem+json` response
+	ApplicationproblemJSON404 *NotFound
+	// ApplicationproblemJSON409 the response for an HTTP 409 `application/problem+json` response
+	ApplicationproblemJSON409 *Conflict
+	// ApplicationproblemJSON422 the response for an HTTP 422 `application/problem+json` response
+	ApplicationproblemJSON422 *ValidationFailed
+	// ApplicationproblemJSON429 the response for an HTTP 429 `application/problem+json` response
+	ApplicationproblemJSON429 *RateLimited
+	// ApplicationproblemJSON503 the response for an HTTP 503 `application/problem+json` response
+	ApplicationproblemJSON503 *Unavailable
+	// Headers429 the parsed response headers for an HTTP 429 response
+	Headers429 *ChangeTunnelTypeResponse429Headers
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ChangeTunnelTypeResponse) GetJSON200() *TunnelWithCredentials {
+	return r.JSON200
+}
+
+// GetApplicationproblemJSON401 returns the response for an HTTP 401 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON401() *Unauthenticated {
+	return r.ApplicationproblemJSON401
+}
+
+// GetApplicationproblemJSON403 returns the response for an HTTP 403 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON403() *Forbidden {
+	return r.ApplicationproblemJSON403
+}
+
+// GetApplicationproblemJSON404 returns the response for an HTTP 404 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON404() *NotFound {
+	return r.ApplicationproblemJSON404
+}
+
+// GetApplicationproblemJSON409 returns the response for an HTTP 409 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON409() *Conflict {
+	return r.ApplicationproblemJSON409
+}
+
+// GetApplicationproblemJSON422 returns the response for an HTTP 422 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON422() *ValidationFailed {
+	return r.ApplicationproblemJSON422
+}
+
+// GetApplicationproblemJSON429 returns the response for an HTTP 429 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON429() *RateLimited {
+	return r.ApplicationproblemJSON429
+}
+
+// GetApplicationproblemJSON503 returns the response for an HTTP 503 `application/problem+json` response
+func (r ChangeTunnelTypeResponse) GetApplicationproblemJSON503() *Unavailable {
+	return r.ApplicationproblemJSON503
+}
+
+// GetBody returns the raw response body bytes
+func (r ChangeTunnelTypeResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ChangeTunnelTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ChangeTunnelTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ChangeTunnelTypeResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 // GetUsageResponse429Headers the declared response headers of an HTTP 429 response for GetUsage
 type GetUsageResponse429Headers struct {
 	RetryAfter *int
@@ -4659,6 +9721,131 @@ func (r GetUsageResponse) ContentType() string {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
 	return ""
+}
+
+// ListAddressesWithResponse The account's addresses and where each is assigned.
+//
+// Every address of the account (the account owns them: one per
+// tunnel plus its extra addresses), lowest first, with where each goes
+// (a tunnel, BGP, or unassigned), and how many the account pays for.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /v1/addresses (the `ListAddresses` operationId).
+func (c *ClientWithResponses) ListAddressesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListAddressesResponse, error) {
+	rsp, err := c.ListAddresses(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListAddressesResponse(rsp)
+}
+
+// BuyAddressesWithBodyWithResponse Buy addresses, as one block (billed at once).
+//
+// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+// (/32 to /29) at the account's location, routed whole down one
+// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+// default). Every address of the block is usable. Each is an extra
+// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+// once; a refused card keeps nothing (402). No cap but the location's
+// free space: 409 `location_full` when it has no free aligned block of
+// that size (nothing charged).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+func (c *ClientWithResponses) BuyAddressesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BuyAddressesResponse, error) {
+	rsp, err := c.BuyAddressesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBuyAddressesResponse(rsp)
+}
+
+// BuyAddressesWithResponse Buy addresses, as one block (billed at once).
+//
+// Buys a contiguous, size-aligned block of 1, 2, 4 or 8 addresses
+// (/32 to /29) at the account's location, routed whole down one
+// tunnel (`tunnel`), or kept unassigned (`kind: unassigned`, the
+// default). Every address of the block is usable. Each is an extra
+// address ($3 a month, from `GET /v1/plans`), prorated and charged at
+// once; a refused card keeps nothing (402). No cap but the location's
+// free space: 409 `location_full` when it has no free aligned block of
+// that size (nothing charged).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /v1/addresses (the `BuyAddresses` operationId).
+func (c *ClientWithResponses) BuyAddressesWithResponse(ctx context.Context, body BuyAddressesJSONRequestBody, reqEditors ...RequestEditorFn) (*BuyAddressesResponse, error) {
+	rsp, err := c.BuyAddresses(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBuyAddressesResponse(rsp)
+}
+
+// ReleaseAddressWithResponse Give up an address, or the whole block it belongs to.
+//
+// Releases the address, or every address of its block, into the
+// usual 30-day quarantine, and lowers the extra addresses as many
+// (credited, prorated). 409 `below_included`: each tunnel includes
+// one address the account keeps.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /v1/addresses/{ip} (the `ReleaseAddress` operationId).
+func (c *ClientWithResponses) ReleaseAddressWithResponse(ctx context.Context, ip string, reqEditors ...RequestEditorFn) (*ReleaseAddressResponse, error) {
+	rsp, err := c.ReleaseAddress(ctx, ip, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReleaseAddressResponse(rsp)
+}
+
+// AssignAddressWithBodyWithResponse Route an address down a tunnel, to BGP, or nowhere.
+//
+// Instant and free: the address stays the account's (no release, no
+// quarantine) and its firewall rules follow it. An address bought in a
+// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+// makes it float: it goes to whichever of the account's BGP tunnels
+// announces it, and is dropped while none does (409
+// `bgp_unavailable` until the account has a tunnel with BGP on at
+// the address's location).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+func (c *ClientWithResponses) AssignAddressWithBodyWithResponse(ctx context.Context, ip string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignAddressResponse, error) {
+	rsp, err := c.AssignAddressWithBody(ctx, ip, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignAddressResponse(rsp)
+}
+
+// AssignAddressWithResponse Route an address down a tunnel, to BGP, or nowhere.
+//
+// Instant and free: the address stays the account's (no release, no
+// quarantine) and its firewall rules follow it. An address bought in a
+// block moves with its whole block (`Address.block`). `{"tunnel": id}`
+// routes it down that tunnel; `{"kind": "unassigned"}` keeps it
+// without routing it (traffic to it is dropped); `{"kind": "bgp"}`
+// makes it float: it goes to whichever of the account's BGP tunnels
+// announces it, and is dropped while none does (409
+// `bgp_unavailable` until the account has a tunnel with BGP on at
+// the address's location).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/addresses/{ip}/assignment (the `AssignAddress` operationId).
+func (c *ClientWithResponses) AssignAddressWithResponse(ctx context.Context, ip string, body AssignAddressJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignAddressResponse, error) {
+	rsp, err := c.AssignAddress(ctx, ip, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignAddressResponse(rsp)
 }
 
 // GetFirewallWithResponse An address's inbound firewall.
@@ -4897,6 +10084,91 @@ func (c *ClientWithResponses) StartCheckoutWithResponse(ctx context.Context, bod
 	return ParseStartCheckoutResponse(rsp)
 }
 
+// DeleteDNSWithResponse Turn opdns DNS off.
+//
+// Your addresses are unlinked from the opdns profile (at once when opdns
+// answers, else we keep trying: `linked_ips` shows what is still
+// linked). Your tunnel's configuration doesn't change.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /v1/dns (the `DeleteDNS` operationId).
+func (c *ClientWithResponses) DeleteDNSWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteDNSResponse, error) {
+	rsp, err := c.DeleteDNS(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteDNSResponse(rsp)
+}
+
+// GetDNSWithResponse The opdns DNS opt-in, and the opdns profiles to pick from.
+//
+// opdns DNS: with it on, opwan links your static addresses to the opdns
+// profile you picked, so lookups that reach opdns's resolver (`resolver`,
+// 23.166.164.53) from them are filtered by it. opwan's configurations
+// never set DNS (opwan isn't a VPN: only your static addresses' traffic
+// uses the tunnel): point a device or server that uses a static address
+// at `resolver` for its lookups. Offered when your op account also has an opdns
+// account (`opdns_account`; null when opdns couldn't be asked just now):
+// `profiles` are your opdns profiles. `state` is `off`, `pending` (opdns
+// not updated yet; we keep trying), `linked` or `error` (`error` says what
+// happened in plain words); `linked_ips` are the addresses opdns has
+// linked now (addresses released or quarantined are unlinked within a
+// minute). `available` is false when this server doesn't offer it.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /v1/dns (the `GetDNS` operationId).
+func (c *ClientWithResponses) GetDNSWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDNSResponse, error) {
+	rsp, err := c.GetDNS(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetDNSResponse(rsp)
+}
+
+// PutDNSWithBodyWithResponse Turn opdns DNS on with one of your opdns profiles, or change the profile.
+//
+// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+// otherwise; opdns checks again that it is yours). 409
+// `no_opdns_account` when your op account has no opdns account; 503
+// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+// Your addresses are linked at once when opdns answers, else `state` is
+// `pending` and we keep trying. Your tunnel's configuration doesn't
+// change: it has no DNS line either way.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+func (c *ClientWithResponses) PutDNSWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutDNSResponse, error) {
+	rsp, err := c.PutDNSWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutDNSResponse(rsp)
+}
+
+// PutDNSWithResponse Turn opdns DNS on with one of your opdns profiles, or change the profile.
+//
+// `profile_id` must be one of the `profiles` `GET /v1/dns` lists (422
+// otherwise; opdns checks again that it is yours). 409
+// `no_opdns_account` when your op account has no opdns account; 503
+// `opdns_unavailable` when opdns couldn't be asked (nothing changed).
+// Your addresses are linked at once when opdns answers, else `state` is
+// `pending` and we keep trying. Your tunnel's configuration doesn't
+// change: it has no DNS line either way.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/dns (the `PutDNS` operationId).
+func (c *ClientWithResponses) PutDNSWithResponse(ctx context.Context, body PutDNSJSONRequestBody, reqEditors ...RequestEditorFn) (*PutDNSResponse, error) {
+	rsp, err := c.PutDNS(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutDNSResponse(rsp)
+}
+
 // ListLocationsWithResponse The exit locations, for the location step.
 //
 // The enabled locations (v1 Dallas only) with what the location step
@@ -4922,8 +10194,11 @@ func (c *ClientWithResponses) ListLocationsWithResponse(ctx context.Context, req
 // GetMeWithResponse The account and everything it has.
 //
 // The signed-in account, its subscription (null before the first
-// checkout), its tunnel (null before one is created), its addresses and
-// this month's usage. 401 `unauthenticated` when signed out.
+// checkout), its first tunnel (`tunnel`: null before one is created, or
+// when the first tunnel isn't WireGuard), every tunnel (`tunnels`),
+// its addresses and where each goes, and this month's usage (the
+// account's, pooled across its tunnels). 401 `unauthenticated` when
+// signed out.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -5195,6 +10470,381 @@ func (c *ClientWithResponses) GetTunnelConfigWithResponse(ctx context.Context, r
 	return ParseGetTunnelConfigResponse(rsp)
 }
 
+// ListTunnelsWithResponse The account's tunnels.
+//
+// Every tunnel of the account, by number (docs/tunnels.md): each one is
+// a billing line with its own plan, type, allowance, usage, status and
+// client configuration. Never a secret.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /v1/tunnels (the `ListTunnels` operationId).
+func (c *ClientWithResponses) ListTunnelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListTunnelsResponse, error) {
+	rsp, err := c.ListTunnels(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTunnelsResponse(rsp)
+}
+
+// CreateTunnelWithBodyWithResponse Add a tunnel (billed at once).
+//
+// Adds a tunnel to the live subscription: its plan's price (and its
+// peak tier) is prorated and charged to the saved card at once; a
+// refused card creates nothing (402). The tunnel gets one new address
+// of the account's location, assigned to it, and its plan's data joins
+// the account's pool. The account's first tunnel (paid at checkout,
+// none made yet) is made on the subscription's own line, without a
+// charge (`plan` and `peak_mbps` are then ignored). For
+// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+// 409 `no_subscription` (subscribe first: the first tunnel is bought
+// through checkout), `tunnel_limit`, `location_full` (nothing was
+// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+func (c *ClientWithResponses) CreateTunnelWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error) {
+	rsp, err := c.CreateTunnelWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTunnelResponse(rsp)
+}
+
+// CreateTunnelWithResponse Add a tunnel (billed at once).
+//
+// Adds a tunnel to the live subscription: its plan's price (and its
+// peak tier) is prorated and charged to the saved card at once; a
+// refused card creates nothing (402). The tunnel gets one new address
+// of the account's location, assigned to it, and its plan's data joins
+// the account's pool. The account's first tunnel (paid at checkout,
+// none made yet) is made on the subscription's own line, without a
+// charge (`plan` and `peak_mbps` are then ignored). For
+// L2TP/IPsec the answer carries `credentials`, **shown this once**.
+// 409 `no_subscription` (subscribe first: the first tunnel is bought
+// through checkout), `tunnel_limit`, `location_full` (nothing was
+// charged), `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /v1/tunnels (the `CreateTunnel` operationId).
+func (c *ClientWithResponses) CreateTunnelWithResponse(ctx context.Context, body CreateTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTunnelResponse, error) {
+	rsp, err := c.CreateTunnel(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateTunnelResponse(rsp)
+}
+
+// DeleteTunnelWithResponse Delete a tunnel (credited).
+//
+// Removes the tunnel and its billing line (the rest of the period is
+// credited, as Stripe prorates). Extra addresses above 2 per remaining
+// tunnel are lowered to that (credited too). The tunnel's addresses
+// stay the account's, unassigned, as long as the account's
+// entitlement (one per tunnel plus the extra addresses) covers them;
+// otherwise `release` names the ones to give up (the usual 30-day
+// quarantine), and without it the most recently added go, a block
+// always whole (single addresses are not preferred: newest first). 409
+// `release_required` (with `release_count`) when `release` names too
+// few. 409 `last_tunnel` (cancel the
+// subscription in Billing instead).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /v1/tunnels/{id} (the `DeleteTunnel` operationId).
+func (c *ClientWithResponses) DeleteTunnelWithResponse(ctx context.Context, id TunnelID, params *DeleteTunnelParams, reqEditors ...RequestEditorFn) (*DeleteTunnelResponse, error) {
+	rsp, err := c.DeleteTunnel(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteTunnelResponse(rsp)
+}
+
+// GetTunnelWithResponse One tunnel.
+//
+// One of the account's tunnels, as in `GET /v1/tunnels` (never a
+// secret). 404 `not_found` for another account's tunnel.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /v1/tunnels/{id} (the `GetTunnel` operationId).
+func (c *ClientWithResponses) GetTunnelWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*GetTunnelResponse, error) {
+	rsp, err := c.GetTunnel(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTunnelResponse(rsp)
+}
+
+// RenameTunnelWithBodyWithResponse Rename a tunnel.
+//
+// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+// dashboard only. 422 on `name`.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+func (c *ClientWithResponses) RenameTunnelWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RenameTunnelResponse, error) {
+	rsp, err := c.RenameTunnelWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRenameTunnelResponse(rsp)
+}
+
+// RenameTunnelWithResponse Rename a tunnel.
+//
+// Sets the tunnel's name (1 to 40 characters, one line), shown in the
+// dashboard only. 422 on `name`.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /v1/tunnels/{id} (the `RenameTunnel` operationId).
+func (c *ClientWithResponses) RenameTunnelWithResponse(ctx context.Context, id TunnelID, body RenameTunnelJSONRequestBody, reqEditors ...RequestEditorFn) (*RenameTunnelResponse, error) {
+	rsp, err := c.RenameTunnel(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRenameTunnelResponse(rsp)
+}
+
+// GetTunnelBGPWithResponse The tunnel's BGP session and what it announces.
+//
+// Customer BGP over the tunnel (free, off by default): its settings,
+// our side's values, the session's state, and the routes received,
+// accepted and refused (with the reason). `available` says whether
+// the tunnel's location offers BGP; `full_table_available` whether
+// it can send the full table.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /v1/tunnels/{id}/bgp (the `GetTunnelBGP` operationId).
+func (c *ClientWithResponses) GetTunnelBGPWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*GetTunnelBGPResponse, error) {
+	rsp, err := c.GetTunnelBGP(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTunnelBGPResponse(rsp)
+}
+
+// PutTunnelBGPWithBodyWithResponse Turn BGP on or off for the tunnel, or change its settings.
+//
+// `enabled` true takes `export` (`default`, the default; or `full`)
+// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+// the key). Turning it on gives the tunnel its session addresses,
+// kept while the tunnel exists, and, the first time for the account,
+// the account its AS number: a private 32-bit number we choose
+// (`asn` in the reply), unique to the account and the same for all
+// its tunnels' sessions. You don't choose it: a request with `asn` is
+// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+// given just now (BGP stays off; try again).
+// Turning it off ends the session; addresses assigned to BGP stay
+// assigned and are dropped while none of the account's tunnels
+// announces them. 409 `bgp_unavailable` (the location doesn't offer
+// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+func (c *ClientWithResponses) PutTunnelBGPWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutTunnelBGPResponse, error) {
+	rsp, err := c.PutTunnelBGPWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutTunnelBGPResponse(rsp)
+}
+
+// PutTunnelBGPWithResponse Turn BGP on or off for the tunnel, or change its settings.
+//
+// `enabled` true takes `export` (`default`, the default; or `full`)
+// and `auth` (`none`, `md5` or `ao`: TCP-AO is recommended; we make
+// the key). Turning it on gives the tunnel its session addresses,
+// kept while the tunnel exists, and, the first time for the account,
+// the account its AS number: a private 32-bit number we choose
+// (`asn` in the reply), unique to the account and the same for all
+// its tunnels' sessions. You don't choose it: a request with `asn` is
+// refused (422 on `asn`). 503 `asn_unavailable`: no number could be
+// given just now (BGP stays off; try again).
+// Turning it off ends the session; addresses assigned to BGP stay
+// assigned and are dropped while none of the account's tunnels
+// announces them. 409 `bgp_unavailable` (the location doesn't offer
+// BGP yet), 409 `full_table_unavailable`, 409 `full_table_full`.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/bgp (the `PutTunnelBGP` operationId).
+func (c *ClientWithResponses) PutTunnelBGPWithResponse(ctx context.Context, id TunnelID, body PutTunnelBGPJSONRequestBody, reqEditors ...RequestEditorFn) (*PutTunnelBGPResponse, error) {
+	rsp, err := c.PutTunnelBGP(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutTunnelBGPResponse(rsp)
+}
+
+// GetTunnelBGPConfigWithResponse The session's values to paste into your router, with examples.
+//
+// Our AS number and address, yours, the key if the session has one,
+// the addresses the session may announce, and configuration examples
+// for BIRD, FRR (and UniFi gateways), MikroTik RouterOS 7, Ubiquiti
+// EdgeOS and OpenWrt. It holds the key: a session or a write token.
+// 409 `bgp_off` while BGP is off for the tunnel.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /v1/tunnels/{id}/bgp/config (the `GetTunnelBGPConfig` operationId).
+func (c *ClientWithResponses) GetTunnelBGPConfigWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*GetTunnelBGPConfigResponse, error) {
+	rsp, err := c.GetTunnelBGPConfig(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTunnelBGPConfigResponse(rsp)
+}
+
+// ResetTunnelBGPKeyWithResponse A new key for the tunnel's BGP session.
+//
+// A new TCP-MD5 password or TCP-AO key for a session with
+// authentication; the old one stops at the next desired state
+// (seconds), so the session restarts once your router has the new
+// one. 409 `bgp_no_auth` when the session has none.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /v1/tunnels/{id}/bgp/key (the `ResetTunnelBGPKey` operationId).
+func (c *ClientWithResponses) ResetTunnelBGPKeyWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*ResetTunnelBGPKeyResponse, error) {
+	rsp, err := c.ResetTunnelBGPKey(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResetTunnelBGPKeyResponse(rsp)
+}
+
+// ResetTunnelCredentialsWithResponse New credentials for an L2TP/IPsec tunnel (shown once).
+//
+// A new IPsec pre-shared key and L2TP password; the old ones stop
+// working at the next desired state (seconds). 409 `not_l2tp` for a
+// WireGuard tunnel.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /v1/tunnels/{id}/credentials (the `ResetTunnelCredentials` operationId).
+func (c *ClientWithResponses) ResetTunnelCredentialsWithResponse(ctx context.Context, id TunnelID, reqEditors ...RequestEditorFn) (*ResetTunnelCredentialsResponse, error) {
+	rsp, err := c.ResetTunnelCredentials(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseResetTunnelCredentialsResponse(rsp)
+}
+
+// PutTunnelKeyWithBodyWithResponse Set or replace a WireGuard tunnel's public key.
+//
+// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+// WireGuard tunnel. 409 `not_wireguard` for the other types.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+func (c *ClientWithResponses) PutTunnelKeyWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutTunnelKeyResponse, error) {
+	rsp, err := c.PutTunnelKeyWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutTunnelKeyResponse(rsp)
+}
+
+// PutTunnelKeyWithResponse Set or replace a WireGuard tunnel's public key.
+//
+// As `PUT /v1/tunnel` (re-keying, bring your own key) for any
+// WireGuard tunnel. 409 `not_wireguard` for the other types.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/key (the `PutTunnelKey` operationId).
+func (c *ClientWithResponses) PutTunnelKeyWithResponse(ctx context.Context, id TunnelID, body PutTunnelKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*PutTunnelKeyResponse, error) {
+	rsp, err := c.PutTunnelKey(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutTunnelKeyResponse(rsp)
+}
+
+// ChangeTunnelPlanWithBodyWithResponse Change a tunnel's plan, monthly data or peak speed.
+//
+// This tunnel's plan and peak tier, prorated and charged (or
+// credited) at once. Monthly data and extra addresses are the
+// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+// current one.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+func (c *ClientWithResponses) ChangeTunnelPlanWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeTunnelPlanResponse, error) {
+	rsp, err := c.ChangeTunnelPlanWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeTunnelPlanResponse(rsp)
+}
+
+// ChangeTunnelPlanWithResponse Change a tunnel's plan, monthly data or peak speed.
+//
+// This tunnel's plan and peak tier, prorated and charged (or
+// credited) at once. Monthly data and extra addresses are the
+// account's: `PUT /v1/subscription`. An absent `peak_mbps` keeps the
+// current one.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/plan (the `ChangeTunnelPlan` operationId).
+func (c *ClientWithResponses) ChangeTunnelPlanWithResponse(ctx context.Context, id TunnelID, body ChangeTunnelPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeTunnelPlanResponse, error) {
+	rsp, err := c.ChangeTunnelPlan(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeTunnelPlanResponse(rsp)
+}
+
+// ChangeTunnelTypeWithBodyWithResponse Change a tunnel's type (and its setup).
+//
+// Sets the tunnel's type and what that type needs: a WireGuard public
+// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+// public IPv4 in `endpoint`). The price doesn't change. The old setup
+// stops at the next desired state. L2TP/IPsec gets new
+// `credentials`, shown this once. 409
+// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+func (c *ClientWithResponses) ChangeTunnelTypeWithBodyWithResponse(ctx context.Context, id TunnelID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ChangeTunnelTypeResponse, error) {
+	rsp, err := c.ChangeTunnelTypeWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeTunnelTypeResponse(rsp)
+}
+
+// ChangeTunnelTypeWithResponse Change a tunnel's type (and its setup).
+//
+// Sets the tunnel's type and what that type needs: a WireGuard public
+// key; for L2TP/IPsec `ike` (`ikev2`, or `ikev1` with your fixed
+// public IPv4 in `endpoint`). The price doesn't change. The old setup
+// stops at the next desired state. L2TP/IPsec gets new
+// `credentials`, shown this once. 409
+// `type_unavailable`, `endpoint_in_use`, `pubkey_in_use`.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /v1/tunnels/{id}/type (the `ChangeTunnelType` operationId).
+func (c *ClientWithResponses) ChangeTunnelTypeWithResponse(ctx context.Context, id TunnelID, body ChangeTunnelTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*ChangeTunnelTypeResponse, error) {
+	rsp, err := c.ChangeTunnelType(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseChangeTunnelTypeResponse(rsp)
+}
+
 // GetUsageWithResponse Data used in a month, per day, and live throughput.
 //
 // Totals and the daily series (UTC days) of a calendar month (default
@@ -5211,6 +10861,326 @@ func (c *ClientWithResponses) GetUsageWithResponse(ctx context.Context, params *
 		return nil, err
 	}
 	return ParseGetUsageResponse(rsp)
+}
+
+// ParseListAddressesResponse parses an HTTP response from a ListAddressesWithResponse call
+func ParseListAddressesResponse(rsp *http.Response) (*ListAddressesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListAddressesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Addresses []Address `json:"addresses"`
+
+			// Entitlement How many addresses the account pays for (one per tunnel plus the extra addresses).
+			Entitlement int `json:"entitlement"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ListAddressesResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseBuyAddressesResponse parses an HTTP response from a BuyAddressesWithResponse call
+func ParseBuyAddressesResponse(rsp *http.Response) (*BuyAddressesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BuyAddressesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Addresses []Address `json:"addresses"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest PaymentFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers BuyAddressesResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseReleaseAddressResponse parses an HTTP response from a ReleaseAddressWithResponse call
+func ParseReleaseAddressResponse(rsp *http.Response) (*ReleaseAddressResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReleaseAddressResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ReleaseAddressResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseAssignAddressResponse parses an HTTP response from a AssignAddressWithResponse call
+func ParseAssignAddressResponse(rsp *http.Response) (*AssignAddressResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AssignAddressResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Address
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers AssignAddressResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
 }
 
 // ParseGetFirewallResponse parses an HTTP response from a GetFirewallWithResponse call
@@ -5737,6 +11707,214 @@ func ParseStartCheckoutResponse(rsp *http.Response) (*StartCheckoutResponse, err
 	switch {
 	case rsp.StatusCode == 429:
 		var headers StartCheckoutResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteDNSResponse parses an HTTP response from a DeleteDNSWithResponse call
+func ParseDeleteDNSResponse(rsp *http.Response) (*DeleteDNSResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteDNSResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DNSSettings
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers DeleteDNSResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetDNSResponse parses an HTTP response from a GetDNSWithResponse call
+func ParseGetDNSResponse(rsp *http.Response) (*GetDNSResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetDNSResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DNSSettings
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers GetDNSResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePutDNSResponse parses an HTTP response from a PutDNSWithResponse call
+func ParsePutDNSResponse(rsp *http.Response) (*PutDNSResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutDNSResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DNSSettings
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest BadRequest
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers PutDNSResponse429Headers
 		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
 			var value int
 			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
@@ -6403,6 +12581,1045 @@ func ParseGetTunnelConfigResponse(rsp *http.Response) (*GetTunnelConfigResponse,
 	switch {
 	case rsp.StatusCode == 429:
 		var headers GetTunnelConfigResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseListTunnelsResponse parses an HTTP response from a ListTunnelsWithResponse call
+func ParseListTunnelsResponse(rsp *http.Response) (*ListTunnelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTunnelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// MaxTunnels How many tunnels an account may have.
+			MaxTunnels int          `json:"max_tunnels"`
+			Tunnels    []TunnelItem `json:"tunnels"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ListTunnelsResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseCreateTunnelResponse parses an HTTP response from a CreateTunnelWithResponse call
+func ParseCreateTunnelResponse(rsp *http.Response) (*CreateTunnelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateTunnelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest TunnelWithCredentials
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest PaymentFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers CreateTunnelResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseDeleteTunnelResponse parses an HTTP response from a DeleteTunnelWithResponse call
+func ParseDeleteTunnelResponse(rsp *http.Response) (*DeleteTunnelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteTunnelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest PaymentFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers DeleteTunnelResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetTunnelResponse parses an HTTP response from a GetTunnelWithResponse call
+func ParseGetTunnelResponse(rsp *http.Response) (*GetTunnelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTunnelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers GetTunnelResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseRenameTunnelResponse parses an HTTP response from a RenameTunnelWithResponse call
+func ParseRenameTunnelResponse(rsp *http.Response) (*RenameTunnelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RenameTunnelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers RenameTunnelResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetTunnelBGPResponse parses an HTTP response from a GetTunnelBGPWithResponse call
+func ParseGetTunnelBGPResponse(rsp *http.Response) (*GetTunnelBGPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTunnelBGPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelBGP
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers GetTunnelBGPResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePutTunnelBGPResponse parses an HTTP response from a PutTunnelBGPWithResponse call
+func ParsePutTunnelBGPResponse(rsp *http.Response) (*PutTunnelBGPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutTunnelBGPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelBGP
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers PutTunnelBGPResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseGetTunnelBGPConfigResponse parses an HTTP response from a GetTunnelBGPConfigWithResponse call
+func ParseGetTunnelBGPConfigResponse(rsp *http.Response) (*GetTunnelBGPConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTunnelBGPConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelBGPConfig
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers GetTunnelBGPConfigResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseResetTunnelBGPKeyResponse parses an HTTP response from a ResetTunnelBGPKeyWithResponse call
+func ParseResetTunnelBGPKeyResponse(rsp *http.Response) (*ResetTunnelBGPKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ResetTunnelBGPKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelBGPConfig
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ResetTunnelBGPKeyResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseResetTunnelCredentialsResponse parses an HTTP response from a ResetTunnelCredentialsWithResponse call
+func ParseResetTunnelCredentialsResponse(rsp *http.Response) (*ResetTunnelCredentialsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ResetTunnelCredentialsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelWithCredentials
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ResetTunnelCredentialsResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParsePutTunnelKeyResponse parses an HTTP response from a PutTunnelKeyWithResponse call
+func ParsePutTunnelKeyResponse(rsp *http.Response) (*PutTunnelKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutTunnelKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers PutTunnelKeyResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseChangeTunnelPlanResponse parses an HTTP response from a ChangeTunnelPlanWithResponse call
+func ParseChangeTunnelPlanResponse(rsp *http.Response) (*ChangeTunnelPlanResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeTunnelPlanResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelItem
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 402:
+		var dest PaymentFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON402 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ChangeTunnelPlanResponse429Headers
+		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
+			var value int
+			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			}
+			headers.RetryAfter = &value
+		}
+		response.Headers429 = &headers
+	}
+
+	return response, nil
+}
+
+// ParseChangeTunnelTypeResponse parses an HTTP response from a ChangeTunnelTypeWithResponse call
+func ParseChangeTunnelTypeResponse(rsp *http.Response) (*ChangeTunnelTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ChangeTunnelTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TunnelWithCredentials
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Unauthenticated
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest Forbidden
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest NotFound
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Conflict
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest ValidationFailed
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest RateLimited
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest Unavailable
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.ApplicationproblemJSON503 = &dest
+
+	}
+
+	switch {
+	case rsp.StatusCode == 429:
+		var headers ChangeTunnelTypeResponse429Headers
 		if values := rsp.Header.Values("Retry-After"); len(values) > 0 {
 			var value int
 			if err := runtime.BindStyledParameterWithOptions("simple", "Retry-After", values[0], &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: false, Type: "integer", Format: ""}); err != nil {

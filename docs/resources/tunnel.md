@@ -3,22 +3,36 @@
 page_title: "opwan_tunnel Resource - opwan"
 subcategory: ""
 description: |-
-  The account's WireGuard tunnel. An account has one tunnel: creating this resource when one exists takes it over and sets its key. Changing public_key re-keys the tunnel in place. The location can't change once the tunnel exists. opwan has no way to delete a tunnel, so destroying this resource only removes it from the Terraform state.
+  One of the account's WireGuard tunnels: its key and name.
+  Without tunnel_id this is the account's first tunnel: creating the resource makes it at location when the account has none, or takes it over and sets its key. With tunnel_id it takes over that tunnel; add tunnels in the dashboard, as an API token can't buy one.
+  Changing public_key re-keys the tunnel in place. The location can't change once the tunnel exists. An API token can't delete a tunnel, so destroying this resource only removes it from the Terraform state.
   Only the public key is sent to opwan. Generate the key pair with opwan_wireguard_key, or yourself with wg genkey | tee private.key | wg pubkey.
 ---
 
 # opwan_tunnel (Resource)
 
-The account's WireGuard tunnel. An account has one tunnel: creating this resource when one exists takes it over and sets its key. Changing `public_key` re-keys the tunnel in place. The location can't change once the tunnel exists. opwan has no way to delete a tunnel, so destroying this resource only removes it from the Terraform state.
+One of the account's WireGuard tunnels: its key and name.
+
+Without `tunnel_id` this is the account's first tunnel: creating the resource makes it at `location` when the account has none, or takes it over and sets its key. With `tunnel_id` it takes over that tunnel; add tunnels in the dashboard, as an API token can't buy one.
+
+Changing `public_key` re-keys the tunnel in place. The location can't change once the tunnel exists. An API token can't delete a tunnel, so destroying this resource only removes it from the Terraform state.
 
 Only the public key is sent to opwan. Generate the key pair with `opwan_wireguard_key`, or yourself with `wg genkey | tee private.key | wg pubkey`.
 
 ## Example Usage
 
 ```terraform
+# The account's first tunnel, created at the location when the account has none.
 resource "opwan_tunnel" "home" {
   location   = "dfw"
   public_key = "xTIBA5rboUvnH4htodjb6e697QjLERt1NAB4mZqp8Dg="
+}
+
+# A tunnel added in the dashboard, taken over by id.
+resource "opwan_tunnel" "office" {
+  tunnel_id  = "tun_3f9a1c2b4d5e6f708192"
+  name       = "Office"
+  public_key = "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8="
 }
 ```
 
@@ -27,18 +41,25 @@ resource "opwan_tunnel" "home" {
 
 ### Required
 
-- `location` (String) A location id from the `opwan_locations` data source (`dfw`). Must be the location chosen at checkout when one was. Can't change once the tunnel exists.
 - `public_key` (String) The client's WireGuard public key, base64 of 32 bytes. Never the private key.
+
+### Optional
+
+- `location` (String) A location id from the `opwan_locations` data source (`dfw`). Needed to create the first tunnel; must be the location chosen at checkout when one was. Can't change once the tunnel exists.
+- `name` (String) The tunnel's name, shown in the dashboard, 1 to 40 characters. Unset keeps opwan's.
+- `tunnel_id` (String) The tunnel to manage (`tun_...`, from `opwan_tunnels`). Unset for the account's first tunnel. Changing it replaces the resource.
 
 ### Read-Only
 
-- `addresses` (List of String) The tunnel's addresses as /32s (the wg-quick `Address`). Empty until the subscription is active.
+- `addresses` (List of String) The addresses routed down this tunnel, as /32s (the wg-quick `Address`). Empty until the subscription is active.
 - `allowed_ips` (List of String) Suggested `AllowedIPs` of the peer on the client.
 - `created_at` (String) When the tunnel was created (RFC 3339).
 - `endpoint` (String) The exit's WireGuard endpoint, `host:port`.
-- `id` (String) Always `tunnel`.
+- `id` (String) The tunnel id, same as `tunnel_id`.
 - `mtu` (Number) Suggested client MTU.
+- `number` (Number) 1, 2, ... in the account.
 - `persistent_keepalive` (Number) Suggested `PersistentKeepalive` in seconds.
+- `plan` (String) `base` or `plus`. Change it in the dashboard.
 - `server_public_key` (String) The exit's WireGuard public key. Null until the exit has reported it, seconds after the tunnel is created.
 - `state` (String) `pending_payment` (no active subscription yet, no address), `active`, `suspended` (a payment is late, traffic blocked) or `canceled` (the subscription ended).
 
@@ -49,6 +70,7 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-# An account has one tunnel; its id is always "tunnel".
+# By tunnel id, or "tunnel" for the account's first tunnel.
+terraform import opwan_tunnel.office tun_3f9a1c2b4d5e6f708192
 terraform import opwan_tunnel.home tunnel
 ```

@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/slop-place/terraform-provider-opwan/internal/client"
 )
@@ -40,6 +41,8 @@ type addOnsModel struct {
 	MaxExtraTB          int64           `tfsdk:"max_extra_tb"`
 	PeakPlan            string          `tfsdk:"peak_plan"`
 	PeakTiers           []peakTierModel `tfsdk:"peak_tiers"`
+	MaxTunnels          int64           `tfsdk:"max_tunnels"`
+	BlockSizes          []int64         `tfsdk:"block_sizes"`
 }
 
 type peakTierModel struct {
@@ -85,8 +88,14 @@ func (d *plansDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, 
 				Computed:            true,
 				MarkdownDescription: "The add-ons.",
 				Attributes: map[string]schema.Attribute{
-					"extra_ip_price_cents":   computedInt64("Per extra address per month."),
-					"max_extra_ips":          computedInt64("Most extra addresses a subscription can have."),
+					"extra_ip_price_cents": computedInt64("Per extra address per month."),
+					"max_extra_ips":        computedInt64("Most extra addresses at checkout; afterwards they are bought in blocks."),
+					"max_tunnels":          computedInt64("Tunnels per account, each billed at its plan's price."),
+					"block_sizes": schema.ListAttribute{
+						Computed:            true,
+						ElementType:         types.Int64Type,
+						MarkdownDescription: "The address block sizes an account may buy at once (1, 2, 4, 8).",
+					},
 					"monthly_tb_price_cents": computedInt64("Monthly data, per TB per month."),
 					"max_monthly_tb":         computedInt64("Most monthly data a subscription can have, TB."),
 					"extra_tb_price_cents":   computedInt64("One-time data, per TB, added to the current month."),
@@ -142,6 +151,11 @@ func (d *plansDataSource) Read(ctx context.Context, _ datasource.ReadRequest, re
 		tiers[i] = peakTierModel{Mbps: int64(tier.Mbps), PriceCents: int64(tier.PriceCents)}
 	}
 
+	blockSizes := make([]int64, len(addOns.BlockSizes))
+	for i, size := range addOns.BlockSizes {
+		blockSizes[i] = int64(size)
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, plansModel{
 		Currency: string(catalogue.Currency),
 		Plans:    plans,
@@ -154,6 +168,8 @@ func (d *plansDataSource) Read(ctx context.Context, _ datasource.ReadRequest, re
 			MaxExtraTB:          int64(addOns.MaxExtraTb),
 			PeakPlan:            string(addOns.PeakPlan),
 			PeakTiers:           tiers,
+			MaxTunnels:          int64(addOns.MaxTunnels),
+			BlockSizes:          blockSizes,
 		},
 	})...)
 }

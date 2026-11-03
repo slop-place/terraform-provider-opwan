@@ -30,11 +30,13 @@ data "opwan_plans" "all" {}
 
 Read-Only:
 
+- `block_sizes` (List of Number) The address block sizes an account may buy at once (1, 2, 4, 8).
 - `extra_ip_price_cents` (Number) Per extra address per month.
 - `extra_tb_price_cents` (Number) One-time data, per TB, added to the current month.
-- `max_extra_ips` (Number) Most extra addresses a subscription can have.
+- `max_extra_ips` (Number) Most extra addresses at checkout; afterwards they are bought in blocks.
 - `max_extra_tb` (Number) Most TB one data add-on purchase can buy.
 - `max_monthly_tb` (Number) Most monthly data a subscription can have, TB.
+- `max_tunnels` (Number) Tunnels per account, each billed at its plan's price.
 - `monthly_tb_price_cents` (Number) Monthly data, per TB per month.
 - `peak_plan` (String) The plan the peak speed tiers apply to.
 - `peak_tiers` (Attributes List) Peak speed tiers, slowest first. The first is the plan's own ceiling at 0 cents. (see [below for nested schema](#nestedatt--add_ons--peak_tiers))

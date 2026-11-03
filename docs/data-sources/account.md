@@ -39,8 +39,12 @@ output "addresses" {
 
 Read-Only:
 
+- `assigned_at` (String) When the account got it (RFC 3339).
+- `assignment` (String) Where it goes: `tunnel`, `bgp` or `unassigned`.
+- `block` (String) The block it was bought in (`72.244.89.16/30`), null for a single address.
 - `ip` (String) The address (dotted IPv4).
 - `location` (String) The address's location id.
+- `tunnel_id` (String) The tunnel it's routed down, or for `bgp` the one announcing it now. Null when none.
 
 
 <a id="nestedatt--subscription"></a>

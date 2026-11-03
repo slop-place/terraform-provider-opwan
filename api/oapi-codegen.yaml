@@ -3,3 +3,9 @@ output: ../internal/opwanapi/client.gen.go
 generate:
   client: true
   models: true
+output-options:
+  exclude-tags:
+    - interest
+  exclude-schemas:
+    - InterestAnswers
+    - InterestState

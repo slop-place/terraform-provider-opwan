@@ -29,11 +29,6 @@ type accountModel struct {
 	Usage        monthUsageModel    `tfsdk:"usage"`
 }
 
-type addressModel struct {
-	IP       string `tfsdk:"ip"`
-	Location string `tfsdk:"location"`
-}
-
 type subscriptionModel struct {
 	Plan               string  `tfsdk:"plan"`
 	Status             string  `tfsdk:"status"`
@@ -83,12 +78,7 @@ func (d *accountDataSource) Schema(_ context.Context, _ datasource.SchemaRequest
 			"addresses": schema.ListNestedAttribute{
 				Computed:            true,
 				MarkdownDescription: "The account's public IPv4 addresses.",
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip":       computedString("The address (dotted IPv4)."),
-						"location": computedString("The address's location id."),
-					},
-				},
+				NestedObject:        schema.NestedAttributeObject{Attributes: addressAttributes()},
 			},
 			"subscription": schema.SingleNestedAttribute{
 				Computed:            true,
@@ -150,18 +140,13 @@ func (d *accountDataSource) Read(ctx context.Context, _ datasource.ReadRequest, 
 }
 
 func accountFromAPI(me *opwanapi.Me) accountModel {
-	addresses := make([]addressModel, len(me.Addresses))
-	for i, address := range me.Addresses {
-		addresses[i] = addressModel{IP: address.Ip, Location: address.Location}
-	}
-
 	return accountModel{
 		ID:           me.Account.Id.String(),
 		Email:        me.Account.Email,
 		Status:       string(me.Account.Status),
 		CreatedAt:    me.Account.CreatedAt.Format(time.RFC3339),
 		Location:     me.Account.Location,
-		Addresses:    addresses,
+		Addresses:    addressesFromAPI(me.Addresses),
 		Subscription: subscriptionFromAPI(me.Subscription),
 		Usage: monthUsageModel{
 			Month:          me.Usage.Month,
